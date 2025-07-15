@@ -28,16 +28,16 @@ size_t	ft_strlcpy(char *restrict dst, const char *restrict src, size_t dstsize)
 	return (ft_strlen(src));
 }
 
-// #include <string.h>
-// #include<stdio.h>
-// int	main(void)
-// {
-// 	char	src[] = "Hello, World";
-// 	char	buffer[12];
+//  #include <string.h>
+//  #include<stdio.h>
+//  int	main(void)
+//  {
+//  	char	src[] = "Hello, World";
+//  	char	buffer[12];
 
-// 	int n;
+//  	int n;
 
-// 	n = ft_strlcpy(buffer, src, 2);
-// 	printf("%d\n", n);
-// 	printf("%s", buffer);
-// }
+//  	n = ft_strlcpy(buffer, src, 2);
+//  	printf("%d\n", n);
+//  	printf("%s", buffer);
+//  }

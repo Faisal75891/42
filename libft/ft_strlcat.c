@@ -20,23 +20,24 @@ size_t	ft_strlcat(char *restrict dst, const char *restrict src, size_t dstsize)
 	j = 0;
 	while (dst[j])
 		j++;
+	if (dstsize == 0 || dstsize <= j)
+		return (ft_strlen(src) + dstsize);
 	i = 0;
-	while (i < dstsize)
+	while (i < dstsize - j - 1 && src[i] != '\0')
 	{
-		dst[j] = src[i];
+		dst[j + i] = src[i];
 		i++;
-		j++;
 	}
-	dst[j] = '\0';
+	dst[j + i] = '\0';
 	return (j + i + dstsize);
 }
 
-#include <stdio.h>
-#include <string.h>
-int	main(void)
-{
-	char h[20] = "Hello";
-	char w[] = ", World!";
-	printf("%zu\n", strlcat(h, w, 0));
-	printf("%s\n", h);
-}
+// #include <stdio.h>
+// #include <string.h>
+// int	main(void)
+// {
+// 	char h[20] = "Hello";
+// 	char w[] = ", World!";
+// 	printf("%zu\n", ft_strlcat(h, w, 0));
+// 	printf("%s\n", h);
+// }
