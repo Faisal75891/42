@@ -1,28 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/15 18:14:02 by fbaras            #+#    #+#             */
-/*   Updated: 2025/07/15 18:14:02 by fbaras           ###   ########.fr       */
+/*   Created: 2025/07/17 13:47:07 by fbaras            #+#    #+#             */
+/*   Updated: 2025/07/17 13:47:07 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-int	ft_tolower(int c)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	if (c >= 'A' && c <= 'Z')
-		return (c + 32);
-	return (c);
+	char			*string;
+	unsigned int	i;
+
+	string = malloc (len + 1);
+	if (!string)
+		return (NULL);
+	i = 0;
+	while (s[start + i] && i < len)
+	{
+		string[i] = s[start + i];
+		i++;
+	}
+	string[i] = '\0';
+	return (string);
 }
 
 // #include <stdio.h>
 // int	main(void)
 // {
-// 	char	word[] = "hello";
-// 		printf("%c\n", ft_tolower('G'));
-// 	return (0);
+// 	char	*string = "hello, World";
+// 	char	*new_string = ft_substr(string, 3, 4);
+// 	printf("%s", new_string);
 // }

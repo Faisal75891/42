@@ -1,28 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/15 18:14:02 by fbaras            #+#    #+#             */
-/*   Updated: 2025/07/15 18:14:02 by fbaras           ###   ########.fr       */
+/*   Created: 2025/07/16 13:46:52 by fbaras            #+#    #+#             */
+/*   Updated: 2025/07/16 13:46:52 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-int	ft_tolower(int c)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	if (c >= 'A' && c <= 'Z')
-		return (c + 32);
-	return (c);
+	char	*string;
+	int		len;
+	int		i;
+	int		j;
+
+	len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	string = malloc(len);
+	if (!string)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		string[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+	{
+		string[i + j] = s2[j];
+		j++;
+	}
+	string[i + j] = '\0';
+	return (string);
 }
 
 // #include <stdio.h>
 // int	main(void)
 // {
-// 	char	word[] = "hello";
-// 		printf("%c\n", ft_tolower('G'));
-// 	return (0);
+// 	char	*string = ft_strjoin("Hello", ", World!");
+// 	printf("%s", string);
 // }

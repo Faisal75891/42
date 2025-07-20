@@ -1,28 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/15 18:14:02 by fbaras            #+#    #+#             */
-/*   Updated: 2025/07/15 18:14:02 by fbaras           ###   ########.fr       */
+/*   Created: 2025/07/18 23:00:56 by fbaras            #+#    #+#             */
+/*   Updated: 2025/07/18 23:00:56 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_tolower(int c)
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	if (c >= 'A' && c <= 'Z')
-		return (c + 32);
-	return (c);
+	unsigned int	i;
+
+	if (!s || !f)
+		return ;
+	i = 0;
+	while (s[i])
+	{
+		f(i, &s[i]);
+		i++;
+	}
 }
 
 // #include <stdio.h>
+// void	f_toupper(unsigned int index, char c)
+// {
+// 	if (*c >= 'a' && *c <= 'z')
+// 		*c = *c - 32;
+// }
+
 // int	main(void)
 // {
-// 	char	word[] = "hello";
-// 		printf("%c\n", ft_tolower('G'));
-// 	return (0);
+// 	char	string[] = "hello, world!";
+// 	ft_striteri(string, f_toupper);
+// 	printf("%s\n", string);
 // }
