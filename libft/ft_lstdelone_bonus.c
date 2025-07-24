@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/15 18:56:29 by fbaras            #+#    #+#             */
-/*   Updated: 2025/07/15 18:56:29 by fbaras           ###   ########.fr       */
+/*   Created: 2025/07/23 22:24:53 by fbaras            #+#    #+#             */
+/*   Updated: 2025/07/23 22:24:53 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-	size_t	i;
-
-	i = 0;
-	while (s1[i] && s1[i] == s2[i] && i < n)
-		i++;
-	return ((unsigned char)s2[i] - (unsigned char)s1[i]);
+	if (lst && del)
+		del(lst->content);
 }
-
-// #include <stdio.h>
-// int main(void)
-// {
-// 	printf("%d", ft_strncmp("helo", "hlo", 5));
-// }

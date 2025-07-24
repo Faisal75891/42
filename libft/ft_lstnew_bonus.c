@@ -1,38 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/14 14:32:39 by fbaras            #+#    #+#             */
-/*   Updated: 2025/07/15 14:46:55 by fbaras           ###   ########.fr       */
+/*   Created: 2025/07/20 13:35:29 by fbaras            #+#    #+#             */
+/*   Updated: 2025/07/20 13:35:29 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-void	*memset(void *b, int c, size_t len)
+t_list	*ft_lstnew(void *content)
 {
-	int		i;
-	char	*temp;
+	t_list	*new;
 
-	temp = b;
-	i = 0;
-	while (i <= len)
-	{
-		temp[i] = c;
-		i++;
-	}
-	temp[i] = 0;
-	return (b);
+	new = malloc(sizeof(t_list));
+	if (!new)
+		return (NULL);
+	new->content = content;
+	new->next = NULL;
+	return (new);
 }
 
 // #include <stdio.h>
 // int	main(void)
 // {
-// 	char buffer[50];
+// 	t_list *node = ft_lstnew("hiii");
+// 	printf("%s\n", node->content);
 
-// 	memset(buffer, 'A', sizeof(buffer));
-//     printf("Buffer after memset with 'A': %s\n", buffer);
 // }

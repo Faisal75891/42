@@ -1,29 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/15 18:56:29 by fbaras            #+#    #+#             */
-/*   Updated: 2025/07/15 18:56:29 by fbaras           ###   ########.fr       */
+/*   Created: 2025/07/23 12:40:55 by fbaras            #+#    #+#             */
+/*   Updated: 2025/07/23 12:40:55 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	size_t	i;
-
-	i = 0;
-	while (s1[i] && s1[i] == s2[i] && i < n)
-		i++;
-	return ((unsigned char)s2[i] - (unsigned char)s1[i]);
+	if (!new)
+		return ;
+	if (*lst)
+		new->next = *lst;
+	else
+		new->next = NULL;
+	*lst = new;
 }
 
 // #include <stdio.h>
-// int main(void)
+// int	main(void)
 // {
-// 	printf("%d", ft_strncmp("helo", "hlo", 5));
+// 	t_list	*lst = ft_lstnew("hiii");
+// 	printf("lst before adding: %s\n", lst->content);
+
+// 	t_list	*new_node = ft_lstnew("hi");
+// 	ft_lstadd_front(&lst, new_node);
+
+// 	while (lst != NULL)
+// 	{
+// 		printf("%s\n", lst->content);
+// 		lst = lst->next;
+// 	}
 // }
