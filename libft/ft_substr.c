@@ -17,8 +17,18 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char			*string;
 	unsigned int	i;
+	size_t			s_len;
+	size_t			actual_len;
 
-	string = malloc (len + 1);
+	if (!s)
+		return (NULL);
+	s_len = ft_strlen(s);
+	if (start > s_len)
+		return (ft_strdup(""));
+	actual_len = s_len - start;
+	if (len > actual_len)
+		len = actual_len;
+	string = malloc (actual_len + 1);
 	if (!string)
 		return (NULL);
 	i = 0;
@@ -35,6 +45,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 // int	main(void)
 // {
 // 	char	*string = "hello, World";
-// 	char	*new_string = ft_substr(string, 3, 4);
-// 	printf("%s", new_string);
+// 	char	*new_string = ft_substr(string, 13, 4);
+// 	printf("%s\n", new_string);
 // }

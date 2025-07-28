@@ -14,20 +14,21 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	while (*s)
-	{
-		if (*s == c)
-			return ((char *)s);
-		*s++;
-	}
-	if (*s == (char)c)
+	if (!s)
+		return (NULL);
+	while (*s && *s != (char)c)
+		s++;
+	if (*s == (char)c || (char)c == '\0')
 		return ((char *)s);
 	return (NULL);
 }
 
 // #include <stdio.h>
-// int	main(void)
+// int main(void)
 // {
-// 	printf(ft_strchr("hello", '\0'));
-
+// 	printf("1. %s\n", ft_strchr("hello", 0));
+// 	printf("2. %s\n", ft_strchr(NULL, '\0'));
+// 	printf("3. %s\n", ft_strchr("hello", '\0'));
+// 	printf("4. %s\n", ft_strchr("hello", 'e'));
+// 	printf("5. %s\n", ft_strchr("hello", 'x'));
 // }

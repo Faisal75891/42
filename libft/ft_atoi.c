@@ -12,12 +12,14 @@
 
 #include "libft.h"
 
-int	atoi(const char *nptr)
+int	ft_atoi(const char *nptr)
 {
 	int	i;
 	int	sign;
 	int	result;
 
+	if (!nptr)
+		return (0);
 	result = 0;
 	sign = 1;
 	i = 0;
@@ -33,3 +35,10 @@ int	atoi(const char *nptr)
 	}
 	return (result);
 }
+
+// #include <stdlib.h>
+// #include <stdio.h>
+// int	main(void)
+// {
+// 	printf("%d\n", atoi(""));
+// }

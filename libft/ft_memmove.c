@@ -14,23 +14,18 @@
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	size_t	i;
-	char	*dst_temp;
-	char	*src_temp;
+	size_t			i;
+	unsigned char	*dst_temp;
+	unsigned char	*src_temp;
 
-	dst_temp = (char *)dst;
-	src_temp = (char *)src;
-	i = 0;
-	while (i < len)
-	{
-		if (dst_temp <= src_temp)
-		{
+	dst_temp = (unsigned char *)dst;
+	src_temp = (unsigned char *)src;
+	if (dst_temp < src_temp)
+		while (len--)
 			*dst_temp++ = *src_temp++;
-		}
-		else
-			dst_temp[i] = src_temp[i];
-		i++;
-	}
+	else if (dst_temp > src_temp)
+		while (len--)
+			dst_temp[len] = src_temp[len];
 	return (dst);
 }
 
@@ -39,8 +34,8 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 // int	main(void)
 // {	
 // 	char	b[] = "sigma";
-// 	//ft_memmove(b + 1, b, 1);
-// 	memmove(b + 1, b, 1);
+// 	ft_memmove(b + 1, b, 1);
+// 	//memmove(b + 1, b, 1);
 
 // 	printf("%s", b);
 // }

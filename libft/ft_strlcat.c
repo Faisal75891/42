@@ -15,29 +15,36 @@
 size_t	ft_strlcat(char *restrict dst, const char *restrict src, size_t dstsize)
 {
 	size_t	i;
-	int		j;
+	size_t	dst_len;
+	size_t	src_len;
 
-	j = 0;
-	while (dst[j])
-		j++;
-	if (dstsize == 0 || dstsize <= j)
-		return (ft_strlen(src) + dstsize);
+	if (!dst && !dstsize)
+		return (ft_strlen(src));
+	if (!dst || !src)
+		return (0);
+	src_len = ft_strlen(src);
+	dst_len = 0;
+	while (dst_len < dstsize && dst[dst_len])
+		dst_len++;
+	if (dst_len == dstsize)
+		return (src_len + dst_len);
 	i = 0;
-	while (i < dstsize - j - 1 && src[i] != '\0')
+	while (i < dstsize - dst_len - 1 && src[i] != '\0')
 	{
-		dst[j + i] = src[i];
+		dst[dst_len + i] = src[i];
 		i++;
 	}
-	dst[j + i] = '\0';
-	return (j + i + dstsize);
+	dst[dst_len + i] = '\0';
+	return (src_len + dst_len);
 }
 
 // #include <stdio.h>
 // #include <string.h>
 // int	main(void)
 // {
-// 	char h[20] = "Hello";
-// 	char w[] = ", World!";
-// 	printf("%zu\n", ft_strlcat(h, w, 0));
-// 	printf("%s\n", h);
+// 	printf("1. %zu\n", ft_strlcat("Hello", NULL, 0));
+// 	printf("2. %zu\n", ft_strlcat(NULL, ", world!", 0));
+// 	printf("3. %zu\n", ft_strlcat("Hello", ", world!", 0));
+// 	printf("4. %zu\n", ft_strlcat("Hello", ", world!", 1));
+// 	printf("5. %zu\n", ft_strlcat("Hello", ", world!", 20));
 // }
