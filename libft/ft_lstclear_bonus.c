@@ -24,7 +24,7 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 	while (temp)
 	{
 		next = temp->next;
-		ft_lstdelone(*lst, del);
+		ft_lstdelone(temp, del);
 		temp = next;
 	}
 	lst = NULL;
@@ -34,7 +34,6 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 // int	main(void)
 // {
 // 	char	*s1 = ft_strdup("hi1");
-
 // 	char	*s2 = ft_strdup("hi2");
 // 	t_list	*lst = NULL;
 // 	ft_lstadd_back(&lst, ft_lstnew(s2));

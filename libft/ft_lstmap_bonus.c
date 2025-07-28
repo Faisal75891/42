@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
@@ -31,11 +30,10 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 		new_node = ft_lstnew(temp);
 		if (!new_node)
 		{
-			del(new_node);
 			ft_lstclear(&list, del);
 			return (NULL);
 		}
-		ft_lstadd_front(&list, new_node);
+		ft_lstadd_back(&list, new_node);
 		lst = lst->next;
 	}
 	return (list);
@@ -63,7 +61,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 //     return (string);
 // }
 // #include <stdio.h>
-// #include <stdlib.h>
+
 // int	main(void)
 // {
 // 	char	*s1 = ft_strdup("hi1");
@@ -72,13 +70,14 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 // 	ft_lstadd_back(&lst, ft_lstnew(s2));
 // 	ft_lstadd_back(&lst, ft_lstnew(s1));
 
-// 	lst = ft_lstmap(lst, &f_toupper, &free);
-
-// 	while (lst != NULL)
-// 	{
-// 		printf("%s\n", lst->content);
-// 		lst = lst->next;
-// 	}
+// 	t_list *new_lst = ft_lstmap(lst, &f_toupper, &free);
 // 	ft_lstclear(&lst, &free);
+
+// 	while (new_lst != NULL)
+// 	{
+// 		printf("%s\n", new_lst->content);
+// 		new_lst = new_lst->next;
+// 	}
+// 	ft_lstclear(&new_lst, &free);
 // 	return (0);
 // }

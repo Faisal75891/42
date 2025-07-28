@@ -35,6 +35,23 @@ char	*ft_strrev(char	*s)
 	return (s);
 }
 
+int	int_len(int n)
+{
+	int	len;
+
+	len = 0;
+	if (n < 0)
+		n = -n;
+	if (n <= 9)
+		len = 1;
+	while (n / 10)
+	{
+		n = n / 10;
+		len++;
+	}
+	return (len);
+}
+
 char	*ft_itoa(int n)
 {
 	char	*string;
@@ -43,10 +60,16 @@ char	*ft_itoa(int n)
 	int		start;
 	char	temp;
 
-	string = malloc(sizeof(n) + 1);
+	string = malloc((sizeof(int) * int_len(n)) + 1);
 	if (!string)
 		return (NULL);
 	i = 0;
+	if (n == 0)
+	{
+		string[0] = '0';
+		string[1] = '\0';
+		return (string);
+	}
 	while (n != 0)
 	{
 		string[i++] = (n % 10) + '0';
@@ -60,5 +83,5 @@ char	*ft_itoa(int n)
 // #include <stdio.h>
 // int	main(void)
 // {
-// 	printf("%s", ft_itoa(1234));
+// 	printf("%s", ft_itoa(1234455));
 // }
