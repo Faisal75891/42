@@ -14,9 +14,9 @@
 
 int	ft_atoi(const char *nptr)
 {
-	int	i;
-	int	sign;
-	int	result;
+	int		i;
+	int		sign;
+	long	result;
 
 	result = 0;
 	sign = 1;
@@ -24,49 +24,50 @@ int	ft_atoi(const char *nptr)
 	while (nptr[i] == 32 || (nptr[i] >= 9 && nptr[i] <= 13))
 		i++;
 	if (nptr[i] == '+' || nptr[i] == '-')
+	{
 		if (nptr[i] == '-')
-			sign *= -1;
-	if (!(nptr[i] >= '0') && (!(nptr[i] <= '9')))
-		return (0);
+			sign = -1;
+		i++;
+	}
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		result = (result * 10) + (nptr[i] - '0');
 		i++;
 	}
-	return (result * sign);
+	return (int)(result * sign);
 }
 
-#include <stdlib.h>
-#include <stdio.h>
-int	main(void)
-{
-	//printf("%d\n", atoi(NULL) == ft_atoi(NULL));
+// #include <stdlib.h>
+// #include <stdio.h>
+// int	main(void)
+// {
+// 	printf("%d\n", atoi(NULL));
 
-	printf("%d\n", atoi("1234"));
-	printf("%d\n\n", ft_atoi("1234"));
+// 	printf("%d\n", atoi("1234"));
+// 	printf("%d\n\n", ft_atoi("1234"));
 
-	printf("1. \n\n");
+// 	printf("1. \n\n");
 
-	printf("%d\n", atoi("-1234"));
-	printf("%d\n\n", ft_atoi("-1234"));
+// 	printf("%d\n", atoi("-1234"));
+// 	printf("%d\n\n", ft_atoi("-1234"));
 
-	printf("2. \n\n");
+// 	printf("2. \n\n");
 
-	printf("%d\n", atoi("2147483647"));
-	printf("%d\n\n", ft_atoi("2147483647")); // INT_mAX
+// 	printf("%d\n", atoi("++2147483647"));
+// 	printf("%d\n\n", ft_atoi("++2147483647")); // INT_mAX
 
-	printf("3. \n\n");
+// 	printf("3. \n\n");
 
-	printf("%d\n", atoi("-2147483648"));
-	printf("%d\n\n", ft_atoi("-2147483648")); // INT_MIN
+// 	printf("%d\n", atoi("-2147483648"));
+// 	printf("%d\n\n", ft_atoi("-2147483648")); // INT_MIN
 
-	printf("4. \n\n");
+// 	printf("4. \n\n");
 
-	printf("%d\n", atoi("-2147483649"));
-	printf("%d\n\n", ft_atoi("-2147483649")); // INT_MIN - 1
+// 	printf("%d\n", atoi("-2147483649"));
+// 	printf("%d\n\n", ft_atoi("-2147483649")); // INT_MIN - 1
 
-	printf("5. \n\n");
+// 	printf("5. \n\n");
 
-	printf("%d\n", atoi("2147483648"));
-	printf("%d\n\n", ft_atoi("2147483648")); // INT_MAX + 1
-}
+// 	printf("%d\n", atoi("2147483648"));
+// 	printf("%d\n\n", ft_atoi("2147483648")); // INT_MAX + 1
+// }
