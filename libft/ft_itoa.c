@@ -14,74 +14,59 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char	*ft_strrev(char	*s)
-{
-	char	temp;
-	int		end;
-	int		start;
-	int		len;
-
-	len = ft_strlen(s);
-	end = len - 1;
-	start = 0;
-	while (start < len / 2)
-	{
-		temp = s[start];
-		s[start] = s[end];
-		s[end] = temp;
-		end--;
-		start++;
-	}
-	return (s);
-}
-
 int	int_len(int n)
 {
 	int	len;
 
 	len = 0;
-	if (n < 0)
-		n = -n;
-	if (n <= 9)
+	if (n <= 0)
 		len = 1;
-	while (n / 10)
+	while (n != 0)
 	{
-		n = n / 10;
+		n /= 10;
 		len++;
 	}
 	return (len);
+}
+
+int	get_first_digit(int n)
+{
+	while (n >= 10)
+		n /= 10;
+	return (n);
 }
 
 char	*ft_itoa(int n)
 {
 	char	*string;
 	int		i;
-	int		end;
-	int		start;
-	char	temp;
+	int		len;
+	long	nbr;
 
-	string = malloc((sizeof(int) * int_len(n)) + 1);
+	nbr = n;
+	len = int_len(nbr);
+	string = malloc(len + 1);
 	if (!string)
 		return (NULL);
 	i = 0;
-	if (n == 0)
+	string[len] = '\0';
+	if (nbr < 0)
 	{
+		string[0] = '-';
+		nbr = -nbr;
+	}
+	if (nbr == 0)
 		string[0] = '0';
-		string[1] = '\0';
-		return (string);
-	}
-	while (n != 0)
+	while (nbr > 0)
 	{
-		string[i++] = (n % 10) + '0';
-		n /= 10;
+		string[--len] = (nbr % 10) + '0';
+		nbr /= 10;
 	}
-	string[i] = '\0';
-	string = ft_strrev(string);
 	return (string);
 }
 
 // #include <stdio.h>
 // int	main(void)
 // {
-// 	printf("%s", ft_itoa(1234455));
+// 	printf("%s\n", ft_itoa(0));
 // }
