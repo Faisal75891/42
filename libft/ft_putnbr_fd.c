@@ -26,9 +26,3 @@ void	ft_putnbr_fd(int n, int fd)
 		ft_putnbr_fd(num / 10, fd);
 	ft_putchar_fd(num % 10 + '0', fd);
 }
-
-// int	main(void)
-// {
-// 	ft_putnbr_fd(-1234 , 1);
-// 	return (0);
-// }

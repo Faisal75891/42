@@ -20,6 +20,8 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 
 	dst_temp = (char *)dst;
 	src_temp = (char *)src;
+	if (n == 0)
+		return (dst);
 	i = 0;
 	while (i < n)
 	{
@@ -28,16 +30,3 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	}
 	return (dst);
 }
-
-// #include <stdio.h>
-// #include <string.h>
-
-// int	main()
-// {
-// 	char csrc[] = "GeeksforGeeks"; 
-// 	char cdest[100];
-
-// 	ft_memcpy(cdest, csrc, 100);
-
-// 	printf("Copied string is %s", cdest);
-// }

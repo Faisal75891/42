@@ -30,17 +30,3 @@ char	*ft_strtrim(char const *s1, char const *set)
 	string = ft_substr(s1, start, end - start);
 	return (string);
 }
-
-	// Loop through s1
-	// during each s1, loop through set and check for matches
-	// check if we checked all letters in set, if so:
-	// append to string
-	// return string
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char	*test = "Hello, World!";
-// 	char	*test_set = "lo";
-// 	printf("%s", ft_strtrim(test, test_set));
-// }

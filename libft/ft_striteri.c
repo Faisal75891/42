@@ -25,17 +25,3 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 		i++;
 	}
 }
-
-// #include <stdio.h>
-// void	f_toupper(unsigned int index, char c)
-// {
-// 	if (*c >= 'a' && *c <= 'z')
-// 		*c = *c - 32;
-// }
-
-// int	main(void)
-// {
-// 	char	string[] = "hello, world!";
-// 	ft_striteri(string, f_toupper);
-// 	printf("%s\n", string);
-// }

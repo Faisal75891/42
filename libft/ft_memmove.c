@@ -14,7 +14,6 @@
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	size_t			i;
 	unsigned char	*dst_temp;
 	unsigned char	*src_temp;
 
@@ -28,14 +27,3 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 			dst_temp[len] = src_temp[len];
 	return (dst);
 }
-
-// #include <string.h>
-// #include <stdio.h>
-// int	main(void)
-// {	
-// 	char	b[] = "sigma";
-// 	ft_memmove(b + 1, b, 1);
-// 	//memmove(b + 1, b, 1);
-
-// 	printf("%s", b);
-// }

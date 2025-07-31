@@ -20,13 +20,3 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)s);
 	return (NULL);
 }
-
-// #include <stdio.h>
-// int main(void)
-// {
-// 	printf("1. %s\n", ft_strchr("hello", 0));
-// 	printf("2. %s\n", ft_strchr(NULL, '\0'));
-// 	printf("3. %s\n", ft_strchr("hello", '\0'));
-// 	printf("4. %s\n", ft_strchr("hello", 'e'));
-// 	printf("5. %s\n", ft_strchr("hello", 'x'));
-// }

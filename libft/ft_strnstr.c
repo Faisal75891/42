@@ -31,25 +31,3 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	}
 	return (NULL);
 }
-
-/*
-	// 012345678910
-	// Foo Bar Baz
-	// Bar
-
-	i = 0;
-	big[0]
-		little[0]
-			little != big
-			break;
-	big[4]
-		little[0]
-			little == big[4] 4 + 0
-		little[1]
-			little == big[5] 4 + 1
-		little[2]
-				   == big[6] 4 + 2
-		little[3] == '\0'
-			return big[i]
-
-*/

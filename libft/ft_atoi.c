@@ -11,12 +11,13 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <limits.h>
 
 int	ft_atoi(const char *nptr)
 {
-	int		i;
-	int		sign;
-	long	result;
+	int			i;
+	int			sign;
+	long long	result;
 
 	result = 0;
 	sign = 1;
@@ -33,41 +34,10 @@ int	ft_atoi(const char *nptr)
 	{
 		result = (result * 10) + (nptr[i] - '0');
 		i++;
+		if (sign == 1 && result > INT_MAX)
+			return (-1);
+		if (sign == -1 && result < (long long)INT_MAX + 1)
+			return (0);
 	}
-	return (int)(result * sign);
+	return ((int)(result * sign));
 }
-
-// #include <stdlib.h>
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	printf("%d\n", atoi(NULL));
-
-// 	printf("%d\n", atoi("1234"));
-// 	printf("%d\n\n", ft_atoi("1234"));
-
-// 	printf("1. \n\n");
-
-// 	printf("%d\n", atoi("-1234"));
-// 	printf("%d\n\n", ft_atoi("-1234"));
-
-// 	printf("2. \n\n");
-
-// 	printf("%d\n", atoi("++2147483647"));
-// 	printf("%d\n\n", ft_atoi("++2147483647")); // INT_mAX
-
-// 	printf("3. \n\n");
-
-// 	printf("%d\n", atoi("-2147483648"));
-// 	printf("%d\n\n", ft_atoi("-2147483648")); // INT_MIN
-
-// 	printf("4. \n\n");
-
-// 	printf("%d\n", atoi("-2147483649"));
-// 	printf("%d\n\n", ft_atoi("-2147483649")); // INT_MIN - 1
-
-// 	printf("5. \n\n");
-
-// 	printf("%d\n", atoi("2147483648"));
-// 	printf("%d\n\n", ft_atoi("2147483648")); // INT_MAX + 1
-// }

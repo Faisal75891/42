@@ -27,17 +27,3 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	dst[i] = '\0';
 	return (ft_strlen(src));
 }
-
-//  #include <string.h>
-//  #include<stdio.h>
-//  int	main(void)
-//  {
-//  	char	src[] = "Hello, World";
-//  	char	buffer[12];
-
-//  	int n;
-
-//  	n = ft_strlcpy(buffer, src, 2);
-//  	printf("%d\n", n);
-//  	printf("%s", buffer);
-//  }

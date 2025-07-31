@@ -15,7 +15,7 @@
 void	ft_bzero(void *s, size_t n)
 {
 	char	*temp;
-	int		i;
+	size_t	i;
 
 	temp = s;
 	i = 0;
@@ -25,12 +25,3 @@ void	ft_bzero(void *s, size_t n)
 		i++;
 	}
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char buffer[50];
-
-// 	bzero(buffer, sizeof(buffer));
-//     printf("Buffer after: %s\n", buffer);
-// }

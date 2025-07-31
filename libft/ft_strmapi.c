@@ -30,17 +30,3 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	string[i] = '\0';
 	return (string);
 }
-
-// char	f_toupper(unsigned int index, char c)
-// {
-// 	if (c >= 'a' && c <= 'z')
-// 		return (c - 32);
-// 	return (c);
-// }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char	*string = "hello, world!";
-// 	printf("%s", ft_strmapi(string, f_toupper));
-// }

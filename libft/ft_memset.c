@@ -26,12 +26,3 @@ void	*ft_memset(void *b, int c, size_t len)
 	}
 	return (b);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char buffer[50];
-
-// 	memset(buffer, 'A', sizeof(buffer));
-//     printf("Buffer after memset with 'A': %s\n", buffer);
-// }

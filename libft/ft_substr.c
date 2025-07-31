@@ -40,11 +40,3 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	string[i] = '\0';
 	return (string);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char	*string = "hello, World";
-// 	char	*new_string = ft_substr(string, 13, 4);
-// 	printf("%s\n", new_string);
-// }

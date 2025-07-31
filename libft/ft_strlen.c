@@ -21,10 +21,3 @@ size_t	ft_strlen(const char *s)
 		len++;
 	return (len);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char	s[] = "12345";
-// 	printf("%zu", ft_strlen(s));
-// }

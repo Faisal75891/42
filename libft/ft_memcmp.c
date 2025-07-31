@@ -23,7 +23,7 @@ int	memcmp(const void *s1, const void *s2, size_t n)
 	i = 0;
 	while (i < n)
 	{
-		if (temp1[i] != temp1[i])
+		if (temp1[i] != temp2[i])
 			return (temp1[i] - temp2[i]);
 		i++;
 	}

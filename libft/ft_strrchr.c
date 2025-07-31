@@ -21,15 +21,9 @@ char	*ft_strrchr(const char *s, int c)
 	{
 		if (*s == (char)c)
 			temp_ptr = (char *)s;
-		*s++;
+		s++;
 	}
 	if (*s == (char)c)
 		temp_ptr = (char *)s;
 	return (temp_ptr);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	printf("%s", ft_strrchr("", '\0'));
-// }

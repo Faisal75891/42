@@ -35,14 +35,3 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	dst[dst_len + i] = '\0';
 	return (src_len + dst_len);
 }
-
-// #include <stdio.h>
-// #include <string.h>
-// int	main(void)
-// {
-// 	printf("1. %zu\n", ft_strlcat("Hello", NULL, 0));
-// 	printf("2. %zu\n", ft_strlcat(NULL, ", world!", 0));
-// 	printf("3. %zu\n", ft_strlcat("Hello", ", world!", 0));
-// 	printf("4. %zu\n", ft_strlcat("Hello", ", world!", 1));
-// 	printf("5. %zu\n", ft_strlcat("Hello", ", world!", 20));
-// }

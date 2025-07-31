@@ -13,7 +13,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-int	count_words(const char *s, char c)
+static int	count_words(const char *s, char c)
 {
 	int	i;
 	int	in_word;
@@ -34,17 +34,7 @@ int	count_words(const char *s, char c)
 	return (i);
 }
 
-int	word_len(const char *s, char c)
-{
-	int	len;
-
-	len = 0;
-	while (s[len] && s[len] != c)
-		len++;
-	return (len);
-}
-
-void	*free_array(char **arr, int size)
+static void	*free_array(char **arr, int size)
 {
 	while (size--)
 		free(arr[size]);
@@ -52,7 +42,7 @@ void	*free_array(char **arr, int size)
 	return (NULL);
 }
 
-int	fill_array(char **arr, const char *s, char c)
+static int	fill_array(char **arr, const char *s, char c)
 {
 	int	i;
 	int	len;
@@ -66,7 +56,7 @@ int	fill_array(char **arr, const char *s, char c)
 			while (s[len] && s[len] != c)
 				len++;
 			arr[i] = malloc(len + 1);
-			if (!arr)
+			if (!arr[i])
 				return (i);
 			ft_strlcpy(arr[i++], s, len + 1);
 			s += len;
@@ -81,8 +71,6 @@ int	fill_array(char **arr, const char *s, char c)
 char	**ft_split(char const *s, char c)
 {
 	char	**arr;
-	int		i;
-	int		len;
 	int		fail_index;
 
 	if (!s)
@@ -95,17 +83,3 @@ char	**ft_split(char const *s, char c)
 		return (free_array(arr, fail_index));
 	return (arr);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char	strs[] = "Hello, world!";
-// 	char	**str = ft_split(strs, ',');
-// 	for (int i = 0; str[i] != NULL; i++)
-// 	{
-// 		printf("%s", str[i]);
-// 		free(str[i]);
-// 	}
-// 	free(str);
-// 	return (0);
-// }

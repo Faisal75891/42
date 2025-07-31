@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int	int_len(int n)
+static int	int_len(int n)
 {
 	int	len;
 
@@ -27,13 +27,6 @@ int	int_len(int n)
 		len++;
 	}
 	return (len);
-}
-
-int	get_first_digit(int n)
-{
-	while (n >= 10)
-		n /= 10;
-	return (n);
 }
 
 char	*ft_itoa(int n)
@@ -64,9 +57,3 @@ char	*ft_itoa(int n)
 	}
 	return (string);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	printf("%s\n", ft_itoa(0));
-// }
