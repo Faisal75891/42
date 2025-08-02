@@ -10,22 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "unistd.h"
+#include "libft.h"
 #include <stdlib.h>
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void	*ft_calloc(size_t count, size_t size)
 {
-	char	*ptr;
-	size_t	i;
+	void	*ptr;
 
-	ptr = malloc(nmemb * size);
+	if (count * size == 0)
+		return (malloc(0));
+	ptr = malloc(count * size);
 	if (!ptr)
 		return (NULL);
-	i = 0;
-	while (i < nmemb * size)
-	{
-		ptr[i] = 0;
-		i++;
-	}
-	return ((void *)ptr);
+	ft_bzero(ptr, count * size);
+	return (ptr);
 }

@@ -34,9 +34,9 @@ int	ft_atoi(const char *nptr)
 	{
 		result = (result * 10) + (nptr[i] - '0');
 		i++;
-		if (sign == 1 && result > INT_MAX)
+		if (sign == 1 && result > LLONG_MAX)
 			return (-1);
-		if (sign == -1 && result < (long long)INT_MAX + 1)
+		if (sign == -1 && result > LLONG_MAX)
 			return (0);
 	}
 	return ((int)(result * sign));
