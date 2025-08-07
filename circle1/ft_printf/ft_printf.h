@@ -20,7 +20,7 @@ int			ft_putnbr_base_fd(unsigned int nbr, const char *base, int fd);
 int			ft_putptr_fd(void *ptr, int fd);
 int			ft_putnbr_fdi(int n, int i, int fd);
 int			ft_putchar_fdi(char c, int fd);
-int			ft_putstr_fdi(char *s, int fd);
+int			ft_putstr_fdi(const char *s, int fd);
 int			ft_printf(const char *format, ...);
 int			ft_putunbr_fd(unsigned int nbr, int fd);
 

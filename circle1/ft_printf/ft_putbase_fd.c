@@ -15,10 +15,19 @@
 int	ft_putnbr_base_fd(unsigned int nbr, const char *base, int fd)
 {
 	int	i;
+	int	error_check;
 
 	i = 0;
 	if (nbr >= ft_strlen(base))
-		i += ft_putnbr_base_fd(nbr / ft_strlen(base), base, fd);
-	i += write(1, &base[nbr % ft_strlen(base)], fd);
+	{
+		error_check = ft_putnbr_base_fd(nbr / ft_strlen(base), base, fd);
+		if (error_check == -1)
+			return (-1);
+		i += error_check;
+	}
+	error_check = ft_putchar_fdi(base[nbr % ft_strlen(base)], fd);
+	if (error_check == -1)
+		return (-1);
+	i += error_check;
 	return (i);
 }

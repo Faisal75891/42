@@ -14,6 +14,10 @@
 
 int	ft_putchar_fdi(char c, int fd)
 {
-	write(fd, &c, 1);
+	int	error_check;
+
+	error_check = write(fd, &c, 1);
+	if (error_check < 0)
+		return (-1);
 	return (1);
 }
