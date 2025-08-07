@@ -11,32 +11,33 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-# include <stdint.h>
 
-static int	uintptr_t_ft_putnbr_base_fd(uintptr_t nbr, const char *base, int fd)
+static int	t_ft_putnbr_base_fd(unsigned long long nbr,
+										const char *base, int fd)
 {
-    int     count;
-    size_t  base_len;
+	int		count;
+	size_t	base_len;
 
-    count = 0;
-    base_len = ft_strlen(base);
-    if (nbr >= base_len)
-        count += uintptr_t_ft_putnbr_base_fd(nbr / base_len, base, fd);
-    count += write(fd, &base[nbr % base_len], 1);
-    return (count);
+	count = 0;
+	base_len = ft_strlen(base);
+	if (nbr >= base_len)
+		count += t_ft_putnbr_base_fd(nbr / base_len, base, fd);
+	count += write(fd, &base[nbr % base_len], 1);
+	return (count);
 }
-int ft_putptr_fd(void *ptr, int fd)
+
+int	ft_putptr_fd(void *ptr, int fd)
 {
-	uintptr_t	num;
-	int count;
+	unsigned long long	num;
+	int					count;
 
 	if (!ptr)
-    {
-        count = write(fd, "(nil)", 5);
-        return (count);
-    }
-	num = (uintptr_t)ptr;
+	{
+		count = write(fd, "(nil)", 5);
+		return (count);
+	}
+	num = (unsigned long long)ptr;
 	count = write(fd, "0x", 2);
-	count += uintptr_t_ft_putnbr_base_fd(num, "0123456789abcdef", fd);
+	count += t_ft_putnbr_base_fd(num, "0123456789abcdef", fd);
 	return (2 + count);
 }

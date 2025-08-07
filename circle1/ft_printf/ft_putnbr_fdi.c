@@ -11,20 +11,19 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "./libft/libft.h"
 
-int ft_putnbr_fdi(int n, int i, int fd)
+int	ft_putnbr_fdi(int n, int i, int fd)
 {
-    long num;
+	long	num;
 
-    num = n;
-    if (num < 0)
-    {
-        i = ft_putchar_fdi('-', fd);
-        num = -num;
-    }
-    if (num > 9)
-        i += ft_putnbr_fdi(num / 10, 0, fd);
-    i += ft_putchar_fdi(num % 10 + '0', fd);
+	num = n;
+	if (num < 0)
+	{
+		i = ft_putchar_fdi('-', fd);
+		num = -num;
+	}
+	if (num > 9)
+		i += ft_putnbr_fdi(num / 10, 0, fd);
+	i += ft_putchar_fdi(num % 10 + '0', fd);
 	return (i);
 }

@@ -11,14 +11,13 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "./libft/libft.h"
 
-int ft_putstr_fdi(char *s, int fd)
+int	ft_putstr_fdi(char *s, int fd)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (s[i])
-        write(fd, &s[i++], 1);
-    return (i);
+	i = 0;
+	while (s[i])
+		write(fd, &s[i++], 1);
+	return (i);
 }

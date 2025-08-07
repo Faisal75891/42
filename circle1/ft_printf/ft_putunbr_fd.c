@@ -11,16 +11,14 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "./libft/libft.h"
 
-int ft_putunbr_fd(unsigned int nbr, int fd)
+int	ft_putunbr_fd(unsigned int nbr, int fd)
 {
-    char digit;
-    
-    if (nbr > 9)
-        ft_putunbr_fd(nbr / 10, fd);
-    
-    digit = nbr % 10 + '0';
-    write(fd, &digit, 1);
-    return (1);
+	char	digit;
+
+	if (nbr > 9)
+		ft_putunbr_fd(nbr / 10, fd);
+	digit = nbr % 10 + '0';
+	write(fd, &digit, 1);
+	return (1);
 }
