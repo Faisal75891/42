@@ -12,32 +12,65 @@
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
+char	*extract_line(char *temp)
 {
-	char	byte;
-	char	buffer[BUFSIZ];
-	char	*new_line;
-	// int		line_size;
 	int		i;
 
-	// line_size = size_of_line(fd) + 1;
-
-	// new_line = malloc (line_size * sizeof(char *));
-	// if (!new_line)
-	// {
-	// 	close(fd);
-	// 	return (NULL);
-	// }
 	i = 0;
-	while (read(fd, &byte, sizeof(char)) > 0)
+	if (!temp)
+		return (NULL);
+	while (temp[i] && temp[i] != '\n')
+		i++;
+	if (temp[i] == '\n')
+		i++;
+	return (ft_substr(temp, 0, i));
+}
+
+char	*reset_temp(char *temp)
+{
+	char	*new_temp;
+	int		i;
+
+	i = 0;
+	while (temp[i] && temp[i] != '\n')
+		i++;
+	if (!temp[i])
 	{
-		if (byte == '\n')
-			break;
-		if (i >= BUFSIZ -1)
-			break;
-		buffer[i++] = byte;
+		free(temp);
+		return (NULL);
 	}
-	buffer[i] = '\0';
-	new_line = buffer;
+	i++;
+	new_temp = ft_substr(temp, i, -1);
+	free(temp);
+	return (new_temp);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*temp;
+	char		*new_line;
+	char		*buffer;
+	int			bytes;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	bytes = 1;
+	while (!ft_strchr(temp, '\n') && bytes > 0)
+	{
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes < 0)
+		{
+			free(buffer);
+			return (NULL);
+		}
+		buffer[bytes] = '\0';
+		temp = ft_strjoin(temp, buffer);
+	}
+	free(buffer);
+	new_line = extract_line(temp);
+	temp = reset_temp(temp);
 	return (new_line);
 }

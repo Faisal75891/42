@@ -38,8 +38,16 @@ int main(void)
 	fd = open("test.txt", O_RDONLY);
 
 	new_line = get_next_line(fd);
-	printf("%s", new_line);
-	
+	char *line_two = get_next_line(fd);
+	char *line_three = get_next_line(fd);
+	char *line_four = get_next_line(fd);
+	printf("%s\n", new_line);
+	printf("%s\n", line_two);
+	printf("%s\n", line_three);
+	printf("%s\n", line_four);
+
+	printf("%d", BUFFER_SIZE);
+
 	close (fd);
 	return (0);
 }
