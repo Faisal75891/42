@@ -17,12 +17,21 @@ static int	t_ft_putnbr_base_fd(unsigned long long nbr,
 {
 	int		count;
 	size_t	base_len;
+	int		error_check;
 
 	count = 0;
 	base_len = ft_strlen(base);
 	if (nbr >= base_len)
-		count += t_ft_putnbr_base_fd(nbr / base_len, base, fd);
-	count += write(fd, &base[nbr % base_len], 1);
+	{
+		error_check = t_ft_putnbr_base_fd(nbr / base_len, base, fd);
+		if (error_check == -1)
+			return (-1);
+		count += error_check;
+	}
+	error_check = ft_putchar_fdi(base[nbr % base_len], fd);
+	if (error_check == -1)
+		return (-1);
+	count += error_check;
 	return (count);
 }
 
@@ -31,13 +40,17 @@ int	ft_putptr_fd(void *ptr, int fd)
 	unsigned long long	num;
 	int					count;
 
+	count = 0;
 	if (!ptr)
 	{
-		count = write(fd, "(nil)", 5);
+		count += write(fd, "0x0", 3);
 		return (count);
 	}
 	num = (unsigned long long)ptr;
-	count = write(fd, "0x", 2);
+	if (write(fd, "0x", 2) == 2)
+		count += 2;
+	else
+		return (-1);
 	count += t_ft_putnbr_base_fd(num, "0123456789abcdef", fd);
-	return (2 + count);
+	return (count);
 }

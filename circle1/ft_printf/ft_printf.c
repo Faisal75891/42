@@ -34,7 +34,7 @@ static int	handle_specifier(const char format, va_list ap)
 		return (ft_putchar_fdi('%', 1));
 	else
 		return (ft_putchar_fdi(format, 1));
-	return (0);
+	return (-1);
 }
 
 int	ft_printf(const char *format, ...)
@@ -47,9 +47,17 @@ int	ft_printf(const char *format, ...)
 	while (*format)
 	{
 		if (*format == '%')
+		{
 			chars_written += handle_specifier(*(++format), ap);
+			if (chars_written < 0)
+				return (chars_written);
+		}
 		else
+		{
 			chars_written += write(1, format, 1);
+			if (chars_written < 0)
+				return (chars_written);
+		}
 		format++;
 	}
 	va_end(ap);

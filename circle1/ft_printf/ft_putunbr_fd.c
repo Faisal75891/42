@@ -15,10 +15,21 @@
 int	ft_putunbr_fd(unsigned int nbr, int fd)
 {
 	char	digit;
+	int		i;
+	int		error_check;
 
+	i = 0;
 	if (nbr > 9)
-		ft_putunbr_fd(nbr / 10, fd);
+	{
+		error_check = ft_putunbr_fd(nbr / 10, fd);
+		if (error_check == -1)
+			return (-1);
+		i += error_check;
+	}
 	digit = nbr % 10 + '0';
-	write(fd, &digit, 1);
-	return (1);
+	error_check = ft_putchar_fdi(digit, 1);
+	if (error_check == -1)
+		return (-1);
+	i += error_check;
+	return (i);
 }

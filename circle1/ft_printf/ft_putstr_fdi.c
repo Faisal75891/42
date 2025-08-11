@@ -12,12 +12,22 @@
 
 #include "ft_printf.h"
 
-int	ft_putstr_fdi(char *s, int fd)
+int	ft_putstr_fdi(const char *s, int fd)
 {
 	int	i;
+	int	count;
 
 	i = 0;
+	count = 0;
+	if (!s)
+		return (ft_putstr_fdi("(null)", 1));
 	while (s[i])
-		write(fd, &s[i++], 1);
-	return (i);
+	{
+		if (ft_putchar_fdi(s[i], fd) > 0)
+			count += 1;
+		else
+			return (-1);
+		i++;
+	}
+	return (count);
 }
