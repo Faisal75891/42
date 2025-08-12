@@ -37,16 +37,19 @@ int main(void)
 
 	fd = open("test.txt", O_RDONLY);
 
+	//printf("%s", ft_strchr("weqwkhdw", '\n'));
+	printf("1.%s\n", ft_strjoin("word 1", "wor"));
+	// printf("%s", reset_temp("hello, \n world\n\n"));
+
 	new_line = get_next_line(fd);
 	char *line_two = get_next_line(fd);
-	char *line_three = get_next_line(fd);
-	char *line_four = get_next_line(fd);
-	printf("%s\n", new_line);
-	printf("%s\n", line_two);
-	printf("%s\n", line_three);
-	printf("%s\n", line_four);
+	// char *line_three = get_next_line(fd);
+	// char *line_four = get_next_line(fd);
+	printf("OUTPUT: %s", new_line);
+	printf("LINE 2%s", line_two);
+	// printf("%s\n", line_three);
+	// printf("%s\n", line_four);
 
-	printf("%d", BUFFER_SIZE);
 
 	close (fd);
 	return (0);

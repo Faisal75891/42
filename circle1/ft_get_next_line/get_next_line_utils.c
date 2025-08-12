@@ -64,40 +64,42 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (new_string);
 }
 
+#include <stdio.h>
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		i;
-	int		j;
-	char	*new_string;
+	char	*string;
 	int		len;
 
-	i = 0;
-	j = 0;
-	len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	new_string = malloc(len);
-	if (!new_string)
+	if (!s1 && s2)
+		return (ft_strdup(s2));
+	if (s1 && !s2)
+		return (ft_strdup(s1));
+	if (!s1 && !s2)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1[i])
+	len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	string = malloc(len);
+	if (!string)
+		return (NULL);
+	while (*s1)
 	{
-		new_string[i] = s1[i];
-		i++;
+		*string++ = *s1++;
+		printf("%c\n", *string);
 	}
-	while (s2[j])
-	{
-		new_string[i + j] = s2[j];
-		j++;
-	}
-	new_string[i + j] = '\0';
-	return (new_string);
+
+	while (*s2)
+		*string++ = *s2++;
+	*string = '\0';
+	printf("%s", &s1[0]);
+	return (&string[0]);
 }
 
-char	*ft_strchr(const char *s, int c)
+int	ft_strchr(const char *s, int c)
 {
+	if (!s)
+		return (0);
 	while (*s && *s != (char)c)
 		s++;
 	if (*s == (char)c || (char)c == '\0')
-		return ((char *)s);
-	return (NULL);
+		return (1);
+	return (0);
 }
