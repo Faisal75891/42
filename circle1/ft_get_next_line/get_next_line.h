@@ -19,7 +19,7 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 32
+#  define BUFFER_SIZE 1
 # endif
 
 char	*get_next_line(int fd);
@@ -32,5 +32,6 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s);
+void	ft_strlcat(char *dst, const char *src);
 
 #endif

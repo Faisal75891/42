@@ -12,33 +12,30 @@
 
 #include "get_next_line.h"
 
-char	*extract_line(char *temp)
+char	*extract_line(char *stash)
 {
 	int		i;
 
 	i = 0;
-	if (!temp)
+	if (!stash)
 		return (NULL);
-	while (temp[i] && temp[i] != '\n')
+	while (stash[i] && stash[i] != '\n')
 		i++;
-	return (ft_substr(temp, 0, i));
+	return (ft_substr(stash, 0, i));
 }
 
-char	*reset_temp(char *temp)
+char	*reset_stash(char *stash)
 {
-	char	*new_temp;
+	char	*new_stash;
 	int		i;
 
-	if (!temp)
+	if (!stash)
 		return (NULL);
 	i = 0;
-	while (temp[i] && temp[i] != '\n')
-		i++;
-	if (!temp[i])
-		return (NULL);
-	i++;
-	new_temp = ft_strdup(&temp[i]);
-	return (new_temp);
+	while (*stash && *stash != '\n')
+		stash++;
+	new_stash = ft_strdup(stash);
+	return (new_stash);
 }
 
 char	*ft_strdup(const char *s)
@@ -61,9 +58,43 @@ char	*ft_strdup(const char *s)
 	return (string);
 }
 
+void	ft_strlcat(char *dst, const char *src)
+{
+	size_t	i;
+	size_t	dst_len;
+
+	dst_len = 0;
+	while (dst[dst_len])
+		dst_len++;
+	i = 0;
+	while (i < dst_len - 1 && src[i] != '\0')
+	{
+		dst[dst_len + i] = src[i];
+		i++;
+	}
+	dst[dst_len + i] = '\0';
+}
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	size_t			i;
+	unsigned char	*temp;
+
+	temp = (unsigned char *)b;
+	i = 0;
+	while (i < len)
+	{
+		temp[i] = (unsigned char)c;
+		i++;
+	}
+	return (b);
+}
+
+
+
 char	*get_next_line(int fd)
 {
-	static char	*temp;
+	static char	*stash;
 	char		*new_line;
 	char		*buffer;
 	ssize_t		bytes;
@@ -74,16 +105,16 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (NULL);
 	bytes = 1;
-	while (ft_strchr(temp, '\n') == 0 && bytes > 0)
+	while (!ft_strchr(stash, '\n') && bytes > 0)
 	{
-		bytes = read(fd, buffer, BUFFER_SIZE);
+		bytes = read(fd, &buffer[0], BUFFER_SIZE);
 		if (bytes < 0)
-			return (NULL);
+			break ;
 		buffer[bytes] = '\0';
-		temp = ft_strjoin(temp, buffer);
+		stash = ft_strjoin(stash, buffer);
 	}
 	free(buffer);
-	new_line = extract_line(temp);
-	temp = reset_temp(temp);
+	new_line = extract_line(stash);
+	stash = reset_stash(stash);
 	return (new_line);
 }

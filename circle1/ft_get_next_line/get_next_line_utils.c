@@ -54,7 +54,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	j = 0;
 	while (i < start)
 		i++;
-	while (i <= len || (len == -1 && s[i]))
+	while ((i <= len) || ((int)len == -1 && s[i]))
 	{
 		new_string[j] = s[i];
 		i++;
@@ -64,11 +64,11 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (new_string);
 }
 
-#include <stdio.h>
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*string;
 	int		len;
+	char	*res;
 
 	if (!s1 && s2)
 		return (ft_strdup(s2));
@@ -81,16 +81,14 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!string)
 		return (NULL);
 	while (*s1)
-	{
 		*string++ = *s1++;
-		printf("%c\n", *string);
-	}
-
 	while (*s2)
 		*string++ = *s2++;
 	*string = '\0';
-	printf("%s", &s1[0]);
-	return (&string[0]);
+	res = &string[0];
+	if (ft_strlen(string) > 0)
+		free(string);
+	return (res);
 }
 
 int	ft_strchr(const char *s, int c)
@@ -99,7 +97,7 @@ int	ft_strchr(const char *s, int c)
 		return (0);
 	while (*s && *s != (char)c)
 		s++;
-	if (*s == (char)c || (char)c == '\0')
+	if (*s == (char)c || (char)c == '\0' || *s == '\0')
 		return (1);
 	return (0);
 }
