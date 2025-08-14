@@ -30,26 +30,31 @@
 //     return (string);
 // }
 
-int main(void)
+int main(int argc, char **argv)
 {
-	static int	fd;
+	int	fd;
 	char		*new_line;
+	(void)argc;
 
-	fd = open("test.txt", O_RDONLY);
+	fd = open(argv[1], O_RDONLY);
 
-	//printf("%s", ft_strchr("weqwkhdw", '\n'));
-	//printf("1.%s\n", ft_strjoin("word 1", "wor"));
-	// printf("%s", reset_temp("hello, \n world\n\n"));
-
+	// char *new_string = extract_line(NULL);
+	// printf("main function test: %s\n", new_string);
+ 
+	printf("========== %s TEST==========", argv[1]);
 	new_line = get_next_line(fd);
 	char *line_two = get_next_line(fd);
 	char *line_three = get_next_line(fd);
 	char *line_four = get_next_line(fd);
-	printf("LINE 1: %s", new_line);
-	printf("LINE 2: %s", line_two);
-	printf("LINE 3: %s", line_three);
-	printf("LINE 4: %s", line_four);
+	printf("\nLINE 1:%s\n", new_line);
+	printf("LINE 2: %s\n", line_two);
+	printf("LINE 3: %s\n", line_three);
+	printf("LINE 4: %s\n", line_four);
 
+	free(new_line);
+	free(line_two);
+	free(line_three);
+	free(line_four);
 
 	close (fd);
 	return (0);
