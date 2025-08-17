@@ -15,75 +15,103 @@
 char	*extract_line(char *stash)
 {
 	int		i;
+	char	*new_line;
 
 	if (!stash)
-		return (ft_strdup(""));
+		return (NULL);
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
 		i++;
-	return (ft_substr(stash, 0, i));
+	if (stash[i] == '\n')
+		i++;
+	new_line = malloc(i + 1);
+	if (!new_line)
+	{
+		free(stash);
+		stash = NULL;
+		return (NULL);
+	}
+	ft_strlcpy(new_line, stash, i + 1);
+	return (new_line);
 }
 
 char	*reset_stash(char *stash)
 {
 	char	*new_stash;
-	int		i;
+	char	*nl_position;
 
-	if (!stash)
-		return (ft_strdup(""));
-	i = 0;
-	while (stash[i] && stash[i] != '\n')
-		i++;
-	if (stash[i + 1])
-		i++;
-	new_stash = ft_strdup((char *)&stash[i]);
+	new_stash = NULL;
+	nl_position = ft_strchr(stash, '\n');
+	if (!nl_position)
+	{
+		free(stash);
+		return (NULL);
+	}
+	if (*(nl_position + 1))
+	{
+		new_stash = ft_strdup(nl_position + 1);
+		if (!new_stash)
+		{
+			free(stash);
+			return (NULL);
+		}
+	}
 	free(stash);
 	return (new_stash);
 }
 
-char	*ft_strdup(const char *s)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	char	*string;
-	int		i;
-	int		len;
+	size_t	i;
 
-	len = ft_strlen(s);
-	string = malloc(len + 1);
-	if (!string)
-		return (NULL);
 	i = 0;
-	while (i < len)
+	if (dstsize == 0)
+		return (ft_strlen(src));
+	while (src[i] != '\0' && i < dstsize - 1)
 	{
-		string[i] = s[i];
+		dst[i] = src[i];
 		i++;
 	}
-	string[i] = '\0';
-	return (string);
+	dst[i] = '\0';
+	return (ft_strlen(src));
+}
+
+char	*read_line(char *stash, char *buffer, int fd)
+{
+	char	*temp;
+	ssize_t	bytes;
+
+	bytes = 1;
+	while (!ft_strchr(stash, '\n') && bytes > 0)
+	{
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes <= 0)
+			break ;
+		buffer[bytes] = '\0';
+		temp = ft_strjoin(stash, buffer);
+		free(stash);
+		stash = temp;
+		if (!stash)
+			return (NULL);
+	}
+	if (bytes < 0 || !stash[0])
+		return (free(stash), stash = NULL, NULL);
+	return (stash);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*stash;
 	char		*new_line;
-	char		*buffer;
-	char		dummy;
-	ssize_t		bytes;
+	char		buffer[BUFFER_SIZE + 1];
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &dummy, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
+		return (free(stash), stash = NULL, NULL);
+	if (!stash)
+		stash = ft_strdup("");
+	if (!stash)
 		return (NULL);
-	buffer = malloc(BUFFER_SIZE + 1);
-	if (!buffer)
-		return (NULL);
-	bytes = 1;
-	while (!ft_strchr(stash, '\n') && bytes > 0)
-	{
-		bytes = read(fd, buffer, BUFFER_SIZE);
-		if (bytes < 0)
-			break ;
-		buffer[bytes] = '\0';
-		stash = ft_strjoin(stash, buffer);
-	}
-	free(buffer);
+	stash = read_line(stash, buffer, fd);
 	new_line = extract_line(stash);
 	stash = reset_stash(stash);
 	return (new_line);
