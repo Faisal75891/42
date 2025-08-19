@@ -46,9 +46,9 @@ int	ft_printf(const char *format, ...)
 	chars_written = 0;
 	while (*format)
 	{
-		if (*format == '%')
+		if (*format == '%' && ++format)
 		{
-			chars_written += handle_specifier(*(++format), ap);
+			chars_written += handle_specifier(*format, ap);
 			if (chars_written < 0)
 				return (chars_written);
 		}

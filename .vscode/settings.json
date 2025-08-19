@@ -9,6 +9,7 @@
         "__string": "c",
         "string": "c",
         "string_view": "c",
-        "istream": "c"
+        "istream": "c",
+        "get_next_line_bonus.h": "c"
     }
 }
