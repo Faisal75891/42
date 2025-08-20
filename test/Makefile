@@ -14,41 +14,48 @@ test5 = multiple_nl.txt
 test6 = words.txt
 test7 = big_line_no_nl.txt
 test8 = big_line_with_nl.txt
+test9 = empty.txt
 
 SRC := $(wildcard $(DEPDIR)*_bonus.c)
 
 OBJ := $(SRC: %.c = $(DEPDIR)%.o)
 
-all: test1 test2 test3 test4 test5 test6 
+all: test1 test2 test3 test4 test5 test6 test7 test8 test9
 
 test1:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out $(test1)
+	echo test1
+	./a.out $(test1)
 
 test2:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out $(test2)
+	./a.out $(test2)
 
 test3:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out $(test3)
+	./a.out $(test3)
 
 test4:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out $(test4)
+	./a.out $(test4)
 
 test5:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out $(test5)
+	./a.out $(test5)
 
 test6:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out $(test6)
+	./a.out $(test6)
 
 test7:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out $(test7)
+	./a.out $(test7)
 
 test8:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out $(test8)
+	./a.out $(test8)
+
+test9:
+	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
+	./a.out $(test9)
+

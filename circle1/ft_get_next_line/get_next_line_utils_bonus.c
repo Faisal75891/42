@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:05:31 by fbaras            #+#    #+#             */
-/*   Updated: 2025/08/19 19:35:19 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/08/20 14:35:53 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ char	*ft_strchr(const char *s, int c)
 	char	*wsg;
 	int		i;
 
+	if (s == NULL)
+		return (NULL);
 	wsg = (char *)s;
 	i = 0;
 	while (*wsg && *wsg != (char)c)

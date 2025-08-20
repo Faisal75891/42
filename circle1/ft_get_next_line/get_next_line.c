@@ -79,7 +79,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 char	*read_line(char *stash, char *buffer, int fd)
 {
 	char	*temp;
-	ssize_t	bytes;
+	int		bytes;
 
 	bytes = 1;
 	while (!ft_strchr(stash, '\n') && bytes > 0)
