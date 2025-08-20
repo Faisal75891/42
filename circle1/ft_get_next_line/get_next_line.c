@@ -82,10 +82,15 @@ char	*read_line(char *stash, char *buffer, int fd)
 	int		bytes;
 
 	bytes = 1;
-	while (!ft_strchr(stash, '\n') && bytes > 0)
+	while ((bytes > 0) && (!stash || !ft_strchr(stash, '\n')))
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
-		if (bytes <= 0)
+		if (bytes < 0)
+		{
+			free(stash);
+			return (NULL);
+		}
+		if (bytes == 0)
 			break ;
 		buffer[bytes] = '\0';
 		temp = ft_strjoin(stash, buffer);
@@ -94,7 +99,7 @@ char	*read_line(char *stash, char *buffer, int fd)
 		if (!stash)
 			return (NULL);
 	}
-	if (bytes < 0 || !stash[0])
+	if (bytes < 0 && (!stash || stash[0] == '\0'))
 		return (free(stash), stash = NULL, NULL);
 	return (stash);
 }

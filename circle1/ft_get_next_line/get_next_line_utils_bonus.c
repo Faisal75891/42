@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:05:31 by fbaras            #+#    #+#             */
-/*   Updated: 2025/08/20 14:35:53 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/08/20 18:33:25 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,41 +24,44 @@ size_t	ft_strlen(const char *s1)
 	return (len);
 }
 
-char	*ft_strdup(const char *s1)
-{
-	char	*new_string;
-	size_t	len;
-	int		i;
-
-	len = 0;
-	len = ft_strlen(s1);
-	new_string = malloc(len + 1);
-	if (!new_string)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		new_string[i] = s1[i];
-		i++;
-	}
-	new_string[i] = '\0';
-	return (new_string);
-}
-
 char	*ft_strchr(const char *s, int c)
 {
-	char	*wsg;
-	int		i;
+	int	i;
 
+	i = 0;
 	if (s == NULL)
 		return (NULL);
-	wsg = (char *)s;
-	i = 0;
-	while (*wsg && *wsg != (char)c)
-		wsg++;
-	if (*wsg == (char)c)
-		return (wsg);
+	while (s[i])
+	{
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if ((char)c == '\0')
+		return ((char *)&s[i]);
 	return (NULL);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*string;
+	int		i;
+	int		len;
+
+	if (!s)
+		return (NULL);
+	len = ft_strlen(s);
+	string = malloc(len + 1);
+	if (!string)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		string[i] = s[i];
+		i++;
+	}
+	string[i] = '\0';
+	return (string);
 }
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)

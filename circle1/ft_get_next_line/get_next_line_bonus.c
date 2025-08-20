@@ -20,12 +20,8 @@ char	*get_next_line(int fd)
 	char		buffer[BUFFER_SIZE + 1];
 	char		*line;
 
-	if (fd > 1024)
-		return (NULL);
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	if (!stash[fd])
-		stash[fd] = NULL;
+	if ((fd > 1024 || fd < 0) || BUFFER_SIZE <= 0)
+		return (free(stash[fd]), stash[fd] = NULL, NULL);
 	stash[fd] = read_line(stash[fd], buffer, fd);
 	line = extract_line(stash[fd]);
 	stash[fd] = reset_stash(stash[fd]);
@@ -41,7 +37,13 @@ char	*read_line(char *stash, char *buffer, int fd)
 	while (!ft_strchr(stash, '\n') && bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read <= 0)
+		if (bytes_read < 0)
+		{
+			if (stash)
+				free(stash);
+			return (NULL);
+		}
+		if (bytes_read == 0)
 			break ;
 		buffer[bytes_read] = '\0';
 		temp = ft_strjoin(stash, buffer);
@@ -50,7 +52,7 @@ char	*read_line(char *stash, char *buffer, int fd)
 		if (!stash)
 			return (NULL);
 	}
-	if (bytes_read < 0 && !stash[0])
+	if (bytes_read <= 0 && (!stash || stash[0] == '\0'))
 		return (free(stash), stash = NULL, NULL);
 	return (stash);
 }
