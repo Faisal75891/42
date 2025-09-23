@@ -3,7 +3,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 BUFFER_SIZE = 10000
 
-DEPDIR = ../
+DEPDIR = ../circle1/ft_get_next_line/
 HEADER = -I../
 
 test1 = tests.txt
@@ -14,15 +14,17 @@ test5 = multiple_nl.txt
 test6 = words.txt
 test7 = big_line_no_nl.txt
 test8 = big_line_with_nl.txt
+test9 = empty.txt
 
-SRC := $(wildcard $(DEPDIR)*.c)
+SRC := $(wildcard $(DEPDIR)*_bonus.c)
 
 OBJ := $(SRC: %.c = $(DEPDIR)%.o)
 
-all: test1 test2 test3 test4 test5 test6 
+all: test1 test2 test3 test4 test5 test6 test7 test8 test9
 
 test1:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
+	echo test1
 	./a.out $(test1)
 
 test2:
@@ -53,8 +55,7 @@ test8:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
 	./a.out $(test8)
 
-val:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./a.out $(test8)
+test9:
+	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
+	./a.out $(test9)
 
-h:
-	gdb ./a.out $(test5)

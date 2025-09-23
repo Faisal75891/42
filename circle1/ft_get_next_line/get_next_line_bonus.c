@@ -12,24 +12,38 @@
 
 #include "get_next_line_bonus.h"
 
+#include <stdio.h>
+
 char	*get_next_line(int fd)
 {
-	static char	*stash;
-	int			bytes_read;
-	char		*buffer[BUFFER_SIZE + 1];
-	char		*temp;
+	static char	*stash[1024];
+	char		buffer[BUFFER_SIZE + 1];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 1) < 0)
-		return (NULL);
-	if (!stash)
-		stash = ft_strdup("");
-	if (!stash)
-		return (NULL);
+	if ((fd > 1024 || fd < 0) || BUFFER_SIZE <= 0)
+		return (free(stash[fd]), stash[fd] = NULL, NULL);
+	stash[fd] = read_line(stash[fd], buffer, fd);
+	line = extract_line(stash[fd]);
+	stash[fd] = reset_stash(stash[fd]);
+	return (line);
+}
+
+char	*read_line(char *stash, char *buffer, int fd)
+{
+	int		bytes_read;
+	char	*temp;
+
+	bytes_read = 1;
 	while (!ft_strchr(stash, '\n') && bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
+		{
+			if (stash)
+				free(stash);
+			return (NULL);
+		}
+		if (bytes_read == 0)
 			break ;
 		buffer[bytes_read] = '\0';
 		temp = ft_strjoin(stash, buffer);
@@ -38,10 +52,20 @@ char	*get_next_line(int fd)
 		if (!stash)
 			return (NULL);
 	}
-	if (bytes_read >= 0 || !stash[0])
-		return (free(stash), stash=NULL, NULL);
-	int i = 0;
-	while (stash[i] && stash[i] != '\n') // " \n" i = 2; malloc (3); => " \n\0"
+	if (bytes_read <= 0 && (!stash || stash[0] == '\0'))
+		return (free(stash), stash = NULL, NULL);
+	return (stash);
+}
+
+char	*extract_line(char *stash)
+{
+	char	*line;
+	int		i;
+
+	if (!stash)
+		return (NULL);
+	i = 0;
+	while (stash[i] && stash[i] != '\n')
 		i++;
 	if (stash[i] == '\n')
 		i++;
@@ -49,29 +73,38 @@ char	*get_next_line(int fd)
 	if (!line)
 	{
 		free(stash);
+		stash = NULL;
 		return (NULL);
 	}
 	ft_strlcpy(line, stash, i + 1);
-	char	*temporary;
+	return (line);
+}
+
+char	*reset_stash(char *stash)
+{
+	char	*new_stash;
 	char	*nl_position;
-	nl_position = ft_strchr(stash, "\n"); // " \n\0"
+
+	new_stash = NULL;
+	if (!stash)
+		return (NULL);
+	nl_position = ft_strchr(stash, '\n');
 	if (!nl_position)
 	{
 		free(stash);
+		stash = NULL;
 		return (NULL);
 	}
-	if (nl_position && *(nl_position + 1))
+	if (*(nl_position + 1))
 	{
-		temporary = ft_strdup(nl_position + 1);
-		if (!temporary)
+		new_stash = ft_strdup(nl_position + 1);
+		if (!new_stash)
 		{
 			free(stash);
+			stash = NULL;
 			return (NULL);
 		}
-		free(stash);
-		stash = temporary;
 	}
-	else
-		stash = NULL;
-	return (stash);
+	free(stash);
+	return (new_stash);
 }
