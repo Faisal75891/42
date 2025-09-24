@@ -1,4 +1,5 @@
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <fcntl.h>
 # include <stdio.h>
@@ -26,59 +27,75 @@ char	**parse_arguments(char *arg)
 
 int	main(int argc, char **argv)
 {
+	int		pipefd[2];
+	pid_t	cpid;
+	char	buffer;
+	int		savestdin;
+	int		savestdout;
+
 	if (argc != 5)
 	{
 		printf("%d\n", argc);
 		exit(0) ;
 	}
-	int fds[2];
-	char	buffer[30] = {0};
-	pipe(fds);
-
-	printf("I am the Parent pid: %d\n", getpid());
-	int file1 = open(argv[1], O_RDONLY); // read from. INFILE
-	int file2 = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644); // write into. OUTFILE
-	if (fork() == 0)
+	if (pipe(pipefd) == -1)
 	{
-		close(fds[0]);
-        close(fds[1]);
-		// redirect the inputs and outputs of the pipe.
-		int	savestdin = dup(0);
-		int	savestout = dup(1);
-		dup2(file1, 0);
-		dup2(file2, 1);
-
-		char **arg_list = parse_arguments(argv[2]);
-		char **arg_list2 = parse_arguments(argv[3]);
-
-		ssize_t bytes_read = read(0, buffer, sizeof(buffer) - 1);
-        if (bytes_read > 0) {
-            buffer[bytes_read] = '\0';
-            printf("Read from input file: %s\n", buffer);
-            write(1, buffer, bytes_read);
-        }
-		// execute the child processes
-		// i.e argv 1 and 2;
-		//execve(argv[2], arg_list, NULL);
-		//execve(argv[3], arg_list2, NULL);
-		dup2(savestdin, 0);
-        dup2(savestout, 1);
-        close(savestdin);
-        close(savestout);
-        
-        close(file1);
-        close(file2);
-        exit(0);
+		perror("pipe");
+		exit(1);
 	}
-	//wait for the child processes;
-	//wait(NULL);
-	// close the files.
+	cpid = fork();
+	if (cpid == -1)
+	{
+		perror("fork");
+		exit(1);
+	}
+	if (cpid == 0)
+	{
+		int file1 = open(argv[1], O_RDONLY);
+		dup2(file1, STDIN_FILENO);
+		close(file1);
+		
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[0]);
+		close(pipefd[1]);
+			char *newargv[] = {argv[2], "--help", NULL};
+			char *newenviron[] = { NULL };
+			execve(argv[2], newargv, newenviron);
+		
+		exit(1);
+	}
+	
+	pid_t pid2 = fork();
+    if (pid2 == 0)
+    {
+        // Child 2: cmd2 - reads from pipe, writes to file2
+        close(pipefd[1]); // Close write end (not needed)
+        
+        // Redirect stdin from pipe read end
+        dup2(pipefd[0], 0);
+        close(pipefd[0]);
+        
+        // Redirect stdout to file2
+        int outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (outfile == -1) {
+            perror("open output file");
+            exit(1);
+        }
+        dup2(outfile, 1);
+        close(outfile);
+        
+        // Execute cmd2
+			char *newargv[] = {NULL, NULL};
+			char *newenviron[] = { NULL };
+        execve(argv[3], newargv, newenviron);
+        perror("execve cmd2");
+        exit(1);
+    }
 
-	wait(NULL);
-	close(fds[0]);
-	close(fds[1]);
-	close(file1);
-	close(file2);
-	// finally exit the program
-	exit(0);
+	close(pipefd[0]);
+    close(pipefd[1]);
+    
+    // Wait for both children to finish
+    waitpid(cpid, NULL, 0);
+    waitpid(pid2, NULL, 0);
 }

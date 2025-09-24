@@ -1,2 +1,1 @@
-Read from input file: szcfazsfasDF Fasefasf asd
-szcfazsfasDF Fasefasf asd
+     74     483    4042
