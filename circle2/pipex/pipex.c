@@ -1,147 +1,110 @@
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <fcntl.h>
-# include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <errno.h>
-#include "libft/libft.h"
-#include "ft_printf/ft_printf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/27 16:42:59 by fbaras            #+#    #+#             */
+/*   Updated: 2025/09/27 23:21:17 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	count_words(char *arg)
-{
-	int		i;
-	int		word_count;
-	char	*trimmed_arg;
-	int		in_word;
-
-	i = 0;
-	word_count = 0;
-	in_word = 0;
-	trimmed_arg = ft_strtrim(arg, " ");
-	if (!trimmed_arg)
-		return (0);
-	while (trimmed_arg[i])
-	{
-		if (trimmed_arg[i] != ' ' && in_word == 0)
-		{
-			word_count++;
-			in_word = 1;
-		}
-		else if (trimmed_arg[i] == ' ')
-			in_word = 0;
-		i++;
-	}
-	free(trimmed_arg);
-	return (word_count);
-}
-
-int	word_len(char *arg, int i)
-{
-	int len;
-
-	len = 0;
-	while (arg[len + i] && arg[len + i] != ' ')
-		len++;
-	return (len + 1);
-}
-
-void	free_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (!arr)
-		return ;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-}
-
-char	**parse_arguments(char *arg)
-{
-	char	**arg_list;
-	int		i;
-	int		j;
-	int		len;
-
-	arg = ft_strtrim(arg, " ");
-	arg_list = malloc ((count_words(arg) + 1) * sizeof(char *));
-	if (!arg_list)
-		return (NULL);
-	i = 0;
-	len = 0;
-	j = 0;
-	while (arg[i])
-	{
-		len = word_len(arg, i);
-		arg_list[j] = malloc(len + 1);
-		if (!arg_list[j])
-		{
-			free_array(arg_list);
-			return (NULL);
-		}
-		ft_strlcpy(arg_list[j], &arg[i], len);
-		arg_list[j++][len] = '\0';
-		i += len;
-	}
-	arg_list[j] = NULL;
-	return (arg_list);
-}
+#include "pipex.h"
 
 
 int	main(int argc, char **argv)
 {
 	int		pipefd[2];
-	pid_t	cpid;
+	int		num_of_commands;
+	int		i;
+	pid_t	pid;
+	int		prev_pipe;
+	int		file;
+	char	**args;
 
-	if (argc != 5)
+	if (argc < 5)
+		exit(0);
+	num_of_commands = argc - 3;
+	i = 0;
+	prev_pipe = -1;
+	while (i < num_of_commands)
 	{
-		exit(0) ;
+		ft_printf("%d.\n", i);
+		if (pipe(pipefd) == -1)
+			exit(1);
+		pid = fork();
+		if (pid == -1)
+			exit(1);
+		if (pid == 0) // This is the child process. Parent will be executed first. at line: 83.
+		{
+			// if (ft_strcmp(argv[1], "here_doc"))
+			// {
+			// 	// then save the limit
+			// 	char	*limiter = argv[2];
+			// 	// then read from stdin.
+			// 	while (!ft_strchr(buffer, limiter) && bytes_read > 0)
+			// 	{
+			// 		bytes_read = read(0, &buffer, BUFFER_SIZE);
+			// 		if (bytes_read < 0)
+			// 			return (0);
+			// 		buffer[bytes_read] = '\0';
+			// 	}
+			// }
+			if (i == 0)
+			{
+				// This is the infile.
+				file = open(argv[1], O_RDONLY);
+				if (file == -1)
+					exit(1);
+				dup2(file, STDIN_FILENO);
+				close(file);
+			}
+			else
+			{
+				// Keep in mind that the previous pipe is the output from the first file or the previous command
+				dup2(prev_pipe, STDIN_FILENO);
+				close(prev_pipe);
+			}
+			if (i == num_of_commands - 1)
+			{
+				file = open (argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				if (file == -1)
+					exit(1);
+				dup2(file, STDOUT_FILENO);
+				close(file);
+			}
+			// We will always go inside here if i isnt 1 or argc - 1; This part 
+			// Sets the Output of the command to the read end of the pipe.
+			else
+			{
+				dup2(pipefd[1], STDOUT_FILENO);
+				close(pipefd[1]); // close becuase we just redirected it.
+				close(pipefd[0]); // close just to be safe as good practice.
+			}
+
+			// Here execute the commands at argv[i]
+			// i starts from 0 and the first command is at index 2
+			args = ft_split(argv[i + 2], ' ');
+			execve(args[0], args, NULL);
+			ft_printf("error: %s at cmd%d", strerror(errno), i);
+			exit(1);
+		}
+		// This is the parent.
+		// Keep setting the previous pipe as the read end for the next iteration.
+		if (prev_pipe != -1)
+			close(prev_pipe);
+		if (i < num_of_commands)
+		{
+			close (pipefd[1]);
+			prev_pipe = pipefd[0];
+		}
+		i++;
 	}
-	if (pipe(pipefd) == -1)
+	while (i < num_of_commands)
 	{
-		perror("pipe");
-		exit(1);
+		wait (NULL);
+		i++;
 	}
-	cpid = fork();
-	if (cpid == -1)
-	{
-		perror("fork");
-		exit(1);
-	}
-	if (cpid == 0)
-	{
-		int file1 = open(argv[1], O_RDONLY);
-		dup2(file1, STDIN_FILENO);
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(file1);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		char **newargv = parse_arguments(argv[2]);
-		char *newenviron[] = { NULL };
-		execve(argv[2], newargv, newenviron);
-		perror("execve cmd1");
-		exit(1);
-	}
-	pid_t cpid2 = fork();
-	if (cpid2 == 0)
-	{
-		int	file2 = open(argv[4], O_WRONLY);
-		dup2(file2, STDOUT_FILENO);
-		dup2(pipefd[0], STDIN_FILENO);
-		close(file2);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		char **newargv = parse_arguments(argv[3]);
-		char *newenviron[] = { NULL };
-		execve(argv[3], newargv, newenviron);
-		perror("execve cmd2");
-		exit(1);
-	}
-	close(pipefd[0]);
-	close(pipefd[1]);
-	waitpid(cpid, NULL, 0);
-	waitpid(cpid2, NULL, 0);
+	return (0);
 }
