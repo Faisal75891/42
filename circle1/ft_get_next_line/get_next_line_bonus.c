@@ -12,8 +12,6 @@
 
 #include "get_next_line_bonus.h"
 
-#include <stdio.h>
-
 char	*get_next_line(int fd)
 {
 	static char	*stash[1024];
@@ -34,7 +32,7 @@ char	*read_line(char *stash, char *buffer, int fd)
 	char	*temp;
 
 	bytes_read = 1;
-	while (!ft_strchr(stash, '\n') && bytes_read > 0)
+	while ((!stash || !ft_strchr(stash, '\n')) && bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)

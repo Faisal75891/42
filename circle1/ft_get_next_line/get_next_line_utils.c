@@ -12,23 +12,6 @@
 
 #include "get_next_line.h"
 
-// int	size_of_line(int fd)
-// {
-// 	char	byte;
-// 	int		chars_read;
-
-// 	chars_read = 0;
-// 	while (read(fd, &byte, 1) > 0)
-// 	{
-// 		write(1, &byte, 1);
-// 		if (byte == '\n')
-// 			break;
-// 		chars_read++;
-// 	}
-// 	close (fd);
-// 	return (chars_read);
-// }
-
 size_t	ft_strlen(const char *s)
 {
 	size_t	len;

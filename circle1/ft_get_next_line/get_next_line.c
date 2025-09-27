@@ -112,10 +112,6 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 		return (free(stash), stash = NULL, NULL);
-	if (!stash)
-		stash = ft_strdup("");
-	if (!stash)
-		return (NULL);
 	stash = read_line(stash, buffer, fd);
 	new_line = extract_line(stash);
 	stash = reset_stash(stash);

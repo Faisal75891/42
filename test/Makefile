@@ -25,37 +25,37 @@ all: test1 test2 test3 test4 test5 test6 test7 test8 test9
 test1:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
 	echo test1
-	./a.out $(test1)
+	valgrind --leak-check=full --track-origins=yes ./a.out $(test1)
 
 test2:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	./a.out $(test2)
+	valgrind --leak-check=full --track-origins=yes ./a.out $(test2)
 
 test3:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	./a.out $(test3)
+	valgrind --leak-check=full --track-origins=yes ./a.out $(test3)
 
 test4:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	./a.out $(test4)
+	valgrind --leak-check=full --track-origins=yes ./a.out $(test4)
 
 test5:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	./a.out $(test5)
+	valgrind --leak-check=full --track-origins=yes ./a.out $(test5)
 
 test6:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	./a.out $(test6)
+	valgrind --leak-check=full --track-origins=yes ./a.out $(test6)
 
 test7:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	./a.out $(test7)
+	valgrind --leak-check=full --track-origins=yes ./a.out $(test7)
 
 test8:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	./a.out $(test8)
+	valgrind --leak-check=full --track-origins=yes ./a.out $(test8)
 
 test9:
 	$(CC) $(CFLAGS) ${SRC} $(HEADER) main.c -D BUFFER_SIZE=$(BUFFER_SIZE)
-	./a.out $(test9)
+	valgrind --leak-check=full --track-origins=yes ./a.out $(test9)
 
