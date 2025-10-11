@@ -20,6 +20,12 @@ test: $(NAME)
 	@echo "Test Completed. OUTPUT:"
 	@cd test_pipex && cat file2.txt
 
+test_bonus: $(NAME)
+	@echo "Hello this is the test input from the make file\nEOF\n" > test_pipex/input.txt
+	@cd test_pipex && < input.txt ./a.out "here_doc" EOF /bin/cat /bin/cat file2.txt
+	@echo "Test Completed. OUTPUT:"
+	@cd test_pipex && cat file2.txt
+
 
 clean:
 	rm -f $(OBJ)
