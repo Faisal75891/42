@@ -21,7 +21,7 @@ test: $(NAME)
 	@cd test_pipex && cat file2.txt
 
 test_bonus: $(NAME)
-	@echo "Hello this is the test input from the make file\nEOF\n" > test_pipex/input.txt
+	@echo "Hello this is the test input WORD1.WORD2.WORD3.WORD4.WORD5.WORD6.WORD7.WORD8 the make file\nEOF\n" > test_pipex/input.txt
 	@cd test_pipex && < input.txt ./a.out "here_doc" EOF /bin/cat /bin/cat file2.txt
 	@echo "Test Completed. OUTPUT:"
 	@cd test_pipex && cat file2.txt
