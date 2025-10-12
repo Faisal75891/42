@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:42:59 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/12 15:13:18 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/12 17:19:49 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,22 +101,22 @@ void	read_input(int is_heredoc, int heredoc_pipe[2], char **argv)
 	}
 }
 
-void	set_output(char **argv, int argc)
+void	set_output(t_gl_variable *glv)
 {
 	int	file;
 
-	file = open (argv[argc - 1], O_WRONLY
+	file = open (glv->argv[glv->argc - 1], O_WRONLY
 			| O_CREAT | O_TRUNC, 0644);
 	if (file == -1)
 		exit(1);
 	redirect(file, STDOUT_FILENO);
 }
 
-void	execute_one_command(char **argv, int is_heredoc, int i)
+void	execute_one_command(t_gl_variable *glv)
 {
-	execve(argv[i + 2 + is_heredoc],
-		ft_split(argv[i + 2 + is_heredoc], ' '), NULL);
-	ft_printf("error: %s at cmd %d", strerror(errno), i);
+	execve(glv->argv[glv->arg_index + 2 + glv->is_heredoc],
+		ft_split(argv[glv->arg_index + 2 + glv->is_heredoc], ' '), NULL);
+	ft_printf("error: %s at cmd %d", strerror(errno), glv->arg_index);
 	exit(1);
 }
 
@@ -132,45 +132,43 @@ void	wait_for_children(int num_of_commands)
 	}
 }
 
-void	renew_pipe(int prev_pipe, int num_of_commands, int i, int pipefd[2])
+void	renew_pipe(int prev_pipe, int num_of_commands,
+	t_gl_variable *glv, int pipefd[2])
 {
 	if (prev_pipe != -1)
 		close(prev_pipe);
-	if (i < num_of_commands)
+	if (glv->arg_index < num_of_commands)
 	{
 		close (pipefd[1]);
 		prev_pipe = pipefd[0];
 	}
 }
 
-void	handle_pipeline_command(int is_heredoc, int heredoc_pipe[2],
-	char **argv, int argc, int prev_pipe,
-	int num_of_commands, int i, int pipefd[2])
+void	handle_pipeline_command(t_gl_variable *glv, int prev_pipe,
+	int num_of_commands, int pipefd[2])
 {
-	if (i == 0)
-		read_input(is_heredoc, heredoc_pipe, argv);
+	if (glv->arg_index == 0)
+		read_input(glv->is_heredoc, glv->heredoc_pipe, glv->argv);
 	else
 		redirect(prev_pipe, STDIN_FILENO);
-	if (i == num_of_commands - 1)
-		set_output(argv, argc);
+	if (glv->arg_index == num_of_commands - 1)
+		set_output(glv->argv, glv->argc);
 	else
 		redirect(pipefd[1], STDOUT_FILENO);
-	execute_one_command(argv, is_heredoc, i);
+	execute_one_command(glv->argv, glv->is_heredoc, glv->arg_index);
 }
 
-void	execute_commands(int heredoc_pipe[2],
-	char **argv, int argc, int is_heredoc)
+//execute_commands(&glv, argv, argc);
+void	execute_commands(t_gl_variable *glv, char **argv, int argc)
 {
 	int		pipefd[2];
-	int		i;
 	pid_t	pid;
 	int		prev_pipe;
 	int		num_of_commands;
 
-	i = 0;
-	num_of_commands = argc - 3 - is_heredoc;
+	num_of_commands = argc - 3 - glv->is_heredoc;
 	prev_pipe = -1;
-	while (i < num_of_commands)
+	while (glv->arg_index < num_of_commands)
 	{
 		if (pipe(pipefd) == -1)
 			exit(1);
@@ -178,24 +176,32 @@ void	execute_commands(int heredoc_pipe[2],
 		if (pid == -1)
 			exit(1);
 		if (pid == 0)
-			handle_pipeline_command(is_heredoc, heredoc_pipe, argv,
-				argc, prev_pipe, num_of_commands, i, pipefd);
+			handle_pipeline_command(glv, prev_pipe, num_of_commands, pipefd);
 		renew_pipe(prev_pipe, num_of_commands, i, pipefd);
-		i++;
+		glv->arg_index++;
 	}
 	wait_for_children(num_of_commands);
 }
 
+void	set_glv(t_gl_variable *glv, int argc, char **argv)
+{
+	glv->argc = argc;
+	glv->argv = argv;
+	glv->arg_index = 0;
+	glv->heredoc_pipe[0] = -1;
+	glv->heredoc_pipe[1] = -1;
+	glv->is_heredoc = 0;
+}
+
 int	main(int argc, char **argv)
 {
-	int	is_heredoc;
-	int	heredoc_pipe[2];
+	t_gl_variable	glv;
 
-	is_heredoc = 0;
+	set_glv(glv, argc, argv);
 	if (argc < 5)
 		exit(EXIT_FAILURE);
 	if (ft_strncmp(argv[1], "here_doc", ft_strlen("here_doc")) == 0)
-		is_heredoc = setup_here_doc(argv, heredoc_pipe);
-	execute_commands(heredoc_pipe, argv, argc, is_heredoc);
+		glv.is_heredoc = setup_here_doc(argv);
+	execute_commands(&glv, argv, argc);
 	return (0);
 }

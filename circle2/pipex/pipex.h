@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 21:31:23 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/12 15:21:56 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/12 17:12:24 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@
 typedef struct global_variables
 {
 	char	**argv;
-	int		arg;
+	int		argc;
+	int		arg_index;
 	int		is_heredoc;
 	int		heredoc_pipe[2];
 }	t_gl_variable;
