@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 21:31:23 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/11 19:42:05 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/12 15:21:56 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,13 @@
 # include <errno.h>
 # include <string.h>
 # include "ft_printf/ft_printf.h"
+
+typedef struct global_variables
+{
+	char	**argv;
+	int		arg;
+	int		is_heredoc;
+	int		heredoc_pipe[2];
+}	t_gl_variable;
 
 #endif

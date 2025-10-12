@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:42:59 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/11 19:58:09 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/12 15:13:18 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,14 @@ void	read_heredoc_input(char *limiter, int pipefd[2])
 int	setup_here_doc(char **argv, int heredoc_pipe[2])
 {
 	pid_t	heredoc_pid;
-	char	*here_doc;
 
-	here_doc = argv[1];
 	if (pipe(heredoc_pipe) == -1)
 		exit(1);
 	heredoc_pid = fork();
 	if (heredoc_pid == -1)
 		exit(1);
 	if (heredoc_pid == 0)
-	{
 		read_heredoc_input(argv[2], heredoc_pipe);
-	}
 	else
 	{
 		close(heredoc_pipe[1]);
@@ -124,9 +120,44 @@ void	execute_one_command(char **argv, int is_heredoc, int i)
 	exit(1);
 }
 
-// EXECUTE_SINGLE_COMMAND();
-// REDIRECT_INPUT()
-// handle_all_commands(...)
+void	wait_for_children(int num_of_commands)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_of_commands)
+	{
+		wait(NULL);
+		i++;
+	}
+}
+
+void	renew_pipe(int prev_pipe, int num_of_commands, int i, int pipefd[2])
+{
+	if (prev_pipe != -1)
+		close(prev_pipe);
+	if (i < num_of_commands)
+	{
+		close (pipefd[1]);
+		prev_pipe = pipefd[0];
+	}
+}
+
+void	handle_pipeline_command(int is_heredoc, int heredoc_pipe[2],
+	char **argv, int argc, int prev_pipe,
+	int num_of_commands, int i, int pipefd[2])
+{
+	if (i == 0)
+		read_input(is_heredoc, heredoc_pipe, argv);
+	else
+		redirect(prev_pipe, STDIN_FILENO);
+	if (i == num_of_commands - 1)
+		set_output(argv, argc);
+	else
+		redirect(pipefd[1], STDOUT_FILENO);
+	execute_one_command(argv, is_heredoc, i);
+}
+
 void	execute_commands(int heredoc_pipe[2],
 	char **argv, int argc, int is_heredoc)
 {
@@ -138,6 +169,7 @@ void	execute_commands(int heredoc_pipe[2],
 
 	i = 0;
 	num_of_commands = argc - 3 - is_heredoc;
+	prev_pipe = -1;
 	while (i < num_of_commands)
 	{
 		if (pipe(pipefd) == -1)
@@ -146,31 +178,12 @@ void	execute_commands(int heredoc_pipe[2],
 		if (pid == -1)
 			exit(1);
 		if (pid == 0)
-		{
-			if (i == 0)
-				read_input(is_heredoc, heredoc_pipe, argv);
-			else
-				redirect(prev_pipe, STDIN_FILENO);
-			if (i == num_of_commands - 1)
-				set_output(argv, argc);
-			else
-				redirect(pipefd[1], STDOUT_FILENO);
-			execute_one_command(argv, is_heredoc, i);
-		}
-		if (prev_pipe != -1)
-			close(prev_pipe);
-		if (i < num_of_commands)
-		{
-			close (pipefd[1]);
-			prev_pipe = pipefd[0];
-		}
+			handle_pipeline_command(is_heredoc, heredoc_pipe, argv,
+				argc, prev_pipe, num_of_commands, i, pipefd);
+		renew_pipe(prev_pipe, num_of_commands, i, pipefd);
 		i++;
 	}
-	while (i < num_of_commands)
-	{
-		wait (NULL);
-		i++;
-	}
+	wait_for_children(num_of_commands);
 }
 
 int	main(int argc, char **argv)
@@ -182,9 +195,7 @@ int	main(int argc, char **argv)
 	if (argc < 5)
 		exit(EXIT_FAILURE);
 	if (ft_strncmp(argv[1], "here_doc", ft_strlen("here_doc")) == 0)
-	{
 		is_heredoc = setup_here_doc(argv, heredoc_pipe);
-	}
 	execute_commands(heredoc_pipe, argv, argc, is_heredoc);
 	return (0);
 }
