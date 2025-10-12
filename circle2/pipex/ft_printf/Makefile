@@ -2,7 +2,7 @@ NAME = libftprintf.a
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 LIBFT_DIR = ./libft
-LIBFT = libft/libft.a
+LIBFT = $(LIBFT_DIR)/libft.a
 
 SRC = ft_printf.c ft_putbase_fd.c ft_putchar_fdi.c ft_putnbr_fdi.c ft_putptr_fd.c ft_putstr_fdi.c ft_putunbr_fd.c
 OBJ = $(SRC:.c=.o)
@@ -10,7 +10,6 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
-	cp $(LIBFT) $(NAME)
 	ar rcs $(NAME) $(OBJ)
 
 $(LIBFT):
