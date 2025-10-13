@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 22:53:06 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/12 21:25:04 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/13 19:50:57 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	setup_here_doc(t_gl_variable *glv)
 		perror("couldn't pipe heredoc");
 		return (0);
 	}
-	ft_printf("heredoc[0]: %d\n\n", glv->heredoc_pipe[0]);
 	heredoc_pid = fork();
 	if (heredoc_pid == -1)
 	{
@@ -76,9 +75,7 @@ int	setup_here_doc(t_gl_variable *glv)
 	}
 	if (heredoc_pid == 0)
 	{
-		close(glv->heredoc_pipe[0]);
 		read_heredoc(glv->argv[2], glv->heredoc_pipe);
-		close(glv->heredoc_pipe[1]);
 		exit(0);
 	}
 	else

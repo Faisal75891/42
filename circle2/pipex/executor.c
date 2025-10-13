@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 20:31:45 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/12 21:34:44 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/13 20:04:02 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,27 @@ void	execute_all_commands(t_gl_variable *glv)
 		}
 		pid = fork();
 		if (pid == -1)
-		{
-			perror("couldn't fork");
 			exit(1);
-		}
 		if (pid == 0)
 			child_process(glv, prev_pipe, num_of_commands, pipefd);
 		renew_pipe(&prev_pipe, num_of_commands, glv->arg_index, pipefd);
 		glv->arg_index++;
 	}
+	if (prev_pipe != -1)
+    	close(prev_pipe);
 	wait_for_children(num_of_commands);
+}
+
+void	child_process(t_gl_variable *glv, int prev_pipe,
+	int num_of_commands, int pipefd[2])
+{
+	if (glv->arg_index == 0)
+		setup_input(glv);
+	else
+		dup_and_close(prev_pipe, STDIN_FILENO);
+	if (glv->arg_index == num_of_commands - 1)
+		setup_output(glv);
+	else
+		dup_and_close(pipefd[1], STDOUT_FILENO);
+	exec_command(glv);
 }

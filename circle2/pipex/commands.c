@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 20:32:55 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/12 22:17:10 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/13 19:46:19 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	setup_input(t_gl_variable *glv)
 	}
 }
 
-void	set_output(t_gl_variable *glv)
+void	setup_output(t_gl_variable *glv)
 {
 	int	file;
 
@@ -64,12 +64,14 @@ void	set_output(t_gl_variable *glv)
 	dup_and_close(file, STDOUT_FILENO);
 }
 
-void free_split(char **arr)
+void	free_split(char **arr)
 {
-    int i = 0;
-    while (arr[i])
-        free(arr[i++]);
-    free(arr);
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
 }
 
 void	exec_command(t_gl_variable *glv)
@@ -94,18 +96,4 @@ void	exec_command(t_gl_variable *glv)
 	}
 	free_split(args);
 	exit(1);
-}
-
-void	child_process(t_gl_variable *glv, int prev_pipe,
-	int num_of_commands, int pipefd[2])
-{
-	if (glv->arg_index == 0)
-		setup_input(glv);
-	else
-		dup_and_close(prev_pipe, STDIN_FILENO);
-	if (glv->arg_index == num_of_commands - 1)
-		set_output(glv);
-	else
-		dup_and_close(pipefd[1], STDOUT_FILENO);
-	exec_command(glv);
 }
