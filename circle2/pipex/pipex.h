@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 21:31:23 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/13 17:54:33 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/14 16:35:25 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int		setup_here_doc(t_gl_variable *glv);
 int		read_line(int fd, char *buffer);
 void	execute_all_commands(t_gl_variable *glv);
 void	wait_for_children(int n);
-void	renew_pipe(int *prev_fd, int i, int n_cmds, int pipefd[2]);
+void	renew_pipe(t_gl_variable *glv, int *prev_pipe,
+			int num_of_commands, int pipefd[2]);
 void	exec_command(t_gl_variable *glv);
 void	setup_input(t_gl_variable *glv);
 void	setup_output(t_gl_variable *glv);

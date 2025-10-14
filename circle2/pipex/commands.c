@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 20:32:55 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/13 19:46:19 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/14 18:31:45 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	setup_input(t_gl_variable *glv)
 {
 	int	file;
 
-	if (glv->is_heredoc == 1)
+	if (glv->arg_index == 0 && glv->is_heredoc == 1)
 		dup_and_close(glv->heredoc_pipe[0], STDIN_FILENO);
 	else
 	{
@@ -88,6 +88,7 @@ void	exec_command(t_gl_variable *glv)
 	{
 		execve(args[0], args, glv->envp);
 		ft_printf("error: %s at cmd %d", strerror(errno), glv->arg_index);
+		exit(1);
 	}
 	else
 	{
