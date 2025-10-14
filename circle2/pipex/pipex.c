@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:42:59 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/14 16:34:27 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/14 20:41:02 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,5 @@ int	main(int argc, char **argv, char **envp)
 		exit(EXIT_FAILURE);
 	if (ft_strncmp(argv[1], "here_doc", ft_strlen("here_doc")) == 0)
 		glv.is_heredoc = setup_here_doc(&glv);
-	execute_all_commands(&glv);
-	return (0);
+	return (execute_all_commands(&glv));
 }

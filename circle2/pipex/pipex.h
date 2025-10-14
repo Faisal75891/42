@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 21:31:23 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/14 16:35:25 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/14 20:40:19 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef struct s_global_variables
 void	init_glv(t_gl_variable *glv, int argc, char **argv, char **envp);
 int		setup_here_doc(t_gl_variable *glv);
 int		read_line(int fd, char *buffer);
-void	execute_all_commands(t_gl_variable *glv);
-void	wait_for_children(int n);
+int		execute_all_commands(t_gl_variable *glv);
+int		wait_for_children(int num_of_commands);
 void	renew_pipe(t_gl_variable *glv, int *prev_pipe,
 			int num_of_commands, int pipefd[2]);
 void	exec_command(t_gl_variable *glv);
@@ -52,5 +52,7 @@ void	child_process(t_gl_variable *glv, int prev_fd,
 			int n_cmds, int pipefd[2]);
 void	dup_and_close(int old_fd, int new_fd);
 void	free_split(char **arr);
+char	*get_cmd_path(char *cmd, char **envp);
+char	*test_paths(char **paths, char *cmd);
 
 #endif

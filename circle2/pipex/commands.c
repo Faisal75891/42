@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 20:32:55 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/14 18:31:45 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/14 21:01:48 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	dup_and_close(int fd1, int fd2)
 {
 	if (fd1 == -1)
 	{
-		fprintf(stderr, "dup_and_close: invalid fd (%d)\n", fd1);
+		perror("dup_and_close: invalid fd");
 		exit(1);
 	}
 	if (dup2(fd1, fd2) == -1)
@@ -27,74 +27,100 @@ void	dup_and_close(int fd1, int fd2)
 	close(fd1);
 }
 
-void	setup_input(t_gl_variable *glv)
-{
-	int	file;
-
-	if (glv->arg_index == 0 && glv->is_heredoc == 1)
-		dup_and_close(glv->heredoc_pipe[0], STDIN_FILENO);
-	else
-	{
-		if (access(glv->argv[1], R_OK) != 0)
-		{
-			perror("infile access error");
-			exit(EXIT_FAILURE);
-		}
-		file = open(glv->argv[1], O_RDONLY);
-		if (file == -1)
-		{
-			perror("infile couldn't be opened");
-			exit(1);
-		}
-		dup_and_close(file, STDIN_FILENO);
-	}
-}
-
-void	setup_output(t_gl_variable *glv)
-{
-	int	file;
-
-	file = open (glv->argv[glv->argc - 1], O_WRONLY
-			| O_CREAT | O_TRUNC, 0644);
-	if (file == -1)
-	{
-		perror("outfile couldn't be opened");
-		exit(1);
-	}
-	dup_and_close(file, STDOUT_FILENO);
-}
-
 void	free_split(char **arr)
 {
 	int	i;
 
+	if (!arr)
+		return ;
 	i = 0;
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);
 }
 
+char	*test_paths(char **paths, char *cmd)
+{
+	char	*temp;
+	int		i;
+	char	*full_path;
+
+	i = 0;
+	while (paths[i])
+	{
+		temp = ft_strjoin(paths[i], "/");
+		if (!temp)
+			return (NULL);
+		full_path = ft_strjoin(temp, cmd);
+		free(temp);
+		if (access(full_path, X_OK) == 0)
+			return (full_path);
+		free(full_path);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*get_cmd_path(char *cmd, char **envp)
+{
+	int		i;
+	char	**paths;
+	char	*full_path;
+
+	if (ft_strchr(cmd, '/'))
+		return (ft_strdup(cmd));
+	i = 0;
+	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
+		i++;
+	if (!envp[i])
+		return (NULL);
+	paths = ft_split(envp[i] + 5, ':');
+	if (!paths)
+		return (NULL);
+	full_path = test_paths(paths, cmd);
+	free_split(paths);
+	return (full_path);
+}
+
 void	exec_command(t_gl_variable *glv)
 {
-	char	**args;
+	char	*cmd;
+	char	*args[4];
 
-	args = ft_split(glv->argv[glv->arg_index + 2 + glv->is_heredoc], ' ');
-	if (!args)
-	{
-		perror("ft_split failed!");
-		exit(1);
-	}
-	if (access(args[0], X_OK) == 0)
-	{
-		execve(args[0], args, glv->envp);
-		ft_printf("error: %s at cmd %d", strerror(errno), glv->arg_index);
-		exit(1);
-	}
-	else
-	{
-		perror("command was not executed or not found");
+	cmd = glv->argv[glv->arg_index + 2 + glv->is_heredoc];
+	args[0] = "/bin/sh";
+	args[1] = "-c";
+	args[2] = cmd;
+	args[3] = NULL;
+	execve("/bin/sh", args, glv->envp);
+	perror("pipex");
+	if (errno == ENOENT)
 		exit(127);
-	}
-	free_split(args);
-	exit(1);
+	else
+		exit(1);
 }
+
+// void	exec_command(t_gl_variable *glv)
+// {
+// 	char	**args;
+// 	char	*cmd;
+
+// 	args = ft_split(glv->argv[glv->arg_index + 2 + glv->is_heredoc], ' ');
+// 	if (!args || !args[0])
+// 	{
+// 		perror("ft_split failed!");
+// 		exit(1);
+// 	}
+// 	cmd = get_cmd_path(args[0], glv->envp);
+// 	if (!cmd)
+// 	{
+// 		ft_printf("pipex: command not found: %s\n", args[0]);
+// 		free_split(args);
+// 		exit(127);
+// 	}
+// 	execve(cmd, args, glv->envp);
+// 	perror("pipex: execve failed");
+// 	free(cmd);
+// 	free_split(args);
+// 	exit(1);
+// }
