@@ -1,7 +1,7 @@
 NAME = push_swap
 CFLAGS = -Wall -Wextra -Werror
 CC = cc
-SRC = push_swap.c
+SRC = instructions.c  operations.c    push_swap.c
 OBJ = $(SRC:.c=.o)
 PRINTF_DIR = ./ft_printf
 LIBFT_DIR = ./ft_printf/libft
@@ -10,7 +10,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 all: $(NAME)
 
-NAME: $(PRINTF) $(LIBFT)
+$(NAME): $(OBJ) $(PRINTF) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJ) $(PRINTF) $(LIBFT) -o $(NAME)
 
 %.o: %.c

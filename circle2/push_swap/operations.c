@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 08:43:02 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/15 09:17:54 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/15 16:14:30 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ int	pop(t_stack *stack, int *item)
 		return (1);
 	*item = stack->collection[stack->size - 1];
 	stack->size--;
-	return (item);
+	return (*item);
 }
 
 int	push(t_stack *stack, int *item)
 {
 	if (is_full(stack))
 		return (1);
-	stack->collection[stack->size] = item;
+	stack->collection[stack->size] = *item;
 	stack->size++;
 	return (0);
 }

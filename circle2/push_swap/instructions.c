@@ -19,8 +19,8 @@ void	sa(t_stack *a)
 
 	temp = pop(a, &temp);
 	temp2 = pop(a, &temp);
-	push(a, temp2);
-	push(a, temp);
+	push(a, &temp2);
+	push(a, &temp);
 }
 
 void	sb(t_stack *b)
@@ -30,11 +30,11 @@ void	sb(t_stack *b)
 
 	temp = pop(b, &temp);
 	temp2 = pop(b, &temp);
-	push(b, temp2);
-	push(b, temp);
+	push(b, &temp2);
+	push(b, &temp);
 }
 
-void	ss(t_stack a, t_stack b)
+void	ss(t_stack *a, t_stack *b)
 {
 	sa(a);
 	sb(b);
@@ -62,7 +62,6 @@ void	pb(t_stack *a, t_stack *b)
 
 void	ra(t_stack *a, t_stack *b)
 {
-	int	item;
 	int	first_item;
 	int	elements_moved;
 
@@ -83,7 +82,6 @@ void	ra(t_stack *a, t_stack *b)
 
 void	rb(t_stack *a, t_stack *b)
 {
-	int	item;
 	int	first_item;
 	int	elements_moved;
 
@@ -125,7 +123,7 @@ void	rra(t_stack *a, t_stack *b)
 		pa(a, b);
 		elements_moved--;
 	}
-	push(a, item);
+	push(a, &item);
 }
 
 void	rrb(t_stack *a, t_stack *b)
@@ -145,7 +143,7 @@ void	rrb(t_stack *a, t_stack *b)
 		pb(a, b);
 		elements_moved--;
 	}
-	push(b, item);
+	push(b, &item);
 }
 
 void	rrr(t_stack *a, t_stack *b)

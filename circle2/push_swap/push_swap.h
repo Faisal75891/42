@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 08:40:37 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/15 11:05:41 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/15 17:12:34 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <unistd.h>
 #include <fcntl.h>
+# include "ft_printf/ft_printf.h"
 
 typedef struct s_stack
 {
@@ -30,6 +31,11 @@ int		is_empty(t_stack *stack);
 int		pop(t_stack *stack, int *item);
 int		push(t_stack *stack, int *item);
 int		peek(t_stack *stack, int *item);
+int		is_sorted(t_stack *a);
+void	ft_sort(t_stack *stack_a, t_stack *stack_b);
+void	free_split(char **arr);
+void	parse_arguments(int argc, char **argv, int *int_array);
+void	push_args(t_stack *a, int *args);
 void	sa(t_stack *a);
 void	sb(t_stack *b);
 void	ss(t_stack *a, t_stack *b);
