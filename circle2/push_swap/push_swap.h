@@ -14,8 +14,9 @@
 # define PUSH_SWAP_H
 
 #include <unistd.h>
+#include <stdlib.h>
 #include <fcntl.h>
-# include "ft_printf/ft_printf.h"
+# include "./ft_printf/ft_printf.h"
 
 typedef struct s_stack
 {
@@ -34,18 +35,23 @@ int		peek(t_stack *stack, int *item);
 int		is_sorted(t_stack *a);
 void	ft_sort(t_stack *stack_a, t_stack *stack_b);
 void	free_split(char **arr);
-void	parse_arguments(int argc, char **argv, int *int_array);
-void	push_args(t_stack *a, int *args);
+int		parse_arguments(int argc, char **argv, int *int_array);
+void	push_args(t_stack *a, int *args, int size);
+int		find_min(t_stack *stack);
+int		find_max(t_stack *stack);
+int		smallest_bigger(t_stack *a, int b);
+int		cost_to_top(t_stack *stack, int position);
+int		find_position(t_stack *a, int b);
 void	sa(t_stack *a);
 void	sb(t_stack *b);
 void	ss(t_stack *a, t_stack *b);
 void	pa(t_stack *a, t_stack *b);
 void	pb(t_stack *a, t_stack *b);
-void	ra(t_stack *a, t_stack *b);
-void	rb(t_stack *a, t_stack *b);
+void	ra(t_stack *a);
+void	rb(t_stack *b);
 void	rr(t_stack *a, t_stack *b);
-void	rra(t_stack *a, t_stack *b);
-void	rrb(t_stack *a, t_stack *b);
+void	rra(t_stack *a);
+void	rrb(t_stack *b);
 void	rrr(t_stack *a, t_stack *b);
 
 #endif

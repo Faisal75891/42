@@ -24,14 +24,14 @@ $(LIBFT):
 
 clean:
 	rm -f $(OBJ)
-	make clean -C $(LIBFT)
-	make clean -C $(ft_printf)
+	make clean -C $(LIBFT_DIR)
+	make clean -C $(PRINTF_DIR)
 
 fclean: clean
 	rm -f $(NAME)
-	make fclean -C $(LIBFT)
-	make fclean -C $(ft_printf)
+	make fclean -C $(LIBFT_DIR)
+	make fclean -C $(PRINTF_DIR)
 
-re: fclean a;;
+re: fclean all
 
 .PHONY: clean fclean re all

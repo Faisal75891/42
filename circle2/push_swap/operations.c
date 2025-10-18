@@ -73,3 +73,94 @@ int	peek(t_stack *stack, int *item)
 	*item = stack->collection[stack->size - 1];
 	return (0);
 }
+
+int	find_min(t_stack *stack)
+{
+	int	min;
+	int	i;
+
+	if (is_empty(stack))
+		return (0);
+	min = stack->collection[0];
+	i = 1;
+	while (i < stack->size)
+	{
+		if (stack->collection[i] < min)
+			min = stack->collection[i];
+		i++;
+	}
+	return (min);
+}
+
+int	find_max(t_stack *stack)
+{
+	int	max;
+	int	i;
+
+	if (is_empty(stack))
+		return (0);
+	max = stack->collection[0];
+	i = 1;
+	while (i < stack->size)
+	{
+		if (stack->collection[i] > max)
+			max = stack->collection[i];
+		i++;
+	}
+	return (max);
+}
+
+int	cost_to_top(t_stack *stack, int position)
+{
+	int	rotate_cost;
+	int	reverse_rotate_cost;
+
+	rotate_cost = stack->size - position;
+	reverse_rotate_cost = position;
+	if (rotate_cost <= reverse_rotate_cost)
+		return (rotate_cost);
+	else
+		return (-reverse_rotate_cost);
+}
+
+// returns the index of the smallest bigger number than b in stack a
+int	smallest_bigger(t_stack *a, int b)
+{
+	int	smallest_bigger_index;
+	int	i;
+
+	i = 0;
+	smallest_bigger_index = -1;
+	while (i < a->size)
+	{
+		if (a->collection[i] > b && (smallest_bigger_index == -1 || a->collection[i] < a->collection[smallest_bigger_index]))
+			smallest_bigger_index = i;
+		i++;
+	}
+	if (smallest_bigger_index == -1)
+	{
+		smallest_bigger_index = find_min(a);
+		i = 0;
+        while (i < a->size)
+        {
+            if (a->collection[i] == smallest_bigger_index)
+                return (i);
+            i++;
+        }
+	}
+	return (smallest_bigger_index);
+}
+
+int	find_position(t_stack *a, int b)
+{
+    int	i;
+
+    i = 0;
+    while (i < a->size)
+    {
+        if (a->collection[i] == b)
+            return (i);
+        i++;
+    }
+    return (-1);
+}

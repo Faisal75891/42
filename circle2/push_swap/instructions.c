@@ -1,14 +1,15 @@
 /* ************************************************************************** */
-/**/
-/*:::  ::::::::   */
-/*   instructions.c :+:  :+::+:   */
-/*+:+ +:+ +:+ */
-/*   By: fbaras <fbaras@student.42.fr>  +#+  +:+   +#+*/
-/*+#+#+#+#+#+   +#+   */
-/*   Created: 2025/10/15 09:44:47 by fbaras#+##+# */
-/*   Updated: 2025/10/15 09:50:04 by fbaras   ###   ########.fr   */
-/**/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   instructions.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/16 15:42:41 by fbaras            #+#    #+#             */
+/*   Updated: 2025/10/16 15:42:41 by fbaras           ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
+
 
 #include "push_swap.h"
 
@@ -17,10 +18,11 @@ void	sa(t_stack *a)
 	int	temp;
 	int	temp2;
 
-	temp = pop(a, &temp);
-	temp2 = pop(a, &temp);
+	pop(a, &temp);
+	pop(a, &temp2);
 	push(a, &temp2);
 	push(a, &temp);
+	ft_printf("sa\n");
 }
 
 void	sb(t_stack *b)
@@ -28,16 +30,27 @@ void	sb(t_stack *b)
 	int	temp;
 	int	temp2;
 
-	temp = pop(b, &temp);
-	temp2 = pop(b, &temp);
+	pop(b, &temp);
+	pop(b, &temp2);
 	push(b, &temp2);
 	push(b, &temp);
+	ft_printf("sb\n");
 }
 
 void	ss(t_stack *a, t_stack *b)
 {
-	sa(a);
-	sb(b);
+	int	temp;
+	int	temp2;
+
+	pop(a, &temp);
+	pop(a, &temp2);
+	push(a, &temp2);
+	push(a, &temp);
+	pop(b, &temp);
+	pop(b, &temp2);
+	push(b, &temp2);
+	push(b, &temp);
+	ft_printf("ss\n");
 }
 
 void	pa(t_stack *a, t_stack *b)
@@ -48,6 +61,7 @@ void	pa(t_stack *a, t_stack *b)
 		return ;
 	pop(b, &item);
 	push(a, &item);
+	ft_printf("pa\n");
 }
 
 void	pb(t_stack *a, t_stack *b)
@@ -58,96 +72,137 @@ void	pb(t_stack *a, t_stack *b)
 		return ;
 	pop(a, &item);
 	push(b, &item);
+	ft_printf("pb\n");
 }
 
-void	ra(t_stack *a, t_stack *b)
+void	ra(t_stack *a)
 {
-	int	first_item;
-	int	elements_moved;
+	int	temp;
+	int	i;
 
-	elements_moved = 0;
-	pop(a, &first_item);
-	while (!is_empty(a))
+	if (a->size < 2)
+		return;
+	temp = a->collection[a->size - 1];
+	i = a->size - 1;
+	while (i > 0)
 	{
-		pb(a, b);
-		elements_moved++;
+		a->collection[i] = a->collection[i - 1];
+		i--;
 	}
-	push(a, &first_item);
-	while (elements_moved > 0)
-	{
-		pa(a, b);
-		elements_moved--;
-	}
+	a->collection[0] = temp;
+	ft_printf("ra\n");
 }
 
-void	rb(t_stack *a, t_stack *b)
+void	rb(t_stack *b)
 {
-	int	first_item;
-	int	elements_moved;
-
-	elements_moved = 0;
-	pop(b, &first_item);
-	while (!is_empty(b))
+	int	temp;
+	int	i;
+	
+	if (b->size < 2)
+		return;
+	temp = b->collection[b->size - 1];
+	i = b->size - 1;
+	while (i > 0)
 	{
-		pa(a, b);
-		elements_moved++;
+		b->collection[i] = b->collection[i - 1];
+		i--;
 	}
-	push(b, &first_item);
-	while (elements_moved > 0)
-	{
-		pb(a, b);
-		elements_moved--;
-	}
+	b->collection[0] = temp;
+	ft_printf("rb\n");
 }
 
 void	rr(t_stack *a, t_stack *b)
 {
-	ra(a, b);
-	rb(a, b);
+	int	temp;
+	int	i;
+	
+	if (a->size >= 2)
+	{
+		temp = a->collection[a->size - 1];
+		i = a->size - 1;
+		while (i > 0)
+		{
+			a->collection[i] = a->collection[i - 1];
+			i--;
+		}
+		a->collection[0] = temp;
+	}
+	if (b->size >= 2)
+	{
+		temp = b->collection[b->size - 1];
+		i = b->size - 1;
+		while (i > 0)
+		{
+			b->collection[i] = b->collection[i - 1];
+			i--;
+		}
+		b->collection[0] = temp;
+	}
+	ft_printf("rr\n");
 }
 
-void	rra(t_stack *a, t_stack *b)
+void	rra(t_stack *a)
 {
-	int	item;
-	int	elements_moved;
-
-	elements_moved = 0;
-	while (!is_empty(a))
+	int	temp;
+	int	i;
+	
+	if (a->size < 2)
+		return;
+	temp = a->collection[0];
+	i = 0;
+	while (i < a->size - 1)
 	{
-		pb(a, b);
-		elements_moved++;
+		a->collection[i] = a->collection[i + 1];
+		i++;
 	}
-	pop(b, &item);
-	while (elements_moved > 0)
-	{
-		pa(a, b);
-		elements_moved--;
-	}
-	push(a, &item);
+	a->collection[a->size - 1] = temp;
+	ft_printf("rra\n");
 }
 
-void	rrb(t_stack *a, t_stack *b)
+void	rrb(t_stack *b)
 {
-	int	item;
-	int	elements_moved;
+	int	temp;
+	int	i;
 
-	elements_moved = 0;
-	while (!is_empty(b))
+	if (b->size < 2)
+		return;
+	temp = b->collection[0];
+	i = 0;
+	while (i < b->size - 1)
 	{
-		pa(a, b);
-		elements_moved++;
+		b->collection[i] = b->collection[i + 1];
+		i++;
 	}
-	pop(a, &item);
-	while (elements_moved > 0)
-	{
-		pb(a, b);
-		elements_moved--;
-	}
-	push(b, &item);
+	b->collection[b->size - 1] = temp;
+	ft_printf("rrb\n");
 }
 
 void	rrr(t_stack *a, t_stack *b)
 {
-	rra(a, b);
-	rrb(a, b);
+	int	temp;
+	int	i;
+	
+	if (a->size >= 2)
+	{
+		temp = a->collection[0];
+		i = 0;
+		while (i < a->size - 1)
+		{
+			a->collection[i] = a->collection[i + 1];
+			i++;
+		}
+		a->collection[a->size - 1] = temp;
+	}
+	if (b->size >= 2)
+	{
+		temp = b->collection[0];
+		i = 0;
+		while (i < b->size - 1)
+		{
+			b->collection[i] = b->collection[i + 1];
+			i++;
+		}
+		b->collection[b->size - 1] = temp;
+	}
+	ft_printf("rrr\n");
 }
