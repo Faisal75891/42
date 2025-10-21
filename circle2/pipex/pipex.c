@@ -29,8 +29,19 @@ int	main(int argc, char **argv, char **envp)
 
 	init_glv(&glv, argc, argv, envp);
 	if (argc < 5)
+	{
+		ft_printf("Usage: %s file1 cmd1 cmd2 ... cmdn file2\n", argv[0]);
+		ft_printf("   or: %s here_doc LIMITER cmd1 cmd2 ... cmdn file\n", argv[0]);
 		exit(EXIT_FAILURE);
-	if (ft_strncmp(argv[1], "here_doc", ft_strlen("here_doc")) == 0)
+	}
+	if (ft_strncmp(argv[1], "here_doc", 9) == 0 && argv[1][8] == '\0')
+	{
+		if (argc < 6)
+		{
+			ft_printf("Usage: %s here_doc LIMITER cmd1 cmd2 ... cmdn file\n", argv[0]);
+			exit(EXIT_FAILURE);
+		}
 		glv.is_heredoc = setup_here_doc(&glv);
+	}
 	return (execute_all_commands(&glv));
 }

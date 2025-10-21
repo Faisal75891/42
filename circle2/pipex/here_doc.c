@@ -66,16 +66,13 @@ void	setup_input(t_gl_variable *glv)
 		dup_and_close(glv->heredoc_pipe[0], STDIN_FILENO);
 	else
 	{
-		if (access(glv->argv[1], R_OK) != 0)
-		{
-			perror("pipex: input");
-			exit(EXIT_FAILURE);
-		}
 		file = open(glv->argv[1], O_RDONLY);
 		if (file == -1)
 		{
-			perror("infile couldn't be opened");
-			exit(1);
+			perror(glv->argv[1]);
+			file = open("/dev/null", O_RDONLY);
+			if (file == -1)
+				exit(EXIT_FAILURE);
 		}
 		dup_and_close(file, STDIN_FILENO);
 	}
@@ -85,11 +82,15 @@ void	setup_output(t_gl_variable *glv)
 {
 	int	file;
 
-	file = open (glv->argv[glv->argc - 1], O_WRONLY
-			| O_CREAT | O_TRUNC, 0644);
+	if (glv->is_heredoc)
+		file = open(glv->argv[glv->argc - 1], O_WRONLY
+				| O_CREAT | O_APPEND, 0644);
+	else
+		file = open(glv->argv[glv->argc - 1], O_WRONLY
+				| O_CREAT | O_TRUNC, 0644);
 	if (file == -1)
 	{
-		perror("outfile couldn't be opened");
+		perror(glv->argv[glv->argc - 1]);
 		exit(1);
 	}
 	dup_and_close(file, STDOUT_FILENO);

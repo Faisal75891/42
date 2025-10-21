@@ -100,27 +100,3 @@ void	exec_command(t_gl_variable *glv)
 		exit(1);
 }
 
-// void	exec_command(t_gl_variable *glv)
-// {
-// 	char	**args;
-// 	char	*cmd;
-
-// 	args = ft_split(glv->argv[glv->arg_index + 2 + glv->is_heredoc], ' ');
-// 	if (!args || !args[0])
-// 	{
-// 		perror("ft_split failed!");
-// 		exit(1);
-// 	}
-// 	cmd = get_cmd_path(args[0], glv->envp);
-// 	if (!cmd)
-// 	{
-// 		ft_printf("pipex: command not found: %s\n", args[0]);
-// 		free_split(args);
-// 		exit(127);
-// 	}
-// 	execve(cmd, args, glv->envp);
-// 	perror("pipex: execve failed");
-// 	free(cmd);
-// 	free_split(args);
-// 	exit(1);
-// }
