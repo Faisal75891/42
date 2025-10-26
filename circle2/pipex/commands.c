@@ -82,21 +82,48 @@ char	*get_cmd_path(char *cmd, char **envp)
 	return (full_path);
 }
 
+// "awk '{sum += 1}; END {print sum}'"
+// split = ["awk", "'{sum += 1};", END, "{print sum}'", NULL]
+//                  ^                               ^ 
+
 void	exec_command(t_gl_variable *glv)
 {
 	char	*cmd;
-	char	*args[4];
+	char	*full_path;
+	char	**args;
 
 	cmd = glv->argv[glv->arg_index + 2 + glv->is_heredoc];
-	args[0] = "/bin/sh";
-	args[1] = "-c";
-	args[2] = cmd;
-	args[3] = NULL;
-	execve("/bin/sh", args, glv->envp);
+	ft_printf("Raw cmd from argv: '%s'\n", cmd);
+	args = ft_split_new(cmd, ' ');
+	full_path = get_cmd_path(args[0], glv->envp);
+	ft_printf("full_path = %s\n", full_path);
+	ft_printf("args[0] = %s\n", args[0]);
+	ft_printf("args[1] = %s\n", args[1]);
+	ft_printf("args[2] = %p\n", args[2]);
+	args[0] = full_path;
+	execve(full_path, args, glv->envp);
 	perror("pipex");
 	if (errno == ENOENT)
 		exit(127);
 	else
 		exit(1);
 }
+
+// void	exec_command(t_gl_variable *glv)
+// {
+// 	char	*cmd;
+// 	char	*args[4];
+
+// 	cmd = glv->argv[glv->arg_index + 2 + glv->is_heredoc];
+// 	args[0] = "/bin/sh";
+// 	args[1] = "-c";
+// 	args[2] = cmd;
+// 	args[3] = NULL;
+// 	execve("/bin/sh", args, glv->envp);
+// 	perror("pipex");
+// 	if (errno == ENOENT)
+// 		exit(127);
+// 	else
+// 		exit(1);
+// }
 

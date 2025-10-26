@@ -1,0 +1,5 @@
+Raw cmd from argv: 'awk '{ sum +=  }; END { print sum }''
+full_path = /usr/bin/awk
+args[0] = awk
+args[1] = { sum +=  }; END { print sum }
+args[2] = 0x0

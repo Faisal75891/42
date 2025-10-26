@@ -1,6 +1,9 @@
 NAME = pipex
-SRC = pipex.c commands.c executor.c here_doc.c
+SRC = pipex.c commands.c executor.c here_doc.c ft_split_new.c
 OBJ = $(SRC:.c=.o)
+
+SRC_BONUS = pipex_bonus.c commands.c executor.c here_doc.c ft_split_new.c
+OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -15,6 +18,9 @@ all: $(NAME)
 $(NAME): $(OBJ) $(PRINTF) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJ) $(PRINTF) $(LIBFT) -o $(NAME)
 
+bonus: $(OBJ_BONUS) $(PRINTF) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ_BONUS) $(PRINTF) $(LIBFT) -o $(NAME)
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -25,7 +31,7 @@ $(LIBFT):
 	make -C $(LIBFT_DIR)
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(OBJ_BONUS)
 	make clean -C $(PRINTF_DIR)
 	make clean -C $(LIBFT_DIR)
 

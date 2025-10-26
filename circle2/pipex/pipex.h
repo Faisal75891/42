@@ -54,5 +54,6 @@ void	dup_and_close(int old_fd, int new_fd);
 void	free_split(char **arr);
 char	*get_cmd_path(char *cmd, char **envp);
 char	*test_paths(char **paths, char *cmd);
+char	**ft_split_new(char const *s, char c);
 
 #endif
