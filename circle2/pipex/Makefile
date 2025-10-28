@@ -1,8 +1,8 @@
 NAME = pipex
-SRC = pipex.c commands.c executor.c here_doc.c ft_split_new.c
+SRC = pipex.c commands.c executor.c here_doc.c ft_split_new.c ft_split_utils.c error.c
 OBJ = $(SRC:.c=.o)
 
-SRC_BONUS = pipex_bonus.c commands.c executor.c here_doc.c ft_split_new.c
+SRC_BONUS = pipex_bonus.c commands.c executor.c here_doc.c ft_split_new.c ft_split_utils.c error.c
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
 CC = cc

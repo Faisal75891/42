@@ -16,27 +16,16 @@ void	dup_and_close(int fd1, int fd2)
 {
 	if (fd1 == -1)
 	{
-		perror("dup_and_close: invalid fd");
-		exit(1);
+		ft_putstr_fd("pipex: dup_and_close: invalid fd\n", 2);
+		exit(EXIT_FAILURE);
 	}
 	if (dup2(fd1, fd2) == -1)
 	{
-		perror("couldn't dup2");
-		exit (1);
+		perror("dup2");
+		exit(EXIT_FAILURE);
 	}
-	close(fd1);
-}
-
-void	free_split(char **arr)
-{
-	int	i;
-
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
+	if (fd1 > -1)
+		close(fd1);
 }
 
 char	*test_paths(char **paths, char *cmd)
@@ -50,12 +39,20 @@ char	*test_paths(char **paths, char *cmd)
 	{
 		temp = ft_strjoin(paths[i], "/");
 		if (!temp)
+		{
 			return (NULL);
+		}
 		full_path = ft_strjoin(temp, cmd);
-		free(temp);
+		if (!full_path)
+			return (NULL);
+		if (temp)
+			free(temp);
 		if (access(full_path, X_OK) == 0)
+		{
 			return (full_path);
-		free(full_path);
+		}
+		if (full_path)
+			free(full_path);
 		i++;
 	}
 	return (NULL);
@@ -78,13 +75,10 @@ char	*get_cmd_path(char *cmd, char **envp)
 	if (!paths)
 		return (NULL);
 	full_path = test_paths(paths, cmd);
-	free_split(paths);
+	if (paths)
+		free_split(paths);
 	return (full_path);
 }
-
-// "awk '{sum += 1}; END {print sum}'"
-// split = ["awk", "'{sum += 1};", END, "{print sum}'", NULL]
-//                  ^                               ^ 
 
 void	exec_command(t_gl_variable *glv)
 {
@@ -93,20 +87,33 @@ void	exec_command(t_gl_variable *glv)
 	char	**args;
 
 	cmd = glv->argv[glv->arg_index + 2 + glv->is_heredoc];
-	ft_printf("Raw cmd from argv: '%s'\n", cmd);
 	args = ft_split_new(cmd, ' ');
-	full_path = get_cmd_path(args[0], glv->envp);
-	ft_printf("full_path = %s\n", full_path);
-	ft_printf("args[0] = %s\n", args[0]);
-	ft_printf("args[1] = %s\n", args[1]);
-	ft_printf("args[2] = %p\n", args[2]);
-	args[0] = full_path;
-	execve(full_path, args, glv->envp);
-	perror("pipex");
-	if (errno == ENOENT)
+	if (!args || !args[0] || args[0][0] == '\0')
+	{
+		ft_putstr_fd("pipex: command not found\n", 2);
+		if (args)
+			free_split(args);
 		exit(127);
-	else
-		exit(1);
+	}
+	full_path = get_cmd_path(args[0], glv->envp);
+	if (!full_path)
+	{
+		ft_putstr_fd("pipex: ", 2);
+		ft_putstr_fd(args[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		if (args)
+			free_split(args);
+		exit(127);
+	}
+	if (execve(full_path, args, glv->envp) == -1)
+	{
+		perror("execve");
+		if (full_path)
+			free(full_path);
+		if (args)
+			free_split(args);
+		exit(126);
+	}
 }
 
 // void	exec_command(t_gl_variable *glv)
@@ -126,4 +133,3 @@ void	exec_command(t_gl_variable *glv)
 // 	else
 // 		exit(1);
 // }
-

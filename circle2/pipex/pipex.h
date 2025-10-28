@@ -38,6 +38,11 @@ typedef struct s_global_variables
 	int		heredoc_pipe[2];
 }	t_gl_variable;
 
+int		count_words(const char *s, char c);
+void	*free_array(char **arr, int size);
+int		get_len(const char *s, int in_quote, int in_double_quote, char c);
+void	is_inside_quote(char *s, int *in_quote, int *in_double_quote);
+
 void	init_glv(t_gl_variable *glv, int argc, char **argv, char **envp);
 int		setup_here_doc(t_gl_variable *glv);
 int		read_line(int fd, char *buffer);

@@ -14,90 +14,63 @@
 #include "pipex.h"
 #include <stdlib.h>
 
-static int	count_words(const char *s, char c)
-{
-	int	i;
-	int	in_word;
-    int in_quote;
-    int in_double_quote;
+// 'awk "{count++} END {printf \"count: %i\" , count}"' 
 
-	i = 0;
-	in_word = 0;
-    in_quote = 0;
-    in_double_quote = 0;
-	while (*s)
-	{
-        if (*s == '\'' && !in_double_quote)
-			in_quote = !in_quote;
-		else if (*s == '"' && !in_quote)
-			in_double_quote = !in_double_quote;
-		if (*s != c && !in_word)
-		{
-			in_word = 1;
-			i++;
-		}
-		else if (*s == c && !in_quote && !in_double_quote)
-			in_word = 0;
-		s++;
-	}
-	return (i);
-}
+// arg[0] = awk
+// arg[1] = "{count++} END {printf \"count: %i\" , count}"
+//                                 ^          ^
+// arg[2] = NULL
 
-static void	*free_array(char **arr, int size)
-{
-	while (size--)
-		free(arr[size]);
-	free(arr);
-	return (NULL);
-}
+
 
 static int	fill_array(char **arr, const char *s, char c)
 {
-	int	i;
-	int	len;
-    int in_quote;
-    int in_double_quote;
+	int	i = 0;
+	int	j = 0;
+	char	quote;
+	int		start;
 
-	i = 0;
-    in_quote = 0;
-    in_double_quote = 0;
-	while (*s)
+	if (!s)
+		return (-1);
+	while (s[i])
 	{
-        if (*s == '\'' && !in_double_quote)
-        {
-			in_quote = !in_quote;
-			s++;
-			continue;
-        }
-		else if (*s == '"' && !in_quote)
-        {
-			in_double_quote = !in_double_quote;
-			s++;
-			continue;
-        }
-		if (*s != c || (*s == c && (in_double_quote || in_quote)))
+		if (s[i] == c)
+			i++;
+		if (!s[i])
+			break ;
+		start = i;
+		if (s[i] == '"' || s[i] == '\'')
 		{
-			len = 0;
-            if (in_quote)
-                while (s[len] && s[len] != '\'')
-                    len++;
-            else if (in_double_quote)
-                while (s[len] && s[len] != '"')
-                    len++;
-            else
-                while (s[len] && s[len] != c)
-                    len++;
-			arr[i] = malloc(len + 1);
-			if (!arr[i])
-				return (i);
-			ft_strlcpy(arr[i++], s, len + 1);
-			s += len;
+			quote = s[i++];
+			start = i;
+			while (s[i] && s[i] != quote)
+			{
+				if (s[i] == '\\' && s[i+1])
+					i++;
+				i++;
+			}
+			int len = i - start;
+			arr[j] = malloc(len + 1);
+			if (!arr[j])
+				return free_array(arr, j), -1;
+			ft_strlcpy(arr[j++], &s[start], len + 1);
+			if (s[i] == quote)
+				i++;
 		}
 		else
-			s++;
+		{
+			start = i;
+			while (s[i] && s[i] != c)
+				i++;
+			int len = i - start;
+			arr[j] = malloc(len + 1);
+			if (!arr[j])
+				return free_array(arr, j), -1;
+			ft_strlcpy(arr[j++], &s[start], len + 1);
+		}
 	}
-	arr[i] = NULL;
-	return (-1);
+	arr[j] = NULL;
+	return (1);
 }
 
 char	**ft_split_new(char const *s, char c)
@@ -111,7 +84,7 @@ char	**ft_split_new(char const *s, char c)
 	if (!arr)
 		return (NULL);
 	fail_index = fill_array(arr, s, c);
-	if (fail_index >= 0)
+	if (fail_index < 0)
 		return (free_array(arr, fail_index));
 	return (arr);
 }

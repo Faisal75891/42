@@ -23,24 +23,33 @@ void	init_glv(t_gl_variable *glv, int argc, char **argv, char **envp)
 	glv->is_heredoc = 0;
 }
 
+static void	print_usage_error(char *program_name, int is_heredoc)
+{
+	ft_putstr_fd("pipex: usage: ", 2);
+	ft_putstr_fd(program_name, 2);
+	if (is_heredoc)
+		ft_putstr_fd(" here_doc LIMITER cmd1 cmd2 ... cmdn file\n", 2);
+	else
+		ft_putstr_fd(" file1 cmd1 cmd2 ... cmdn file2\n", 2);
+	exit(EXIT_FAILURE);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_gl_variable	glv;
+	int				exit_status;
 
 	if (argc < 5)
-	{
-        ft_printf("Usage: %s file1 cmd1 cmd2 ... cmdn file2\n", argv[0]);
-		exit(EXIT_FAILURE);
-	}
-    init_glv(&glv, argc, argv, envp);
+		print_usage_error(argv[0], 0);
+	init_glv(&glv, argc, argv, envp);
 	if (ft_strncmp(argv[1], "here_doc", 9) == 0 && argv[1][8] == '\0')
 	{
 		if (argc < 6)
-		{
-			ft_printf("Usage: %s here_doc LIMITER cmd1 cmd2 ... cmdn file\n", argv[0]);
-			exit(EXIT_FAILURE);
-		}
+			print_usage_error(argv[0], 1);
 		glv.is_heredoc = setup_here_doc(&glv);
 	}
-	return (execute_all_commands(&glv));
+	exit_status = execute_all_commands(&glv);
+	if (glv.heredoc_pipe[0] != -1)
+		close(glv.heredoc_pipe[0]);
+	return (exit_status);
 }

@@ -26,12 +26,18 @@ void	init_glv(t_gl_variable *glv, int argc, char **argv, char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	t_gl_variable	glv;
+	int				exit_status;
 
 	if (argc != 5)
 	{
 		ft_printf("Usage: %s file1 cmd1 cmd2 file2\n", argv[0]);
-		exit(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	init_glv(&glv, argc, argv, envp);
-	return (execute_all_commands(&glv));
+	exit_status = execute_all_commands(&glv);
+	if (glv.heredoc_pipe[0] != -1)
+		close(glv.heredoc_pipe[0]);
+	if (glv.heredoc_pipe[1] != -1)
+		close(glv.heredoc_pipe[1]);
+	return (exit_status);
 }
