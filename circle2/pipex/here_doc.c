@@ -71,9 +71,11 @@ void	setup_input(t_gl_variable *glv)
 		{
 			ft_putstr_fd("pipex: ", 2);
 			perror(glv->argv[1]);
-			file = open("/dev/null", O_RDONLY);
-			if (file == -1)
-				exit(EXIT_FAILURE);
+			// make sure to exit child proccess for command one
+			exit (EXIT_FAILURE);
+			// file = open("/dev/null", O_RDONLY);
+			// if (file == -1)
+			// 	exit(EXIT_FAILURE);
 		}
 		dup_and_close(file, STDIN_FILENO);
 	}

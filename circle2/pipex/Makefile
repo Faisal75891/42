@@ -6,7 +6,7 @@ SRC_BONUS = pipex_bonus.c commands.c executor.c here_doc.c ft_split_new.c ft_spl
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 PRINTF_DIR = ./ft_printf
 LIBFT_DIR = ./ft_printf/libft
 

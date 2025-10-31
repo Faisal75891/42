@@ -58,6 +58,7 @@ char	*test_paths(char **paths, char *cmd)
 		{
 			if (access(full_path, X_OK) == 0)
 				return (full_path);
+			free_split(paths);
 			handle_permission_denied(full_path);
 		}
 		free(full_path);

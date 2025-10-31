@@ -14,7 +14,7 @@
 # define PIPEX_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
+#  define BUFFER_SIZE 5000
 # endif
 
 # include <sys/types.h>
