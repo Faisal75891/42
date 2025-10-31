@@ -49,7 +49,7 @@ int	main(int argc, char **argv, char **envp)
 		glv.is_heredoc = setup_here_doc(&glv);
 	}
 	exit_status = execute_all_commands(&glv);
-	if (glv.heredoc_pipe[0] != -1)
-		close(glv.heredoc_pipe[0]);
+	close_if_open(&glv.heredoc_pipe[1]);
+	close_if_open(&glv.heredoc_pipe[0]);
 	return (exit_status);
 }

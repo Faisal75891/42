@@ -2,3 +2,5 @@
        1
        0
 Test failed
+       0
+Test failed

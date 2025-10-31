@@ -41,7 +41,7 @@ void	read_heredoc(char *limiter, int pipefd[2])
 	int		bytes_read;
 	char	buffer[BUFFER_SIZE];
 
-	close(pipefd[0]);
+	close_if_open(&pipefd[0]);
 	while (1)
 	{
 		ft_printf("pipe heredoc> ");
@@ -55,7 +55,7 @@ void	read_heredoc(char *limiter, int pipefd[2])
 		buffer[bytes_read - 1] = '\n';
 		write(pipefd[1], buffer, bytes_read);
 	}
-	close(pipefd[1]);
+	close_if_open(&pipefd[1]);
 }
 
 void	setup_input(t_gl_variable *glv)
@@ -69,6 +69,7 @@ void	setup_input(t_gl_variable *glv)
 		file = open(glv->argv[1], O_RDONLY);
 		if (file == -1)
 		{
+			ft_putstr_fd("pipex: ", 2);
 			perror(glv->argv[1]);
 			file = open("/dev/null", O_RDONLY);
 			if (file == -1)
@@ -90,8 +91,9 @@ void	setup_output(t_gl_variable *glv)
 				| O_CREAT | O_TRUNC, 0644);
 	if (file == -1)
 	{
+		ft_putstr_fd("pipex: ", 2);
 		perror(glv->argv[glv->argc - 1]);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	dup_and_close(file, STDOUT_FILENO);
 }
@@ -109,8 +111,8 @@ int	setup_here_doc(t_gl_variable *glv)
 	if (heredoc_pid == -1)
 	{
 		perror("couldn't fork heredoc");
-		close(glv->heredoc_pipe[0]);
-		close(glv->heredoc_pipe[1]);
+		close_if_open(&glv->heredoc_pipe[0]);
+		close_if_open(&glv->heredoc_pipe[1]);
 		return (0);
 	}
 	if (heredoc_pid == 0)
@@ -118,7 +120,7 @@ int	setup_here_doc(t_gl_variable *glv)
 		read_heredoc(glv->argv[2], glv->heredoc_pipe);
 		exit(0);
 	}
-	close(glv->heredoc_pipe[1]);
+	close_if_open(&glv->heredoc_pipe[1]);
 	waitpid(heredoc_pid, NULL, 0);
 	return (1);
 }

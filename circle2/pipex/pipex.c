@@ -35,9 +35,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	init_glv(&glv, argc, argv, envp);
 	exit_status = execute_all_commands(&glv);
-	if (glv.heredoc_pipe[0] != -1)
-		close(glv.heredoc_pipe[0]);
-	if (glv.heredoc_pipe[1] != -1)
-		close(glv.heredoc_pipe[1]);
+	close_if_open(&glv.heredoc_pipe[1]);
+	close_if_open(&glv.heredoc_pipe[0]);
 	return (exit_status);
 }

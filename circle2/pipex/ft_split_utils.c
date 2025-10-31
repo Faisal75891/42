@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:07:13 by fbaras            #+#    #+#             */
-/*   Updated: 2025/10/28 21:09:35 by fbaras           ###   ########.fr       */
+/*   Updated: 2025/10/31 04:05:42 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,65 +17,72 @@
 // word1 "               word2                      "
 // 0                       1                        2
 
+static int	handle_quote(const char *s, int i)
+{
+	char	quote;
+
+	quote = s[i++];
+	while (s[i] && s[i] != quote)
+	{
+		if (s[i] == '\\' && s[i + 1])
+			i++;
+		i++;
+	}
+	if (s[i] == quote)
+		i++;
+	return (i);
+}
+
+char	*unescape_string(char *str)
+{
+	char	*result;
+	int		i;
+	int		j;
+
+	result = malloc(ft_strlen(str) + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '\\' && str[i + 1])
+			i++;
+		result[j++] = str[i++];
+	}
+	result[j] = '\0';
+	return (result);
+}
+
 int	count_words(const char *s, char c)
 {
-	int	i;
-	int	in_word;
-	int	in_quote;
-	int	in_double_quote;
+	int		count;
+	int		i;
 
+	count = 0;
 	i = 0;
-	in_word = 0;
-	in_quote = 0;
-	in_double_quote = 0;
-	while (*s)
+	while (s[i])
 	{
-		if (*s == '\'' && !in_double_quote)
-			in_quote = !in_quote;
-		else if (*s == '"' && !in_quote)
-			in_double_quote = !in_double_quote;
-		if (*s != c && !in_word)
-		{
-			in_word = 1;
+		while (s[i] == c)
 			i++;
+		if (!s[i])
+			break ;
+		count++;
+		if (s[i] == '"' || s[i] == '\'')
+			i += handle_quote(s, i);
+		else
+		{
+			while (s[i] && s[i] != c && s[i] != '"' && s[i] != '\'')
+				i++;
 		}
-		else if (*s == c && !in_quote && !in_double_quote)
-			in_word = 0;
-		s++;
 	}
-	return (i);
+	return (count);
 }
 
 void	*free_array(char **arr, int size)
 {
-	while (size--)
+	while (--size > 0)
 		free(arr[size]);
 	free(arr);
 	return (NULL);
-}
-
-int	get_len(const char *s, int in_quote, int in_double_quote, char c)
-{
-	int	len;
-
-	len = 0;
-	while (s[len])
-	{
-		if (s[len] == '\'' && !in_double_quote)
-			in_quote = !in_quote;
-		else if (s[len] == '"' && !in_quote)
-			in_double_quote = !in_double_quote;
-		if (!in_quote && !in_double_quote && s[len] == c)
-			break ;
-		len++;
-	}
-	return (len);
-}
-
-void	is_inside_quote(char *s, int *in_quote, int *in_double_quote)
-{
-	if (*s == '\'' && !(*in_double_quote))
-		*in_quote = !(*in_quote);
-	else if (*s == '"' && !(*in_quote))
-		*in_double_quote = !(*in_double_quote);
 }

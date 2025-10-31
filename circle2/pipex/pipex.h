@@ -40,14 +40,19 @@ typedef struct s_global_variables
 
 int		count_words(const char *s, char c);
 void	*free_array(char **arr, int size);
-int		get_len(const char *s, int in_quote, int in_double_quote, char c);
-void	is_inside_quote(char *s, int *in_quote, int *in_double_quote);
+void	close_if_open(int *fd);
+void	error_exit(int exit_code, char **args);
+char	*handle_absolute_path(char *cmd);
+void	handle_permission_denied(char *full_path);
+void	exec_error(char *cmd, char **args, char *full_path);
+void	command_not_found_error(char *cmd, char **args);
+char	*unescape_string(char *str);
 
 void	init_glv(t_gl_variable *glv, int argc, char **argv, char **envp);
 int		setup_here_doc(t_gl_variable *glv);
 int		read_line(int fd, char *buffer);
 int		execute_all_commands(t_gl_variable *glv);
-int		wait_for_children(int num_of_commands);
+int		wait_for_children(int num_of_commands, pid_t last_pid);
 void	renew_pipe(t_gl_variable *glv, int *prev_pipe,
 			int num_of_commands, int pipefd[2]);
 void	exec_command(t_gl_variable *glv);

@@ -12,19 +12,35 @@
 
 #include "pipex.h"
 
-int	wait_for_children(int num_of_commands)
+void	close_if_open(int *fd)
 {
-	int	status;
-	int	exit_code;
-	int	i;
+	if (*fd > -1)
+	{
+		if (close(*fd) == -1)
+			perror("close");
+		*fd = -1;
+	}
+}
+
+int	wait_for_children(int num_of_commands, pid_t last_pid)
+{
+	int		status;
+	int		exit_code;
+	int		i;
+	pid_t	pid;
 
 	i = 0;
 	exit_code = 0;
 	while (i < num_of_commands)
 	{
-		wait(&status);
-		if ((status & 0x7F) == 0)
-			exit_code = (status >> 8) & 0xFF;
+		pid = wait(&status);
+		if (pid == last_pid)
+		{
+			if (WIFEXITED(status))
+				exit_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				exit_code = 128 + WTERMSIG(status);
+		}
 		i++;
 	}
 	return (exit_code);
@@ -33,18 +49,17 @@ int	wait_for_children(int num_of_commands)
 void	renew_pipe(t_gl_variable *glv, int *prev_pipe,
 	int num_of_commands, int pipefd[2])
 {
-	if (*prev_pipe != -1)
-		close(*prev_pipe);
+	close_if_open(prev_pipe);
 	if (glv->is_heredoc && glv->arg_index == 1)
-		close(glv->heredoc_pipe[0]);
+		close_if_open(&glv->heredoc_pipe[0]);
 	if (glv->arg_index < num_of_commands - 1)
 	{
 		*prev_pipe = pipefd[0];
 	}
 	else
 	{
-		close(pipefd[0]);
-		close(pipefd[1]);
+		close_if_open(&pipefd[0]);
+		close_if_open(&pipefd[1]);
 		*prev_pipe = -1;
 	}
 }
@@ -53,6 +68,7 @@ int	execute_all_commands(t_gl_variable *glv)
 {
 	int		pipefd[2];
 	pid_t	pid;
+	pid_t	last_pid;
 	int		prev_pipe;
 	int		num_of_commands;
 
@@ -67,22 +83,23 @@ int	execute_all_commands(t_gl_variable *glv)
 			exit(1);
 		if (pid == 0)
 			child_process(glv, prev_pipe, num_of_commands, pipefd);
-		close(pipefd[1]);
+		last_pid = pid;
+		close_if_open(&pipefd[1]);
 		renew_pipe(glv, &prev_pipe, num_of_commands, pipefd);
 		glv->arg_index++;
 	}
-	if (prev_pipe != -1)
-		close(prev_pipe);
-	return (wait_for_children(num_of_commands));
+	close_if_open(&prev_pipe);
+	return (wait_for_children(num_of_commands, last_pid));
 }
 
 void	child_process(t_gl_variable *glv, int prev_pipe,
 	int num_of_commands, int pipefd[2])
 {
+	close_if_open(&pipefd[0]);
 	if (glv->arg_index < num_of_commands - 1)
-		close(pipefd[0]);
+		close_if_open(&pipefd[0]);
 	if (glv->is_heredoc && glv->arg_index == 0)
-		close(glv->heredoc_pipe[1]);
+		close_if_open(&glv->heredoc_pipe[1]);
 	if (glv->arg_index == 0)
 		setup_input(glv);
 	else
