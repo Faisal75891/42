@@ -42,6 +42,7 @@ int		find_max(t_stack *stack);
 int		smallest_bigger(t_stack *a, int b);
 int		cost_to_top(t_stack *stack, int position);
 int		find_position(t_stack *a, int b);
+void	print_stack(t_stack *stack, char *name);
 void	sa(t_stack *a);
 void	sb(t_stack *b);
 void	ss(t_stack *a, t_stack *b);

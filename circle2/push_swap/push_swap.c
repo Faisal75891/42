@@ -14,85 +14,89 @@
 
 int	is_sorted(t_stack *a)
 {
-	int		check;
-	int		i;
-	t_stack	*temp;
+	int i;
 
-	temp = a;
-	i = 0;
-	check = 0;
-	while(i < temp->size)
+	if (!a || a->size <= 1)
+		return (1);
+
+	i = 1;
+	while (i < a->size)
 	{
-		if (check > temp->collection[i])
+		if (a->collection[i - 1] < a->collection[i])
 			return (0);
-		check = temp->collection[i];
 		i++;
 	}
 	return (1);
 }
 
+void	sort_two(t_stack *a)
+{
+	if (a->collection[0] < a->collection[1])
+		sa(a);
+}
+
 void	sort_three(t_stack *a)
 {
 	int	top;
-	int	mid;
-	int	bot;
+	int	middle;
+	int	last;
+	int	max;
 
-	if (a->size != 3)
-		return;
-	
-	bot = a->collection[0];
-	mid = a->collection[1];
+	max = find_max(a);
 	top = a->collection[2];
-	
-	if (bot < mid && mid > top && bot > top)
-		sa(a);
-	else if (bot < mid && mid < top)
-	{
-		sa(a);
-		rra(a);
-	}
-	else if (bot < top && top < mid)
+	middle = a->collection[1];
+	last = a->collection[0];
+	if (top == max)
 		ra(a);
-	else if (bot > mid && mid < top && bot > top)
-	{
+	else if (middle == max)
 		rra(a);
+	top = a->collection[2];
+	middle = a->collection[1];
+	last = a->collection[0];
+	if (top > middle)
 		sa(a);
-	}
-	else if (bot > mid && mid < top && bot < top)
-		rra(a);
 }
 
 void	ft_sort(t_stack *a, t_stack *b)
 {
-	//int	popped;
 	int	peeked;
-	int	sb;
+	int	sb_index;
 	int	i;
-	int	min_index;
 
-	i = 0;
-	while (a->size > 3)
-		pb(a, b);
-	//ft_printf("sorthing three...\n");
-	sort_three(a);
-	while (!is_empty(b))
+	if (a->capacity == 2)
+		sort_two(a);
+	else if (a->capacity == 3)
+		sort_three(a);
+	else
 	{
+		while (a->size != 3)
+			pb(a, b);
+		if (a->size == 3)
+			sort_three(a);
+		else
+			ft_printf("no\n");
 		peek(b, &peeked);
-		sb = smallest_bigger(a, peeked);
-		//ft_printf("smallest bigger than %d is at %d\n", peeked, sb);
-		while (i < sb)
+		while (!is_empty(b))
 		{
-			ra(a);
-			i++;
+			print_stack(a, "A");
+			print_stack(b, "B");
+			sb_index = smallest_bigger(a, peeked); //gets the index;
+			ft_printf("sb: %d\n", sb_index);
+			if (sb < 0)
+				pa(a, b);
+			else
+			{
+				i = 0;
+				while (i < sb_index - 1)
+				{
+					ra(a);
+					i++;
+				}
+				pa(a, b);
+			}
 		}
-		pa(a, b);
-		i = 0;
 	}
-	min_index = find_position(a, find_max(a));
-	while (min_index-- > 0)
-		ra(a);
 }
-
 
 void	free_split(char **arr)
 {
@@ -157,29 +161,29 @@ void	push_args(t_stack *a, int *args, int size)
 {
 	int	i;
 	
-	i = size - 1;
-	while (i >= 0)
+	i = 0;
+	while (i < size)
 	{
 		a->collection[a->size] = args[i];
 		a->size++;
-		i--;
+		i++;
 	}
 }
 
 void	print_stack(t_stack *stack, char *name)
 {
-    int	i;
+	int	i;
 
-    ft_printf("Stack %s (size=%d): [", name, stack->size);
-    i = 0;
-    while (i < stack->size)
-    {
-        ft_printf("%d", stack->collection[i]);
-        if (i < stack->size - 1)
-            ft_printf(", ");
-        i++;
-    }
-    ft_printf("]\n");
+	ft_printf("Stack %s (size=%d): [", name, stack->size);
+	i = 0;
+	while (i < stack->size)
+	{
+		ft_printf("%d", stack->collection[i]);
+		if (i < stack->size - 1)
+			ft_printf(", ");
+		i++;
+	}
+	ft_printf("]\n");
 }
 
 int	main(int argc, char **argv)
@@ -199,16 +203,21 @@ int	main(int argc, char **argv)
 	stack_a = create_stack(capacity);
 	stack_b = create_stack(capacity);
 	push_args(stack_a, int_array, capacity);
-	ft_sort(stack_a, stack_b);
-	print_stack(stack_a, "A"); 
-	int		temp;
-	if (is_sorted(stack_a))
+	if (is_sorted(stack_a) == 1)
 		ft_printf("sorted!\n");
-	while (!is_empty(stack_a))
+	else
 	{
-		pop(stack_a, &temp);
-		ft_printf("%d, ", temp);
+		ft_sort(stack_a, stack_b);
+		if (is_sorted(stack_a) == 1)
+		{
+			print_stack(stack_a, "A after sort");
+			ft_printf("sorted!\n");
+		}
+		else
+		{
+			print_stack(stack_a, " ");
+			ft_printf("not sorted!!\n");
+		}
 	}
-	write(1, "\n", 1);
 	return (0);
 }

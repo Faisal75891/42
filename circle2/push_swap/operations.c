@@ -123,32 +123,39 @@ int	cost_to_top(t_stack *stack, int position)
 		return (-reverse_rotate_cost);
 }
 
-// returns the index of the smallest bigger number than b in stack a
 int	smallest_bigger(t_stack *a, int b)
 {
-	int	smallest_bigger_index;
-	int	i;
+	int i;
+	int	sb_found;
+	int	sb_index;
+	int	val;
 
-	i = 0;
-	smallest_bigger_index = -1;
-	while (i < a->size)
+	i = a->capacity - 1;
+	sb_found = 0;
+	val = 0;
+	sb_index = -1;
+	/*
+	b = 3
+	sb = 6
+
+	1 2 6 4 2 3 5
+          ^sb 	
+	    ^sb
+	*/
+	while (i >= 0)
 	{
-		if (a->collection[i] > b && (smallest_bigger_index == -1 || a->collection[i] < a->collection[smallest_bigger_index]))
-			smallest_bigger_index = i;
-		i++;
+		val = a->collection[i];
+		if (val > b)
+		{
+			if ( !sb_found || val < a->collection[sb_index])
+			{
+				sb_found = 1;
+				sb_index = i;
+			}
+		}
+		i--;
 	}
-	if (smallest_bigger_index == -1)
-	{
-		smallest_bigger_index = find_min(a);
-		i = 0;
-        while (i < a->size)
-        {
-            if (a->collection[i] == smallest_bigger_index)
-                return (i);
-            i++;
-        }
-	}
-	return (smallest_bigger_index);
+	return (sb_index);
 }
 
 int	find_position(t_stack *a, int b)
