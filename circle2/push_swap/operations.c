@@ -125,29 +125,24 @@ int	cost_to_top(t_stack *stack, int position)
 
 int	smallest_bigger(t_stack *a, int b)
 {
-	int i;
+	int	i;
 	int	sb_found;
 	int	sb_index;
 	int	val;
 
-	i = a->capacity - 1;
+	if (!a || a->size == 0)
+		return (-1);
+	i = a->size - 1;
 	sb_found = 0;
 	val = 0;
 	sb_index = -1;
-	/*
-	b = 3
-	sb = 6
 
-	1 2 6 4 2 3 5
-          ^sb 	
-	    ^sb
-	*/
 	while (i >= 0)
 	{
 		val = a->collection[i];
 		if (val > b)
 		{
-			if ( !sb_found || val < a->collection[sb_index])
+			if (!sb_found || val < a->collection[sb_index])
 			{
 				sb_found = 1;
 				sb_index = i;

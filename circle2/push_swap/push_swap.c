@@ -29,70 +29,225 @@ int	is_sorted(t_stack *a)
 	return (1);
 }
 
+int	is_sorted_descending(t_stack *a)
+{
+	int i;
+
+	if (!a || a->size <= 1)
+		return (1);
+
+	i = 1;
+	while (i < a->size)
+	{
+		if (a->collection[i - 1] > a->collection[i])
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	sort_two(t_stack *a)
 {
 	if (a->collection[0] < a->collection[1])
 		sa(a);
 }
 
-void	sort_three(t_stack *a)
+int	sort_three(t_stack *a)
 {
 	int	top;
 	int	middle;
-	int	last;
 	int	max;
 
 	max = find_max(a);
 	top = a->collection[2];
 	middle = a->collection[1];
-	last = a->collection[0];
 	if (top == max)
 		ra(a);
 	else if (middle == max)
 		rra(a);
 	top = a->collection[2];
 	middle = a->collection[1];
-	last = a->collection[0];
 	if (top > middle)
 		sa(a);
+	int last = a->collection[2];
+	return (last);
 }
+
+int	sort_three_b(t_stack *b)
+{
+	int	top;
+	int	middle;
+	int	min;
+
+	min = find_min(b);
+	top = b->collection[2];
+	middle = b->collection[1];
+	if (top == min)
+		rb(b);
+	else if (middle == min)
+		rrb(b);
+	top = b->collection[2];
+	middle = b->collection[1];
+	if (top < middle)
+		sb(b);
+	top = b->collection[2];
+	return (top);
+}
+
+//failed on:
+// -312, 686, -819, 321, 267
+// 237 126 -346 -325 -166 -442
+// 925 141 -278 -898 -930 -655
+// 104 121 662 385 235 -89 -761 168 -781
 
 void	ft_sort(t_stack *a, t_stack *b)
 {
 	int	peeked;
 	int	sb_index;
 	int	i;
+	int	max;
+	int max_pos;
 
 	if (a->capacity == 2)
+	{
 		sort_two(a);
+		return ;
+	}
 	else if (a->capacity == 3)
+	{
 		sort_three(a);
+		return ;
+	}
 	else
 	{
-		while (a->size != 3)
-			pb(a, b);
-		if (a->size == 3)
-			sort_three(a);
-		else
-			ft_printf("no\n");
-		peek(b, &peeked);
-		while (!is_empty(b))
+		// push 3 items into b;
+		i = 0;
+		while (i < 3 && !is_empty(a))
 		{
-			print_stack(a, "A");
-			print_stack(b, "B");
-			sb_index = smallest_bigger(a, peeked); //gets the index;
-			ft_printf("sb: %d\n", sb_index);
-			if (sb < 0)
-				pa(a, b);
+			pb(a, b);
+			i++;
+		}
+		max = sort_three_b(b);
+		while (!is_empty(a))
+		{
+			peek(a, &peeked);
+			if (peeked > max)
+				max = peeked;
+			sb_index = smallest_bigger(b, peeked);
+			//print_stack(a, "A");
+			//ft_printf("top of a: %d\n", a->collection[a->size - 1]);
+			//print_stack(b, "B");
+			//ft_printf("top of b: %d\n", b->collection[b->size - 1]);
+			//ft_printf("sb: %d is %d\n", sb_index, b->collection[sb_index]);
+			if (sb_index < 0)
+			{
+				//ft_printf("PEEKED IS %d\n", peeked);
+				max = find_max(b);
+				max_pos = find_position(b, max);
+				//ft_printf("max num: %d %d %d\n", b->collection[max_pos], max_pos, max);
+				if (max_pos > b->size / 2)
+				{
+					while (max_pos < b->size -1)
+					{
+						rb(b);
+						//print_stack(b, "B!!");
+						//ft_printf("max: %d\n", max_pos);
+						max_pos++;
+					}
+					pb(a, b);
+				}
+				else
+				{
+					while (max_pos >= 0)
+					{
+						rrb(b);
+						//print_stack(b, "B!!");
+						max_pos--;
+					}
+					pb(a, b);
+				}
+			}
+			else if (sb_index == 0)
+			{
+				pb(a, b);
+				continue ;
+			}
+			else if (sb_index == b->size - 1)
+			{
+				pb(a, b);
+				sb(b);
+				continue ;
+			}
 			else
 			{
-				i = 0;
-				while (i < sb_index - 1)
+				if (sb_index > (b->size)/ 2)
+				{
+					i = 0;
+					int rots = b->size - sb_index;
+					while (i < rots)
+					{
+						rb(b);
+						//print_stack(b, "B");
+						i++;
+					}
+				}
+				else
+				{
+					i = 0;
+					while (i < sb_index)
+					{
+						rrb(b);
+						i++;
+					}
+				}
+				pb(a, b);
+				//print_stack(b, "B");
+			}
+		}
+		max_pos = find_position(b, max);
+		if (max_pos > b->size / 2)
+		{
+			while (max_pos < b->size -2)
+			{
+				rb(b);
+				//print_stack(b, "B!!");
+				//ft_printf("max: %d\n", max_pos);
+				max_pos++;
+			}
+		}
+		else
+		{
+			while (max_pos >= -1)
+			{
+				rrb(b);
+				//print_stack(b, "B!!");
+				max_pos--;
+			}
+		}
+		while (!is_empty(b))
+			pa(a, b);
+		if (!is_sorted_descending(a))
+		{
+			max = find_max(a);
+			max_pos = find_position(a, max);
+			if (max_pos > a->size / 2)
+			{
+				while (max_pos < a->size -2)
 				{
 					ra(a);
-					i++;
+					//print_stack(b, "B!!");
+					//ft_printf("max: %d\n", max_pos);
+					max_pos++;
 				}
-				pa(a, b);
+			}
+			else
+			{
+				while (max_pos > -1)
+				{
+					rra(a);
+					//print_stack(b, "B!!");
+					max_pos--;
+				}
 			}
 		}
 	}
@@ -204,14 +359,14 @@ int	main(int argc, char **argv)
 	stack_b = create_stack(capacity);
 	push_args(stack_a, int_array, capacity);
 	if (is_sorted(stack_a) == 1)
-		ft_printf("sorted!\n");
+		ft_printf("");
 	else
 	{
 		ft_sort(stack_a, stack_b);
 		if (is_sorted(stack_a) == 1)
 		{
-			print_stack(stack_a, "A after sort");
-			ft_printf("sorted!\n");
+			//print_stack(stack_a, "A after sort");
+			//ft_printf("sorted!\n");
 		}
 		else
 		{
