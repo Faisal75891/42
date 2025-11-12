@@ -145,7 +145,7 @@ void	rotate_to_top(t_stack *stack, int index, int a)
 	if (a == 0)
 	{
 		if (index < median)
-			while (i < index + 1)
+			while (i < index)
 			{
 				rra(stack);
 				i++;
@@ -153,7 +153,7 @@ void	rotate_to_top(t_stack *stack, int index, int a)
 		else
 		{
 			i = index;
-			while(i < stack->size)
+			while(i < stack->size - 1)
 			{
 				ra(stack);
 				i++;
@@ -171,7 +171,7 @@ void	rotate_to_top(t_stack *stack, int index, int a)
 		else
 		{
 			i = index;
-			while(i < stack->size)
+			while(i <= stack->size)
 			{
 				rb(stack);
 				i++;
@@ -180,7 +180,7 @@ void	rotate_to_top(t_stack *stack, int index, int a)
 	}
 }
 
-void	fix_rotation(t_stack *stack)
+void	fix_rotation(t_stack *stack, int a)
 {
 	int	pos_max;
 	int	median;
@@ -191,30 +191,64 @@ void	fix_rotation(t_stack *stack)
 	i = 0;
 	if (a == 0)
 	{
-		if (pos_max < median)
+		if (pos_max > median)
 		{
 			while (i < pos_max)
+			{
 				rra(stack);
+				i++;
+			}
 		}
 		else
 		{
-			while (i < stack->size)
+			while (i <= stack->size)
+			{
 				ra(stack);
+				i++;
+			}
 		}
 	}
-	else
+	else if (a == 1)
 	{
-		if (pos_max < median)
+		if (pos_max > median)
 		{
 			while (i < pos_max)
+			{
 				rrb(stack);
+				i++;
+			}
 		}
 		else
 		{
-			while (i < stack->size)
+			while (i <= stack->size)
+			{
 				rb(stack);
+				i++;
+			}
 		}
 	}
+}
+
+int	spinjutsu_spin(t_stack *stack, int sb, int a)
+{
+	// rotate stack b to make sb the top.
+	// if sb == 0 -> pb(a, b), sb() then exit 1
+	// if sb == stack->size do non
+	// if sb == -1. rotate max to top
+	// else rra/ra unitl sb == stack->size
+	ft_printf("Sb value is %d\n", sb);
+	if (sb == 0)
+	{
+		if (a == 0)
+			rra(stack);
+		else
+			rrb(stack);
+	}
+	else if (sb == stack->size - 1)
+		return (1);
+	else if (sb <= -1)
+		fix_rotation(stack, a);
+	return (0);
 }
 
 void	ft_sort(t_stack *a, t_stack *b)
@@ -222,15 +256,7 @@ void	ft_sort(t_stack *a, t_stack *b)
 	int	peeked;
 	int	sb_index;
 	int	i;
-	int	max;
-	int max_pos;
 	int	best_move_index;
-	int	step5_counter = 0;
-	int	step6_counter = 0;
-	int	step7_counter = 0;
-	int	step8 = 0;
-	int step9 = 0;
-	int	pushing_counter = 0;
 
 	if (a->capacity == 2)
 	{
@@ -249,58 +275,34 @@ void	ft_sort(t_stack *a, t_stack *b)
 		while (i < 3 && !is_empty(a))
 		{
 			pb(a, b);
-			pushing_counter++;
 			i++;
 		}
-		max = sort_three_b(b);
+		sort_three_b(b);
 		while (!is_empty(a))
 		{
 			best_move_index = best_index_to_move(a, b); // returns index of the number to push.
+			ft_printf("best number to move is: index %d %d\n", best_move_index, a->collection[best_move_index]);
 			rotate_to_top(a, best_move_index, 0);
 			peek(a, &peeked);
 			sb_index = smallest_bigger(b, peeked);
-			rotate_to_top(b, sb_index, 1);
+			if (spinjutsu_spin(b, sb_index, 1) == 1)
+			{
+				print_stack(b, "B before rotation");
+				pb(a, b);
+				sb(b);
+				print_stack(b, "B after rotation");
+				continue ;
+			}
+			print_stack(a, "A after rotation");
+			print_stack(b, "B after rotation");
 			pb(a, b);
 		}
 		// rotate b back into order.
-		fix_rotation(b);
-		max_pos = find_position(b, max);
+		//fix_rotation(b, 1);
 		while (!is_empty(b))
-		{
-			step7_counter++;
 			pa(a, b);
-		}
 		// check if a is sorted just for good measure.
-		if (!is_sorted_descending(a))
-		{
-			max = find_max(a);
-			max_pos = find_position(a, max);
-			if (max_pos > a->size / 2)
-			{
-				while (!is_sorted(a))
-				{
-					ra(a);
-					step8++;
-					//print_stack(b, "B!!");
-					//ft_printf("max: %d\n", max_pos);
-					max_pos++;
-				}
-				step8++;
-			}
-			else
-			{
-				while (!is_sorted(a))
-				{
-					rra(a);
-					step9++;
-					//print_stack(b, "B!!");
-					max_pos--;
-				}
-				step9++;
-			}
-		}
-		ft_printf("step5 took %d steps\n step6 took %d steps\n step7 took %d steps\n step8 took %d steps\n step9 took %d steps\n", step5_counter, step6_counter, step7_counter, step8, step9);
-		ft_printf("other things took %d steps\n", pushing_counter);
+		fix_rotation(a, 0);
 	}
 }
 
