@@ -94,11 +94,128 @@ int	sort_three_b(t_stack *b)
 	return (top);
 }
 
-//failed on:
-// -312, 686, -819, 321, 267
-// 237 126 -346 -325 -166 -442
-// 925 141 -278 -898 -930 -655
-// 104 121 662 385 235 -89 -761 168 -781
+/*
+	Moves the cheapest value to move from a to b.
+
+	Cost to push from a to b is:
+		distance of the index from the median, + 1 pb()
+	Cost to rotate list in b:
+		distance from the index of the target(sb) to the median
+	Total Cost = cost to push + cost to rotate
+
+	keep track of the lowest cost in the array and return it.
+	stack: [2, 5, 9, 80, 54, ...]
+	array: [2, 3, 1, 4 , 5 , ...] <- each element is the cost value.
+	               ^
+	then get the index of the minimum_value
+	this means i will try to push the element at index 2 or value 9.
+*/ 
+int	best_index_to_move(t_stack *a, t_stack *b)
+{
+	int	total;
+	int	min_index;
+	int	min;
+	int	i;
+
+	min = INT_MAX;
+	min_index = -1;
+	i = 0;
+	while (i < a->size - 1)
+	{
+	// 	position = smallest_bigger(b, a->collection[i]);
+	// 	cost_to_rotate = cost_to_top(b, position);
+	// 	total = cost_to_rotate + cost_to_top(a, a->collection[i]);
+		total = cost_to_top(b, smallest_bigger(b, a->collection[i])) + cost_to_top(a, a->collection[i]);
+		if (total < min)
+			min_index = i;
+		i++;
+	}
+	if (min_index < 0)
+		return (-1);
+	return (min_index);
+}
+
+void	rotate_to_top(t_stack *stack, int index, int a)
+{
+	int	median;
+	int	i;
+
+	i = 0;
+	median = stack->size / 2;
+	if (a == 0)
+	{
+		if (index < median)
+			while (i < index + 1)
+			{
+				rra(stack);
+				i++;
+			}
+		else
+		{
+			i = index;
+			while(i < stack->size)
+			{
+				ra(stack);
+				i++;
+			}
+		}
+	}
+	else
+	{
+		if (index < median)
+			while (i < index + 1)
+			{
+				rrb(stack);
+				i++;
+			}
+		else
+		{
+			i = index;
+			while(i < stack->size)
+			{
+				rb(stack);
+				i++;
+			}
+		}
+	}
+}
+
+void	fix_rotation(t_stack *stack)
+{
+	int	pos_max;
+	int	median;
+	int	i;
+
+	pos_max = find_position(stack, find_max(stack));
+	median = stack->size / 2;
+	i = 0;
+	if (a == 0)
+	{
+		if (pos_max < median)
+		{
+			while (i < pos_max)
+				rra(stack);
+		}
+		else
+		{
+			while (i < stack->size)
+				ra(stack);
+		}
+	}
+	else
+	{
+		if (pos_max < median)
+		{
+			while (i < pos_max)
+				rrb(stack);
+		}
+		else
+		{
+			while (i < stack->size)
+				rb(stack);
+		}
+	}
+}
 
 void	ft_sort(t_stack *a, t_stack *b)
 {
@@ -107,6 +224,13 @@ void	ft_sort(t_stack *a, t_stack *b)
 	int	i;
 	int	max;
 	int max_pos;
+	int	best_move_index;
+	int	step5_counter = 0;
+	int	step6_counter = 0;
+	int	step7_counter = 0;
+	int	step8 = 0;
+	int step9 = 0;
+	int	pushing_counter = 0;
 
 	if (a->capacity == 2)
 	{
@@ -125,131 +249,58 @@ void	ft_sort(t_stack *a, t_stack *b)
 		while (i < 3 && !is_empty(a))
 		{
 			pb(a, b);
+			pushing_counter++;
 			i++;
 		}
 		max = sort_three_b(b);
 		while (!is_empty(a))
 		{
+			best_move_index = best_index_to_move(a, b); // returns index of the number to push.
+			rotate_to_top(a, best_move_index, 0);
 			peek(a, &peeked);
-			if (peeked > max)
-				max = peeked;
 			sb_index = smallest_bigger(b, peeked);
-			//print_stack(a, "A");
-			//ft_printf("top of a: %d\n", a->collection[a->size - 1]);
-			//print_stack(b, "B");
-			//ft_printf("top of b: %d\n", b->collection[b->size - 1]);
-			//ft_printf("sb: %d is %d\n", sb_index, b->collection[sb_index]);
-			if (sb_index < 0)
-			{
-				//ft_printf("PEEKED IS %d\n", peeked);
-				max = find_max(b);
-				max_pos = find_position(b, max);
-				//ft_printf("max num: %d %d %d\n", b->collection[max_pos], max_pos, max);
-				if (max_pos > b->size / 2)
-				{
-					while (max_pos < b->size -1)
-					{
-						rb(b);
-						//print_stack(b, "B!!");
-						//ft_printf("max: %d\n", max_pos);
-						max_pos++;
-					}
-					pb(a, b);
-				}
-				else
-				{
-					while (max_pos >= 0)
-					{
-						rrb(b);
-						//print_stack(b, "B!!");
-						max_pos--;
-					}
-					pb(a, b);
-				}
-			}
-			else if (sb_index == 0)
-			{
-				pb(a, b);
-				continue ;
-			}
-			else if (sb_index == b->size - 1)
-			{
-				pb(a, b);
-				sb(b);
-				continue ;
-			}
-			else
-			{
-				if (sb_index > (b->size)/ 2)
-				{
-					i = 0;
-					int rots = b->size - sb_index;
-					while (i < rots)
-					{
-						rb(b);
-						//print_stack(b, "B");
-						i++;
-					}
-				}
-				else
-				{
-					i = 0;
-					while (i < sb_index)
-					{
-						rrb(b);
-						i++;
-					}
-				}
-				pb(a, b);
-				//print_stack(b, "B");
-			}
+			rotate_to_top(b, sb_index, 1);
+			pb(a, b);
 		}
+		// rotate b back into order.
+		fix_rotation(b);
 		max_pos = find_position(b, max);
-		if (max_pos > b->size / 2)
-		{
-			while (max_pos < b->size -2)
-			{
-				rb(b);
-				//print_stack(b, "B!!");
-				//ft_printf("max: %d\n", max_pos);
-				max_pos++;
-			}
-		}
-		else
-		{
-			while (max_pos >= -1)
-			{
-				rrb(b);
-				//print_stack(b, "B!!");
-				max_pos--;
-			}
-		}
 		while (!is_empty(b))
+		{
+			step7_counter++;
 			pa(a, b);
+		}
+		// check if a is sorted just for good measure.
 		if (!is_sorted_descending(a))
 		{
 			max = find_max(a);
 			max_pos = find_position(a, max);
 			if (max_pos > a->size / 2)
 			{
-				while (max_pos < a->size -2)
+				while (!is_sorted(a))
 				{
 					ra(a);
+					step8++;
 					//print_stack(b, "B!!");
 					//ft_printf("max: %d\n", max_pos);
 					max_pos++;
 				}
+				step8++;
 			}
 			else
 			{
-				while (max_pos > -1)
+				while (!is_sorted(a))
 				{
 					rra(a);
+					step9++;
 					//print_stack(b, "B!!");
 					max_pos--;
 				}
+				step9++;
 			}
 		}
+		ft_printf("step5 took %d steps\n step6 took %d steps\n step7 took %d steps\n step8 took %d steps\n step9 took %d steps\n", step5_counter, step6_counter, step7_counter, step8, step9);
+		ft_printf("other things took %d steps\n", pushing_counter);
 	}
 }
 

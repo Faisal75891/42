@@ -32,9 +32,12 @@ fi
 # Helper to generate random sequence of N unique integers
 generate_numbers() {
     local n=$1
-    # Generate numbers from -RANGE to +RANGE
-    shuf -i 0-$((2 * RANGE)) -n $n | awk -v range=$RANGE '{print $1 - range}'
+    local RANGE=${RANGE:-10}  # Default RANGE to 10 if not set
+
+    # Generate numbers from -RANGE to +RANGE, shuffle, and pick n
+    seq 0 $((2 * RANGE)) | awk -v range=$RANGE '{print $1 - range}' | sort -R | head -n "$n"
 }
+
 
 echo "Starting push_swap tests..."
 echo "Testing sizes from $MIN_SIZE to $MAX_SIZE"

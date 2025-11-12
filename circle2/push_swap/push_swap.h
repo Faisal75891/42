@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <limits.h>
 # include "./ft_printf/ft_printf.h"
 
 typedef struct s_stack
