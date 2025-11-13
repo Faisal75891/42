@@ -115,6 +115,8 @@ int	cost_to_top(t_stack *stack, int position)
 	int	rotate_cost;
 	int	reverse_rotate_cost;
 
+	if (position < 0)
+		position = find_position(stack, find_max(stack));
 	rotate_cost = stack->size - position;
 	reverse_rotate_cost = position;
 	if (rotate_cost <= reverse_rotate_cost)

@@ -103,7 +103,7 @@ int	sort_three_b(t_stack *b)
 		distance from the index of the target(sb) to the median
 	Total Cost = cost to push + cost to rotate
 
-	keep track of the lowest cost in the array and return it.
+	keep track of the lowest cost in the stack and return it.
 	stack: [2, 5, 9, 80, 54, ...]
 	array: [2, 3, 1, 4 , 5 , ...] <- each element is the cost value.
 	               ^
@@ -120,135 +120,109 @@ int	best_index_to_move(t_stack *a, t_stack *b)
 	min = INT_MAX;
 	min_index = -1;
 	i = 0;
-	while (i < a->size - 1)
+	while (i < a->size)
 	{
 	// 	position = smallest_bigger(b, a->collection[i]);
 	// 	cost_to_rotate = cost_to_top(b, position);
 	// 	total = cost_to_rotate + cost_to_top(a, a->collection[i]);
-		total = cost_to_top(b, smallest_bigger(b, a->collection[i])) + cost_to_top(a, a->collection[i]);
+		total = cost_to_top(b, smallest_bigger(b, a->collection[i])) + cost_to_top(a, i);
 		if (total < min)
+		{
+			min = total;
 			min_index = i;
+		}
 		i++;
 	}
 	if (min_index < 0)
 		return (-1);
-	return (min_index);
+	return (min_index);		
 }
 
 void	rotate_to_top(t_stack *stack, int index, int a)
 {
-	int	median;
-	int	i;
+	int	rotations;
 
-	i = 0;
-	median = stack->size / 2;
+	rotations = cost_to_top(stack, index);
+	if (rotations == 0)
+	{
+		print_stack(stack, "YA");
+		return ;
+	}
+	ft_printf("rotations needed %d to reach top from index %d\n", rotations, index);
+	
 	if (a == 0)
 	{
-		if (index < median)
-			while (i < index)
-			{
+		print_stack(stack, "A");
+		if (rotations > 0)
+		{
+			while (rotations-- > 0)
 				rra(stack);
-				i++;
-			}
+		}
 		else
 		{
-			i = index;
-			while(i < stack->size - 1)
-			{
+			while (rotations++ < 0)
 				ra(stack);
-				i++;
-			}
 		}
+		print_stack(stack, "A");
 	}
 	else
 	{
-		if (index < median)
-			while (i < index + 1)
-			{
-				rrb(stack);
-				i++;
-			}
+		print_stack(stack, "B");
+		if (rotations > 0)
+		{
+			while (rotations-- > 0)
+				rb(stack);
+		}
 		else
 		{
-			i = index;
-			while(i <= stack->size)
-			{
-				rb(stack);
-				i++;
-			}
+			while (rotations++ < 0)
+				rrb(stack);
 		}
+		print_stack(stack, "B");
 	}
 }
 
-void	fix_rotation(t_stack *stack, int a)
+void	put_max_top(t_stack *stack, int a)
 {
 	int	pos_max;
-	int	median;
-	int	i;
+	int	max;
 
-	pos_max = find_position(stack, find_max(stack));
-	median = stack->size / 2;
-	i = 0;
-	if (a == 0)
-	{
-		if (pos_max > median)
-		{
-			while (i < pos_max)
-			{
-				rra(stack);
-				i++;
-			}
-		}
-		else
-		{
-			while (i <= stack->size)
-			{
-				ra(stack);
-				i++;
-			}
-		}
-	}
-	else if (a == 1)
-	{
-		if (pos_max > median)
-		{
-			while (i < pos_max)
-			{
-				rrb(stack);
-				i++;
-			}
-		}
-		else
-		{
-			while (i <= stack->size)
-			{
-				rb(stack);
-				i++;
-			}
-		}
-	}
+	max = find_max(stack);
+	pos_max = find_position(stack, max);
+	if (pos_max == 0)
+		return ;
+	rotate_to_top(stack, pos_max, a);
 }
 
-int	spinjutsu_spin(t_stack *stack, int sb, int a)
+void	push_into_stack(t_stack *a, t_stack *b, int sb_index)
 {
+	int	max;
+	//int i;
 	// rotate stack b to make sb the top.
 	// if sb == 0 -> pb(a, b), sb() then exit 1
 	// if sb == stack->size do non
 	// if sb == -1. rotate max to top
 	// else rra/ra unitl sb == stack->size
-	ft_printf("Sb value is %d\n", sb);
-	if (sb == 0)
+	if (sb_index == 0)
+		return ;
+	else if (sb_index == a->size - 1)
 	{
-		if (a == 0)
-			rra(stack);
-		else
-			rrb(stack);
+		pb(a, b);
+		sb(b);
 	}
-	else if (sb == stack->size - 1)
-		return (1);
-	else if (sb <= -1)
-		fix_rotation(stack, a);
-	return (0);
+	else if (sb_index <= -1)
+	{
+		max = find_position(b, find_max(b));
+		rotate_to_top(b, max, 1);
+	}
+	else
+	{
+		rotate_to_top(b, sb_index, 1);
+		rb(b);
+	}
+	print_stack(a, "A");
+	print_stack(b, "B");
+	pb(a, b);
 }
 
 void	ft_sort(t_stack *a, t_stack *b)
@@ -281,28 +255,17 @@ void	ft_sort(t_stack *a, t_stack *b)
 		while (!is_empty(a))
 		{
 			best_move_index = best_index_to_move(a, b); // returns index of the number to push.
-			ft_printf("best number to move is: index %d %d\n", best_move_index, a->collection[best_move_index]);
+			ft_printf("best number to move from a %d\n\n", a->collection[best_move_index]);
 			rotate_to_top(a, best_move_index, 0);
 			peek(a, &peeked);
 			sb_index = smallest_bigger(b, peeked);
-			if (spinjutsu_spin(b, sb_index, 1) == 1)
-			{
-				print_stack(b, "B before rotation");
-				pb(a, b);
-				sb(b);
-				print_stack(b, "B after rotation");
-				continue ;
-			}
-			print_stack(a, "A after rotation");
-			print_stack(b, "B after rotation");
-			pb(a, b);
+			push_into_stack(a, b, sb_index);
 		}
 		// rotate b back into order.
-		//fix_rotation(b, 1);
+		put_max_top(b, 1);
 		while (!is_empty(b))
 			pa(a, b);
 		// check if a is sorted just for good measure.
-		fix_rotation(a, 0);
 	}
 }
 
@@ -394,7 +357,7 @@ void	print_stack(t_stack *stack, char *name)
 	ft_printf("]\n");
 }
 
-int	main(int argc, char **argv)
+int	push_swap(int argc, char **argv)
 {
 	t_stack	*stack_a;
 	t_stack	*stack_b;
@@ -411,6 +374,7 @@ int	main(int argc, char **argv)
 	stack_a = create_stack(capacity);
 	stack_b = create_stack(capacity);
 	push_args(stack_a, int_array, capacity);
+	print_stack(stack_a, "A initially");
 	if (is_sorted(stack_a) == 1)
 		ft_printf("");
 	else
@@ -428,4 +392,40 @@ int	main(int argc, char **argv)
 		}
 	}
 	return (0);
+}
+
+#include <stdio.h>
+#include <time.h>
+int main(int argc, char **argv) {
+	if (argc > 1)
+		return (push_swap(argc, argv));
+
+    srand(time(NULL)); // Seed random number generator
+
+    // Simulate 3 random numbers as arguments
+    int num_args = 7; // Program name + 3 random numbers
+    char *argv_test[num_args];
+    int argc_test = num_args;
+
+    // Set program name
+    argv_test[0] = "./push_swap";
+
+    // Generate and convert random numbers
+    for (int i = 1; i < num_args; i++) {
+        int random_num = rand() % 100; // Random number between 0 and 99
+        char num_str[10]; // Buffer for string conversion
+        sprintf(num_str, "%d", random_num);
+        argv_test[i] = malloc(ft_strlen(num_str) + 1); // Allocate memory
+        ft_strlcpy(argv_test[i], num_str, 10); // Copy string
+    }
+
+    // Call the function with simulated arguments
+    push_swap(argc_test, argv_test);
+
+    // Free allocated memory
+    for (int i = 1; i < num_args; i++) {
+        free(argv_test[i]);
+    }
+
+    return 0;
 }
