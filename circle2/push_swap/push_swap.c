@@ -145,6 +145,7 @@ void	rotate_to_top(t_stack *stack, int index, int a)
 	rotations = cost_to_top(stack, index);
 	if (rotations == 0)
 	{
+		rra(stack);
 		print_stack(stack, "YA");
 		return ;
 	}
@@ -155,13 +156,13 @@ void	rotate_to_top(t_stack *stack, int index, int a)
 		print_stack(stack, "A");
 		if (rotations > 0)
 		{
-			while (rotations-- > 0)
-				rra(stack);
+			while (rotations-- > 1)
+				ra(stack);
 		}
 		else
 		{
-			while (rotations++ < 0)
-				ra(stack);
+			while (rotations++ <= 0)
+				rra(stack);
 		}
 		print_stack(stack, "A");
 	}
@@ -170,12 +171,12 @@ void	rotate_to_top(t_stack *stack, int index, int a)
 		print_stack(stack, "B");
 		if (rotations > 0)
 		{
-			while (rotations-- > 0)
+			while (rotations-- > 1)
 				rb(stack);
 		}
 		else
 		{
-			while (rotations++ < 0)
+			while (rotations++ <= 0)
 				rrb(stack);
 		}
 		print_stack(stack, "B");
@@ -209,6 +210,7 @@ void	push_into_stack(t_stack *a, t_stack *b, int sb_index)
 	{
 		pb(a, b);
 		sb(b);
+		return ;
 	}
 	else if (sb_index <= -1)
 	{

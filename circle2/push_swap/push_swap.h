@@ -28,6 +28,7 @@ typedef struct s_stack
 
 t_stack	*create_stack(int capacity);
 void	destroy_stack(t_stack *stack);
+void	rotate_to_top(t_stack *stack, int index, int a);
 int		is_full(t_stack *stack);
 int		is_empty(t_stack *stack);
 int		pop(t_stack *stack, int *item);
