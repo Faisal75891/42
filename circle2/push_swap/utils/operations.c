@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../push_swap.h"
 
 t_stack	*create_stack(int capacity)
 {
@@ -123,36 +123,6 @@ int	cost_to_top(t_stack *stack, int position)
 		return (rotate_cost);
 	else
 		return (-reverse_rotate_cost);
-}
-
-int	smallest_bigger(t_stack *a, int b)
-{
-	int	i;
-	int	sb_found;
-	int	sb_index;
-	int	val;
-
-	if (!a || a->size == 0)
-		return (-1);
-	i = a->size - 1;
-	sb_found = 0;
-	val = 0;
-	sb_index = -1;
-
-	while (i >= 0)
-	{
-		val = a->collection[i];
-		if (val > b)
-		{
-			if (!sb_found || val < a->collection[sb_index])
-			{
-				sb_found = 1;
-				sb_index = i;
-			}
-		}
-		i--;
-	}
-	return (sb_index);
 }
 
 int	find_position(t_stack *a, int b)

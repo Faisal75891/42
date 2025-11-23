@@ -1,17 +1,50 @@
 NAME = push_swap
 CFLAGS = -Wall -Wextra -Werror
 CC = cc
-SRC = instructions.c  operations.c    push_swap.c
+SRC = ./utils/instructions.c	utils/operations.c	./utils/parser.c ./utils/print_stack.c push_swap.c ./sort_utils/is_sorted.c	./sort_utils/utils.c
 OBJ = $(SRC:.c=.o)
 PRINTF_DIR = ./ft_printf
 LIBFT_DIR = ./ft_printf/libft
 PRINTF = $(PRINTF_DIR)/libftprintf.a
 LIBFT = $(LIBFT_DIR)/libft.a
 
+UNITY_DIR = unity
+UNITY_SRC = $(UNITY_DIR)/unity.c
+
+FLAGS = -I $(UNITY_DIR)
+
+# Your source files
+UTILS = utils/*.c
+SORT_UTILS = sort_utils/*.c
+UNIT_TESTS_DIR = unit_tests/
+
+# Test targets
+test_smallest_bigger: unit_tests/test_smallest_bigger.c $(PRINTF) $(LIBFT)
+	@$(CC) $(FLAGS) $< $(UNITY_SRC) $(UTILS) $(SORT_UTILS) $(PRINTF) $(LIBFT) -o $@ && ./$@
+
+test_cost_to_top: unit_tests/test_cost_to_top.c $(PRINTF) $(LIBFT)
+	@$(CC) $(FLAGS) $< $(UNITY_SRC) $(UTILS) $(PRINTF) $(LIBFT) -o $@ && ./$@
+
+test_is_sorted: unit_tests/test_is_sorted.c $(PRINTF) $(LIBFT)
+	@$(CC) $(FLAGS) $< $(UNITY_SRC) $(SORT_UTILS) $(PRINTF) $(LIBFT) -o $@ && ./$@
+
+test_parse_arguments: $(UNIT_TESTS_DIR)/test_parse_arguments.c $(PRINTF) $(LIBFT)
+	@$(CC) $(FLAGS) $< $(UNITY_SRC) $(UTILS) $(SORT_UTILS) $(PRINTF) $(LIBFT) -o $@ && ./$@
+
+test_push_args: $(UNIT_TESTS_DIR)/test_push_args.c $(PRINTF) $(LIBFT)
+	@$(CC) $(FLAGS) $< $(UNITY_SRC) $(UTILS) $(SORT_UTILS) $(PRINTF) $(LIBFT) -o $@ && ./$@
+
+test: test_smallest_bigger test_cost_to_top test_is_sorted test_parse_arguments test_push_args
+
+clean_tests:
+	rm -f test_*
+
+TESTS_OBJ = $(TESTS:.c=.o);
+
 all: $(NAME)
 
 $(NAME): $(OBJ) $(PRINTF) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJ) $(PRINTF) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(PRINTF) $(LIBFT) -o $(NAME)	
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -53,4 +86,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean fclean re all
+.PHONY: clean fclean re all test clean_tests
