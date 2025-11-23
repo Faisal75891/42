@@ -50,7 +50,7 @@ void	push_into_stack(t_stack *a, t_stack *b, int sb_index)
 void	setUp(void) {}
 void	tearDown(void) {}
 
-void    ()
+void	()
 {
 
 }
