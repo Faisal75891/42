@@ -88,12 +88,12 @@ void	all_cases(void)
 	push_args(b, array_b, 4);
 	// Stack A: [3, 2, 4, 5] (5 is top)
 	// Stack B: [7, 9, 6, 1] (1 is top)
-	// cost for "3" (idx 0): 1 + 3 + 1 = 5
-	// cost for "2" (idx 1): 2 + 3 + 1 = 6
-	// cost for "4" (idx 2): 3 + 3 + 1 = 7
-	// cost for "5" (idx 3): 0 + 3 + 1 = 4
-	// best index to move is index 3, value "5"
-	TEST_ASSERT_EQUAL_INT(3, best_index_to_move(a, b));
+	// cost for "3" (idx 0): max(3,1) + 1 = 4
+	// cost for "2" (idx 1): max(2,1) + 1 = 3
+	// cost for "4" (idx 2): max(1,1) + 1 = 2
+	// cost for "5" (idx 3): 0 + 1 + 1 = 2
+	// best index to move is index 2 (first minimum), value "4"
+	TEST_ASSERT_EQUAL_INT(2, best_index_to_move(a, b));
 	destroy_stack(a);
 	destroy_stack(b);
 }
@@ -126,8 +126,9 @@ void	test_all_smaller_than_b(void)
 	push_args(b, array_b, 4);
 	// All elements in A are smaller than all in B
 	// smallest_bigger should return -1, which means find max position
+	// Both index 0 and 3 tie at cost 2, so returns first (index 0)
 	int result = best_index_to_move(a, b);
-	TEST_ASSERT_TRUE(result == 3);
+	TEST_ASSERT_EQUAL_INT(0, result);
 	destroy_stack(a);
 	destroy_stack(b);
 }

@@ -1,45 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_sorted.c                                        :+:      :+:    :+:   */
+/*   ops_push.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/25 22:09:10 by fbaras            #+#    #+#             */
-/*   Updated: 2025/11/25 22:09:10 by fbaras           ###   ########.fr       */
+/*   Created: 2025/11/25 22:16:47 by fbaras            #+#    #+#             */
+/*   Updated: 2025/11/25 22:16:47 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-int	is_sorted(t_stack *a)
+void	pa(t_stack *a, t_stack *b)
 {
-	int	i;
+	int	item;
 
-	if (!a || a->size <= 1)
-		return (1);
-	i = 1;
-	while (i < a->size)
-	{
-		if (a->collection[i - 1] <= a->collection[i])
-			return (0);
-		i++;
-	}
-	return (1);
+	if (b->size == 0)
+		return ;
+	pop(b, &item);
+	push(a, &item);
+	ft_printf("pa\n");
 }
 
-int	is_sorted_descending(t_stack *a)
+void	pb(t_stack *a, t_stack *b)
 {
-	int	i;
+	int	item;
 
-	if (!a || a->size <= 1)
-		return (1);
-	i = 1;
-	while (i < a->size)
-	{
-		if (a->collection[i - 1] >= a->collection[i])
-			return (0);
-		i++;
-	}
-	return (1);
+	if (a->size == 0)
+		return ;
+	pop(a, &item);
+	push(b, &item);
+	ft_printf("pb\n");
 }

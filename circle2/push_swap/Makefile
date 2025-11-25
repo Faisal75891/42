@@ -1,7 +1,7 @@
 NAME = push_swap
 CFLAGS = -Wall -Wextra -Werror
 CC = cc
-SRC = ./utils/instructions.c	utils/operations.c	./utils/parser.c ./utils/print_stack.c push_swap.c ./sort_utils/is_sorted.c	./sort_utils/utils.c
+SRC = utils/ops_swap.c utils/ops_push.c utils/ops_rotate_up.c utils/ops_rotate_down.c utils/check_for_duplicates.c utils/stack_operations.c utils/stack_checks.c utils/parser.c utils/print_stack.c sort_utils/utils.c push_swap.c sort_utils/best_index_to_move.c sort_utils/is_sorted.c sort_utils/rotate_to_top.c sort_utils/smallest_biggers.c sort_utils/stack_positioning.c small_sort/small_sort.c
 OBJ = $(SRC:.c=.o)
 PRINTF_DIR = ./ft_printf
 LIBFT_DIR = ./ft_printf/libft

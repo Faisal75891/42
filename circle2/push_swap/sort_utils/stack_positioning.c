@@ -1,45 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_sorted.c                                        :+:      :+:    :+:   */
+/*   stack_positioning.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/25 22:09:10 by fbaras            #+#    #+#             */
-/*   Updated: 2025/11/25 22:09:10 by fbaras           ###   ########.fr       */
+/*   Created: 2025/11/25 21:02:03 by fbaras            #+#    #+#             */
+/*   Updated: 2025/11/25 21:02:03 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-int	is_sorted(t_stack *a)
+void	put_max_top(t_stack *stack, int a)
 {
-	int	i;
+	int	pos_max;
+	int	max;
 
-	if (!a || a->size <= 1)
-		return (1);
-	i = 1;
-	while (i < a->size)
-	{
-		if (a->collection[i - 1] <= a->collection[i])
-			return (0);
-		i++;
-	}
-	return (1);
+	max = find_max(stack);
+	pos_max = find_position(stack, max);
+	if (pos_max == 0)
+		return ;
+	rotate_to_top(stack, pos_max, a);
 }
 
-int	is_sorted_descending(t_stack *a)
+void	put_to_bot(t_stack *stack, int index, int a)
 {
-	int	i;
+	int	rotations;
 
-	if (!a || a->size <= 1)
-		return (1);
-	i = 1;
-	while (i < a->size)
+	if (index == 0)
+		return ;
+	rotations = index;
+	if (a == 0)
 	{
-		if (a->collection[i - 1] >= a->collection[i])
-			return (0);
-		i++;
+		while (rotations-- > 0)
+			rra(stack);
 	}
-	return (1);
+	else
+	{
+		while (rotations-- > 0)
+			rrb(stack);
+	}
 }
