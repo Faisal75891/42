@@ -88,8 +88,8 @@ void	push_args(t_stack *a, int *args, int size)
 	i = 0;
 	while (i < size)
 	{
-		a->collection[a->size] = args[i];
-		a->size++;
+		if (push(a, &args[i]))
+			return ;
 		i++;
 	}
 }

@@ -22,7 +22,7 @@ int	is_sorted(t_stack *a)
 	i = 1;
 	while (i < a->size)
 	{
-		if (a->collection[i - 1] < a->collection[i])
+		if (a->collection[i - 1] <= a->collection[i])
 			return (0);
 		i++;
 	}
@@ -39,7 +39,7 @@ int	is_sorted_descending(t_stack *a)
 	i = 1;
 	while (i < a->size)
 	{
-		if (a->collection[i - 1] > a->collection[i])
+		if (a->collection[i - 1] >= a->collection[i])
 			return (0);
 		i++;
 	}

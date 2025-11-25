@@ -74,6 +74,14 @@ int	peek(t_stack *stack, int *item)
 	return (0);
 }
 
+int	peek_at_index(t_stack *stack, int index, int *item)
+{
+	if (!stack || index < 0 || index >= stack->size)
+		return (1);
+	*item = stack->collection[index];
+	return (0);
+}
+
 int	find_min(t_stack *stack)
 {
 	int	min;
@@ -98,7 +106,7 @@ int	find_max(t_stack *stack)
 	int	i;
 
 	if (is_empty(stack))
-		return (0);
+		return (-1);
 	max = stack->collection[0];
 	i = 1;
 	while (i < stack->size)
@@ -117,8 +125,10 @@ int	cost_to_top(t_stack *stack, int position)
 
 	if (position < 0)
 		position = find_position(stack, find_max(stack));
-	rotate_cost = stack->size - position;
-	reverse_rotate_cost = position;
+	if (position == stack->size - 1)
+		return (0);
+	rotate_cost = stack->size - 1 - position;
+	reverse_rotate_cost = position + 1;
 	if (rotate_cost <= reverse_rotate_cost)
 		return (rotate_cost);
 	else
@@ -127,14 +137,14 @@ int	cost_to_top(t_stack *stack, int position)
 
 int	find_position(t_stack *a, int b)
 {
-    int	i;
+	int	i;
 
-    i = 0;
-    while (i < a->size)
-    {
-        if (a->collection[i] == b)
-            return (i);
-        i++;
-    }
-    return (-1);
+	i = 0;
+	while (i < a->size)
+	{
+		if (a->collection[i] == b)
+			return (i);
+		i++;
+	}
+	return (-1);
 }
