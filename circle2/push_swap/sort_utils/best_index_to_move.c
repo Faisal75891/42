@@ -28,9 +28,9 @@ static int	calulate_cost(t_stack *a, t_stack *b, int i)
 	int	position;
 
 	total = 0;
-	position = smallest_bigger(b, a->collection[i]);
+	position = largest_smaller(b, a->collection[i]);
 	if (position == -1)
-		position = find_position(b, find_max(b));
+		position = find_position(b, find_min(b));
 	cost_to_rotate_b = cost_to_top(b, position);
 	cost_to_rotate_a = cost_to_top(a, i);
 	if (cost_to_rotate_a > 0 && cost_to_rotate_b > 0)
@@ -57,9 +57,9 @@ static int	calulate_cost_back(t_stack *a, t_stack *b, int b_index)
 	int	total;
 
 	value = b->collection[b_index];
-	position = largest_smaller(a, value);
+	position = smallest_bigger(a, value);
 	if (position == -1)
-		position = find_position(a, find_max(a));
+		position = find_position(a, find_min(a));
 	cost_to_rotate_a = cost_to_top(a, position);
 	cost_to_rotate_b = cost_to_top(b, b_index);
 	if (cost_to_rotate_a > 0 && cost_to_rotate_b > 0)

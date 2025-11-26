@@ -17,15 +17,15 @@ void	make_best_move_in_a(t_stack *a, t_stack *b)
 	int	peeked;
 	int	sb_index;
 	int	best_move_index;
-	int	min;
+	int	max;
 
 	best_move_index = best_index_to_move(a, b);
 	peek_at_index(a, best_move_index, &peeked);
-	sb_index = smallest_bigger(b, peeked);
+	sb_index = largest_smaller(b, peeked);
 	if (sb_index == -1)
 	{
-		min = find_min(b);
-		sb_index = find_position(b, min);
+		max= find_max(b);
+		sb_index = find_position(b, max);
 	}
 	rotate_both_to_top(a, b, best_move_index, sb_index);
 	pb(a, b);
@@ -36,17 +36,17 @@ void	make_best_move_in_b(t_stack *a, t_stack *b)
 	int	back_index;
 	int	target_pos;
 	int	peeked;
-	int	max;
+	int	min;
 
 	back_index = best_index_to_move_back(b, a);
 	if (back_index == -1)
 		back_index = 0;
 	peek_at_index(b, back_index, &peeked);
-	target_pos = largest_smaller(a, peeked);
+	target_pos = smallest_bigger(a, peeked);
 	if (target_pos == -1)
 	{
-		max = find_max(a);
-		target_pos = find_position(a, max);
+		min = find_min(a);
+		target_pos = find_position(a, min);
 	}
 	rotate_both_to_top(a, b, target_pos, back_index);
 	pa(a, b);
@@ -69,7 +69,7 @@ void	ft_sort(t_stack *a, t_stack *b)
 		sort_three(a);
 		while (!is_empty(b))
 			make_best_move_in_b(a, b);
-		put_to_bot(a, find_position(a, find_min(a)), 0);
+		put_to_bot(a, find_position(a, find_max(a)), 0);
 	}
 }
 
@@ -94,7 +94,7 @@ void	push_swap(int argc, char **argv)
 	stack_b = create_stack(capacity);
 	push_args(stack_a, int_array, capacity);
 	ft_sort(stack_a, stack_b);
-	print_stack(stack_a, "A");
+	//print_stack(stack_a, "A");
 	destroy_stack(stack_a);
 	destroy_stack(stack_b);
 	free(int_array);
