@@ -19,13 +19,63 @@ void	make_best_move_in_a(t_stack *a, t_stack *b)
 	int	best_move_index;
 	int	max;
 
+<<<<<<< HEAD
+void	rotate_to_top(t_stack *stack, int index, int a)
+{
+	int	rotations;
+
+	rotations = cost_to_top(stack, index);
+	if (rotations == 0)
+	{
+		rra(stack);
+		print_stack(stack, "YA");
+		return ;
+	}
+	ft_printf("rotations needed %d to reach top from index %d\n", rotations, index);
+	
+	if (a == 0)
+	{
+		print_stack(stack, "A");
+		if (rotations > 0)
+		{
+			while (rotations-- > 1)
+				ra(stack);
+		}
+		else
+		{
+			while (rotations++ <= 0)
+				rra(stack);
+		}
+		print_stack(stack, "A");
+	}
+	else
+	{
+		print_stack(stack, "B");
+		if (rotations > 0)
+		{
+			while (rotations-- > 1)
+				rb(stack);
+		}
+		else
+		{
+			while (rotations++ <= 0)
+				rrb(stack);
+		}
+		print_stack(stack, "B");
+=======
 	best_move_index = best_index_to_move(a, b);
 	peek_at_index(a, best_move_index, &peeked);
 	sb_index = largest_smaller(b, peeked);
 	if (sb_index == -1)
 	{
+<<<<<<< HEAD
 		max= find_max(b);
 		sb_index = find_position(b, max);
+=======
+		min = find_min(b);
+		sb_index = find_position(b, min);
+>>>>>>> 32d832156f7b16884e66701041c3a981eec31d75
+>>>>>>> 01fcc53baa5d2e24253ee053f10324c857ad8dde
 	}
 	rotate_both_to_top(a, b, best_move_index, sb_index);
 	pb(a, b);
@@ -38,12 +88,40 @@ void	make_best_move_in_b(t_stack *a, t_stack *b)
 	int	peeked;
 	int	min;
 
+<<<<<<< HEAD
+	max = find_max(stack);
+	pos_max = find_position(stack, max);
+	if (pos_max == 0)
+		return ;
+	rotate_to_top(stack, pos_max, a);
+}
+
+void	push_into_stack(t_stack *a, t_stack *b, int sb_index)
+{
+	int	max;
+	//int i;
+	// rotate stack b to make sb the top.
+	// if sb == 0 -> pb(a, b), sb() then exit 1
+	// if sb == stack->size do non
+	// if sb == -1. rotate max to top
+	// else rra/ra unitl sb == stack->size
+	if (sb_index == 0)
+		return ;
+	else if (sb_index == a->size - 1)
+	{
+		pb(a, b);
+		sb(b);
+		return ;
+	}
+	else if (sb_index <= -1)
+=======
 	back_index = best_index_to_move_back(b, a);
 	if (back_index == -1)
 		back_index = 0;
 	peek_at_index(b, back_index, &peeked);
 	target_pos = smallest_bigger(a, peeked);
 	if (target_pos == -1)
+>>>>>>> 32d832156f7b16884e66701041c3a981eec31d75
 	{
 		min = find_min(a);
 		target_pos = find_position(a, min);
