@@ -27,6 +27,7 @@ typedef struct s_stack
 } t_stack;
 
 t_stack	*create_stack(int capacity);
+char	*get_operation();
 void	destroy_stack(t_stack *stack);
 void	print_stack(t_stack *stack, char *name);
 int		best_index_to_move(t_stack *a, t_stack *b);
