@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "ft_printf.h": "c",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "push_swap.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "makefile.configureOnOpen": false
