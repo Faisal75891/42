@@ -17,6 +17,8 @@ void	sa(t_stack *a)
 	int	temp;
 	int	temp2;
 
+	if (a->size < 2 || a->capacity < 2)
+		return ;
 	pop(a, &temp);
 	pop(a, &temp2);
 	push(a, &temp);
@@ -29,6 +31,8 @@ void	sb(t_stack *b)
 	int	temp;
 	int	temp2;
 
+	if (b->capacity < 2 || b->size < 2)
+		return ;
 	pop(b, &temp);
 	pop(b, &temp2);
 	push(b, &temp);
@@ -41,6 +45,8 @@ void	ss(t_stack *a, t_stack *b)
 	int	temp;
 	int	temp2;
 
+	if (a->size < 2 || a->capacity < 2 || b->capacity < 2 || b->size < 2)
+		return ;
 	pop(a, &temp);
 	pop(a, &temp2);
 	push(a, &temp2);

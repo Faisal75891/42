@@ -17,7 +17,6 @@ void	setUp(void) {}
 void	tearDown(void) {}
 
 /*
-/*
 	Moves the cheapest value to move from a to b.
 
 	Cost to push from a to b is:

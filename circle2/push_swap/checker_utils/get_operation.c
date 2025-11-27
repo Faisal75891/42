@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_operation.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/26 16:25:08 by fbaras            #+#    #+#             */
-/*   Updated: 2025/11/26 16:25:08 by fbaras           ###   ########.fr       */
+/*   Created: 2025/11/27 19:26:13 by fbaras            #+#    #+#             */
+/*   Updated: 2025/11/27 19:26:13 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,29 @@
 char	*read_line(char *stash)
 {
 	char	*buffer;
-	int		bytes;
+	ssize_t	bytes;
 	char	*new_stash;
 
-	buffer = malloc (1025);
+	buffer = malloc(1025);
+	if (!buffer)
+	{
+		if (stash)
+		{
+			free(stash);
+			stash = NULL;
+		}
+		return (NULL);
+	}
 	bytes = 1;
 	new_stash = NULL;
 	while (bytes > 0 && (!stash || !ft_strchr(stash, '\n')))
 	{
 		bytes = read(0, buffer, 10);
-		if (bytes <	 0)
+		if (bytes < 0)
 		{
 			if (stash)
 				free(stash);
+			free(buffer);
 			return (NULL);
 		}
 		if (bytes == 0)
@@ -35,10 +45,10 @@ char	*read_line(char *stash)
 		buffer[bytes] = '\0';
 		if (!stash)
 		{
-			stash = ft_strdup (buffer);
+			stash = ft_strdup(buffer);
 			if (!stash)
 			{
-				stash = NULL;
+				free(buffer);
 				return (NULL);
 			}
 		}
@@ -48,13 +58,17 @@ char	*read_line(char *stash)
 			free(stash);
 			stash = new_stash;
 			if (!stash)
+			{
+				free(buffer);
 				return (NULL);
+			}
 		}
 	}
-	if (bytes <= 0 && (!stash))
+	if (bytes == 0 && (!stash || stash[0] == '\0'))
 	{
-		free(stash);
-		stash=NULL;
+		if (stash)
+			free(stash);
+		free(buffer);
 		return (NULL);
 	}
 	free(buffer);
@@ -63,25 +77,21 @@ char	*read_line(char *stash)
 
 char	*get_line(char *stash)
 {
-		char    *line;
-		int		i;
+	char	*line;
+	int		i;
 
-		if (!stash)
-				return (NULL);
-		i = 0;
-		while (stash[i] && stash[i] != '\n')
-				i++;
-		if (stash[i] == '\n')
-				i++;
-		line = malloc(i + 1);
-		if (!line)
-		{
-				free(stash);
-				stash = NULL;
-				return (NULL);
-		}
-		ft_strlcpy(line, stash, i + 1);
-		return (line);
+	if (!stash || stash[0] == '\0')
+		return (NULL);
+	i = 0;
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	if (stash[i] == '\n')
+		i++;
+	line = malloc(i + 1);
+	if (!line)
+		return (NULL);
+	ft_strlcpy(line, stash, i + 1);
+	return (line);
 }
 
 char	*reset_stash(char *stash)
@@ -89,32 +99,34 @@ char	*reset_stash(char *stash)
 	char	*new_stash;
 	int		i;
 
-	i = 0;
-	new_stash = NULL;
 	if (!stash || stash[0] == '\0')
-		return (NULL);
-	while (stash[i] != '\n')
-		i++;
-	if (stash[i] == '\n')
 	{
-		new_stash = ft_strdup(&stash[i + 1]);
-		if (!new_stash)
-		{
+		if (stash)
 			free(stash);
-			return (NULL);
-		}
+		return (NULL);
 	}
+	i = 0;
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	if (!stash[i])
+	{
+		free(stash);
+		return (NULL);
+	}
+	new_stash = ft_strdup(&stash[i + 1]);
 	free(stash);
 	return (new_stash);
 }
 
-char	*get_operation()
+char	*get_operation(void)
 {
 	static char	*stash;
 	char		*new_line;
 
-	stash = read_line (stash);
+	stash = read_line(stash);
+	if (!stash)
+		return (NULL);
 	new_line = get_line(stash);
-	stash = reset_stash (stash);
+	stash = reset_stash(stash);
 	return (new_line);
 }

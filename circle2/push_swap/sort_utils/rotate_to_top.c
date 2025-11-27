@@ -16,22 +16,24 @@ static void	do_rotations(t_stack *stack, int rotations, int is_a)
 {
 	if (rotations > 0)
 	{
-		while (rotations-- > 0)
+		while (rotations > 0)
 		{
 			if (is_a)
 				ra(stack);
 			else
 				rb(stack);
+			rotations--;
 		}
 	}
 	else
 	{
-		while (rotations++ < 0)
+		while (rotations < 0)
 		{
 			if (is_a)
 				rra(stack);
 			else
 				rrb(stack);
+			rotations++;
 		}
 	}
 }
@@ -54,10 +56,16 @@ static void	rotate_both_a(t_stack *a, t_stack *b, int cost_a, int cost_b)
 		cost_a--;
 		cost_b--;
 	}
-	while (cost_a-- > 0)
+	while (cost_a > 0)
+	{
 		ra(a);
-	while (cost_b-- > 0)
+		cost_a--;
+	}
+	while (cost_b > 0)
+	{
 		rb(b);
+		cost_b--;
+	}
 }
 
 static void	rotate_both_b(t_stack *a, t_stack *b, int cost_a, int cost_b)
@@ -68,10 +76,16 @@ static void	rotate_both_b(t_stack *a, t_stack *b, int cost_a, int cost_b)
 		cost_a++;
 		cost_b++;
 	}
-	while (cost_a++ < 0)
+	while (cost_a < 0)
+	{
 		rra(a);
-	while (cost_b++ < 0)
+		cost_a++;
+	}
+	while (cost_b < 0)
+	{
 		rrb(b);
+		cost_b++;
+	}
 }
 
 void	rotate_both_to_top(t_stack *a, t_stack *b, int a_index, int b_index)
@@ -87,7 +101,7 @@ void	rotate_both_to_top(t_stack *a, t_stack *b, int a_index, int b_index)
 		rotate_both_b(a, b, cost_a, cost_b);
 	else
 	{
-		rotate_to_top(a, a_index, 0);
-		rotate_to_top(b, b_index, 1);
+		rotate_to_top(a, a_index, 1);
+		rotate_to_top(b, b_index, 0);
 	}
 }

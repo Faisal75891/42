@@ -29,9 +29,6 @@ typedef struct s_stack
 t_stack	*create_stack(int capacity);
 char	*get_operation();
 void	destroy_stack(t_stack *stack);
-<<<<<<< HEAD
-void	rotate_to_top(t_stack *stack, int index, int a);
-=======
 void	print_stack(t_stack *stack, char *name);
 int		best_index_to_move(t_stack *a, t_stack *b);
 int		best_index_to_move_back(t_stack *b, t_stack *a);
@@ -47,7 +44,6 @@ void	sort_two(t_stack *a);
 int		sort_three(t_stack *a);
 void	sort_four(t_stack *a, t_stack *b);
 void	sort_five(t_stack *a, t_stack *b);
->>>>>>> 32d832156f7b16884e66701041c3a981eec31d75
 int		is_full(t_stack *stack);
 int		is_empty(t_stack *stack);
 int		pop(t_stack *stack, int *item);
