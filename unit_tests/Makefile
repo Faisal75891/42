@@ -3,10 +3,10 @@ UNITY_SRC = $(UNITY_DIR)/unity.c
 
 FLAGS = -I $(UNITY_DIR)
 
-UTILS = ../utils/*.c
-SORT_UTILS = ../sort_utils/*.c
-PRINTF_DIR = ../ft_printf
-LIBFT_DIR = ../ft_printf/libft
+UTILS = ../circle2/push_swap/utils/*.c
+SORT_UTILS = ../circle2/push_swap/sort_utils/*.c
+PRINTF_DIR = ../circle2/push_swap/ft_printf
+LIBFT_DIR = ../circle2/push_swap/ft_printf/libft
 PRINTF = $(PRINTF_DIR)/libftprintf.a
 LIBFT = $(LIBFT_DIR)/libft.a
 

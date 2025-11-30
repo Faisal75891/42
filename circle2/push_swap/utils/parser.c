@@ -51,11 +51,13 @@ int	parse_one_string(char **argv, int *int_array)
 	while (args[i])
 	{
 		if (!is_valid_number(args[last]))
+		{
+			free_split(args);
 			return (0);
-		int_array[i] = ft_atoi(args[last]);
-		i++;
-		last--;
+		}
+		int_array[i++] = ft_atoi(args[last--]);
 	}
+	free_split(args);
 	return (i);
 }
 
@@ -84,6 +86,27 @@ int	parse_arguments(int argc, char **argv, int *int_array)
 		}
 	}
 	return (i);
+}
+
+int	array_size(int argc, char **argv)
+{
+	int	i;
+	int	size;
+
+	if (argc > 2)
+		return (argc);
+	i = 0;
+	size = 0;
+	while (argv[1][i])
+	{
+		while (ft_isspace(argv[1][i]))
+			i++;
+		if (argv[1][i])
+			size++;
+		while (argv[1][i] && !ft_isspace(argv[1][i]))
+			i++;
+	}
+	return (size);
 }
 
 // Takes in an array of ints.

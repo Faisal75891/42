@@ -63,38 +63,20 @@ int	sort_three_b(t_stack *b)
 
 void	sort_four(t_stack *a, t_stack *b)
 {
-	int	max;
-	int	pos;
-
 	if (!a || a->size != 4)
 		return ;
-	max = find_max(a);
-	pos = find_position(a, max);
-	rotate_to_top(a, pos, 0);
+	rotate_to_top(a, find_position(a, find_min(a)), 1);
 	pb(a, b);
 	sort_three(a);
 	pa(a, b);
-	ra(a);
 }
 
 void	sort_five(t_stack *a, t_stack *b)
 {
-	int	max;
-	int	pos;
-
 	if (!a || a->size != 5)
 		return ;
-	max = find_max(a);
-	pos = find_position(a, max);
-	rotate_to_top(a, pos, 0);
+	rotate_to_top(a, find_position(a, find_min(a)), 1);
 	pb(a, b);
-	max = find_max(a);
-	pos = find_position(a, max);
-	rotate_to_top(a, pos, 0);
-	pb(a, b);
-	sort_three(a);
+	sort_four(a, b);
 	pa(a, b);
-	ra(a);
-	pa(a, b);
-	ra(a);
 }

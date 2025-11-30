@@ -12,66 +12,42 @@
 
 #include "../push_swap.h"
 
+char	*free_and_return(char *stash, char *buffer)
+{
+	if (stash)
+	{
+		free(stash);
+		stash = NULL;
+	}
+	if (buffer)
+		free(buffer);
+	return (NULL);
+}
+
 char	*read_line(char *stash)
 {
 	char	*buffer;
 	ssize_t	bytes;
-	char	*new_stash;
 
 	buffer = malloc(1025);
 	if (!buffer)
-	{
-		if (stash)
-		{
-			free(stash);
-			stash = NULL;
-		}
-		return (NULL);
-	}
+		return (free_and_return(stash, NULL));
 	bytes = 1;
-	new_stash = NULL;
 	while (bytes > 0 && (!stash || !ft_strchr(stash, '\n')))
 	{
-		bytes = read(0, buffer, 10);
-		if (bytes < 0)
-		{
-			if (stash)
-				free(stash);
-			free(buffer);
-			return (NULL);
-		}
-		if (bytes == 0)
+		bytes = read(0, buffer, 1024);
+		if (bytes <= 0)
 			break ;
 		buffer[bytes] = '\0';
 		if (!stash)
-		{
-			stash = ft_strdup(buffer);
-			if (!stash)
-			{
-				free(buffer);
-				return (NULL);
-			}
-		}
+			stash = copy_buffer(buffer);
 		else
-		{
-			new_stash = ft_strjoin(stash, buffer);
-			free(stash);
-			stash = new_stash;
-			if (!stash)
-			{
-				free(buffer);
-				return (NULL);
-			}
-		}
+			stash = concatenate_buffer(stash, buffer);
 	}
 	if (bytes == 0 && (!stash || stash[0] == '\0'))
-	{
-		if (stash)
-			free(stash);
+		return (free_and_return(stash, buffer));
+	if (buffer)
 		free(buffer);
-		return (NULL);
-	}
-	free(buffer);
 	return (stash);
 }
 

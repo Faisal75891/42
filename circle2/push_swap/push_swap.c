@@ -62,23 +62,15 @@ void	ft_sort(t_stack *a, t_stack *b)
 		sort_four(a, b);
 	else if (a->capacity == 5)
 		sort_five(a, b);
+	else if (a->capacity == 1)
+		return ;
 	else
 	{
 		while (a->size > 3)
-		{
 			make_best_move_in_a(a, b);
-			// print_stack(a, "A");
-			// print_stack(b, "B");
-		}
 		sort_three(a);
-		// print_stack(a, "A");
-		// print_stack(b, "B");
 		while (!is_empty(b))
-		{
 			make_best_move_in_b(a, b);
-			// print_stack(a, "A");
-			// print_stack(b, "B");
-		}
 		put_to_bot(a, find_position(a, find_max(a)), 0);
 	}
 }
@@ -90,7 +82,7 @@ void	push_swap(int argc, char **argv)
 	int		*int_array;
 	int		capacity;
 
-	int_array = malloc(sizeof(int) * (argc - 1));
+	int_array = malloc(sizeof(int) * array_size(argc, argv));
 	if (!int_array)
 		return ;
 	capacity = parse_arguments(argc, argv, int_array);
@@ -104,12 +96,16 @@ void	push_swap(int argc, char **argv)
 	stack_b = create_stack(capacity);
 	push_args(stack_a, int_array, capacity);
 	ft_sort(stack_a, stack_b);
-	//print_stack(stack_a, "A");
 	destroy_stack(stack_a);
 	destroy_stack(stack_b);
 	free(int_array);
 }
 
+// TODO: ~Handle one string arguments~ ✓
+// TODO: Fix norminette ✓
+// TODO: Test Everyting.
+// TODO: Find memory leaks:
+		//
 int	main(int argc, char **argv)
 {
 	if (argc < 2)

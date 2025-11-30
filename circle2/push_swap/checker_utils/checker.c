@@ -12,7 +12,7 @@
 
 #include "../push_swap.h"
 
-static void	choose_operation(t_stack *a, t_stack *b, char *operation)
+static int	choose_operation(t_stack *a, t_stack *b, char *operation)
 {
 	if (!ft_strncmp(operation, "pb\n", 4))
 		pb(a, b);
@@ -37,24 +37,31 @@ static void	choose_operation(t_stack *a, t_stack *b, char *operation)
 	else if (!ft_strncmp(operation, "rrr\n", 4))
 		rrr(a, b);
 	else
-		ft_printf("\n");
+		return (1);
+	return (0);
 }
 
 static int	do_operations(t_stack *a, t_stack *b)
 {
 	char	*operation;
+	int		i;
+	int		op_check;
+	int		error_exit;
 
 	operation = get_operation();
-	int i = 1;
+	i = 1;
+	error_exit = 0;
 	while (operation != NULL)
 	{
-		choose_operation(a, b, operation);
-		ft_printf("%d. %s", i, operation);
-
+		op_check = choose_operation(a, b, operation);
 		free(operation);
+		if (op_check == 1)
+			error_exit = -1;
 		operation = get_operation();
 		i++;
 	}
+	if (error_exit == -1)
+		return (-1);
 	if (is_sorted(a) && is_empty(b))
 		return (0);
 	else
@@ -83,17 +90,12 @@ rra
 ./push_swap "1 2 4 3 5 7 9" | ./checker/checker "1 2 4 3 5 7 9"
 */
 
-int	main(int argc, char **argv)
+int	initialize_stacks(t_stack **a, t_stack **b, int argc, char **argv)
 {
-	t_stack *a;
-	t_stack *b;
-	int		capacity;
 	int		*int_array;
-	int		result;
+	int		capacity;
 
-	if (argc < 2)
-		return (1);
-	int_array = malloc (sizeof(int) * (argc - 1));
+	int_array = malloc(sizeof(int) * array_size(argc, argv));
 	if (!int_array)
 		return (1);
 	capacity = parse_arguments(argc, argv, int_array);
@@ -103,18 +105,32 @@ int	main(int argc, char **argv)
 		ft_putstr_fd("Error\n", 2);
 		return (1);
 	}
-	a = create_stack(capacity);	
-	b = create_stack(capacity);	
-	push_args(a, int_array, capacity);
+	*a = create_stack(capacity);
+	*b = create_stack(capacity);
+	push_args(*a, int_array, capacity);
 	free(int_array);
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_stack	*a;
+	t_stack	*b;
+	int		result;
+
+	if (argc < 2)
+		return (1);
+	a = NULL;
+	b = NULL;
+	if (initialize_stacks(&a, &b, argc, argv) == 1)
+		return (1);
 	result = do_operations(a, b);
 	if (result == 0)
 		ft_printf("OK\n");
-	else
-	{
+	else if (result == 1)
 		ft_printf("KO\n");
-		print_stack(a, "A");
-	}
+	else
+		ft_putstr_fd("Error\n", 2);
 	destroy_stack(a);
 	destroy_stack(b);
 	return (result);

@@ -13,22 +13,28 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <limits.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <limits.h>
 # include "./ft_printf/ft_printf.h"
 
 typedef struct s_stack
 {
-	int *collection;
-	int capacity;
-	int size;
-} t_stack;
+	int	*collection;
+	int	capacity;
+	int	size;
+}	t_stack;
 
 t_stack	*create_stack(int capacity);
-char	*get_operation();
+char	*get_operation(void);
+int		array_size(int argc, char **argv);
+char	*copy_buffer(char *buffer);
+char	*concatenate_buffer(char *stash, char *buffer);
+char	*free_and_return(char *stash, char *buffer);
+void	free_split(char **arr);
 void	destroy_stack(t_stack *stack);
+int		ft_isspace(int c);
 void	print_stack(t_stack *stack, char *name);
 int		best_index_to_move(t_stack *a, t_stack *b);
 int		best_index_to_move_back(t_stack *b, t_stack *a);

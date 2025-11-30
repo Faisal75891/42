@@ -12,6 +12,24 @@
 
 #include "../push_swap.h"
 
+// This is for parser.c but there is no space there.
+int	ft_isspace(int c)
+{
+	return (c == 32 || (c >= 9 && c <= 13));
+}
+
+void	free_split(char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
+}
+
 void	print_stack(t_stack *stack, char *name)
 {
 	int	i;
