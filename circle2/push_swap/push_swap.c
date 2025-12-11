@@ -54,6 +54,8 @@ void	make_best_move_in_b(t_stack *a, t_stack *b)
 
 void	ft_sort(t_stack *a, t_stack *b)
 {
+	if (is_sorted(a))
+		return ;
 	if (a->capacity == 2)
 		sort_two(a);
 	else if (a->capacity == 3)
@@ -89,7 +91,7 @@ void	push_swap(int argc, char **argv)
 	if (capacity == 0 || check_for_duplicates(int_array, capacity))
 	{
 		free(int_array);
-		ft_printf("Error\n");
+		ft_putstr_fd("Error\n", 2);
 		return ;
 	}
 	stack_a = create_stack(capacity);

@@ -14,18 +14,26 @@
 
 static int	is_valid_number(char *str)
 {
-	int	i;
+	int			i;
+	long long	num;
+	int			sign;
 
 	i = 0;
+	num = 0;
+	sign = 1;
 	if (!str || !*str)
 		return (0);
 	if (str[i] == '-' || str[i] == '+')
+	{
 		i++;
-	if (!str[i])
-		return (0);
+		sign = -1;
+	}
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
+			return (0);
+		num = (num * 10) + (str[i] - '0');
+		if ((num > 2147483648 && sign == -1) || (num > 2147483647 && sign == 1))
 			return (0);
 		i++;
 	}
