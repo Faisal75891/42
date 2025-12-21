@@ -2,35 +2,41 @@ NAME = fdf
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-LINUX_FLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
-MAC_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
+MINILIB_MAC_DIR = ./minilibx/mlx
+MINILIB_LINUX_DIR = ./minilibx/mlx_linux
 
-MINILIB_MAC_DIR = mlx
-MINILIB_LINUX_DIR = minilibx_linux
+LINUX_FLAGS = -Lmlx_linux -lmlx_Linux -L$(MINILIB_LINUX_DIR) -Imlx_linux -lXext -lX11 -lm -lz
+MAC_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
 
 LIBFT_DIR = ./ft_printf/libft
 FT_PRINTF_DIR = ./ft_printf
 
 FT_PRINTF = $(FT_PRINTF_DIR)/libftprintf.a
 LIBFT = $(LIBFT_DIR)/libft.a
+MINILIBX = $(MINILIB_LINUX_DIR)/libmlx.a
 
-SRC = fdf.c
+SRC = fdf.c parse.c ft_get_next_line/get_next_line.c ft_get_next_line/get_next_line_utils.c 
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-
-$(NAME): $(OBJ) $(LIBFT) $(FT_PRINTF)
-	$(CC) $(CFLAGS) $(MAC_FLAGS) $(OBJ) $(FT_PRINTF) $(LIBFT) -o $(NAME)
+$(NAME): $(OBJ) $(LIBFT) $(FT_PRINTF) $(MINILIBX)
+	$(CC) $(CFLAGS) $(OBJ) $(FT_PRINTF) $(LIBFT) $(MINILIBX) $(LINUX_FLAGS) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I$(MINILIB_MAC_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
+
+install_dependencies_linux:
+	sudo apt-get update && sudo apt-get install xorg libxext-dev zlib1g-dev libbsd-dev
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
 
 $(FT_PRINTF):
 	make -C $(FT_PRINTF_DIR)
+
+$(MINILIBX):
+	make all -C $(MINILIB_LINUX_DIR)
 
 clean:
 	rm -f $(OBJ) $(OBJ_BONUS)
