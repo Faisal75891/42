@@ -83,7 +83,7 @@ t_map	*get_fdf_map(char *map_name)
 	fd = open(map_name, O_RDONLY);
 	// if (fd == -1)
 	// 	return (NULL);
-	map->array = malloc(sizeof(int *) * map->height); //height of fdf map
+	map->array = malloc(sizeof(t_coord *) * map->height); //height of fdf map
 	// if (!map->array)
 	// 	return (NULL);
 	line = get_next_line(fd);
@@ -94,10 +94,14 @@ t_map	*get_fdf_map(char *map_name)
 		// 	return (NULL);
 		i = 0;
 		map->width = get_line_width(fdf_line);
-		map->array[map->array_size] = malloc (sizeof(int) * map->width);
+		map->array[map->array_size] = malloc (sizeof(t_coord) * map->width);
 		while (fdf_line[i])
 		{
-			map->array[map->array_size][i] = ft_atoi(fdf_line[i]);
+			if (ft_strchr(fdf_line[i], ','))
+				map->array[map->array_size][i].color = parse_hex_color(ft_strchr(fdf_line[i], ',') + 1);
+			else
+				map->array[map->array_size][i].color = create_color(255,255,255);
+			map->array[map->array_size][i].z = ft_atoi(fdf_line[i]);
 			i++;
 		}
 		map->array_size++;
