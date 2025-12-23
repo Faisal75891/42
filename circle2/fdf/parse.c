@@ -67,7 +67,6 @@ t_map	*get_fdf_map(char *map_name)
 	// TODO: handle errors and exit.!
 	// TODO: init variables.
 	map = malloc (sizeof(t_map));
-	map->height = 0;
 	map->width = 0;
 	map->array_size = 0;
 	map->scale = 0;
@@ -78,7 +77,6 @@ t_map	*get_fdf_map(char *map_name)
 	map->translate_x = 420;
 	map->translate_y = -80;
 	map->scale_offset = -19;
-	map->scale = 0;
 	map->height = get_map_height(map_name);
 	fd = open(map_name, O_RDONLY);
 	// if (fd == -1)
