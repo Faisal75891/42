@@ -19,7 +19,7 @@ int is_rotate(int keysym)
 
 int is_scale(int keysym)
 {
-	return (keysym == 101 || keysym 113)
+	return (keysym == 101 || keysym == 113);
 }
 
 int is_pan(int keysym)

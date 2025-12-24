@@ -60,50 +60,56 @@ typedef struct s_mlx_data
 
 */
 
-void    init_mlx(t_mlx_data *mlx_data)
+t_mlx_data	*init_mlx(void)
 {
-    mlx_data = malloc (sizeof(t_mlx_data));
+	t_mlx_data *mlx_data;
+
+	mlx_data = malloc (sizeof(t_mlx_data));
 	if (!mlx_data)
-		return (1);
+		return (NULL);
 	mlx_data->mlx_ptr = mlx_init();
 	if (!mlx_data->mlx_ptr)
-		return (1);
+		return (NULL);
 	mlx_data->win_ptr = mlx_new_window(mlx_data->mlx_ptr, WIDTH, HEIGHT, "sigma");
 	if (mlx_data->win_ptr == NULL)
 	{
 		free(mlx_data->mlx_ptr);
-		return (1);
+		return (NULL);
 	}
+	return (mlx_data);
 }
 
 void    init_image(t_mlx_data *mlx_data)
 {
-    mlx_data->img = mlx_new_image(mlx_data->mlx_ptr, WIDTH, HEIGHT);
+	mlx_data->img = mlx_new_image(mlx_data->mlx_ptr, WIDTH, HEIGHT);
 	mlx_data->addr = mlx_get_data_addr(mlx_data->img, &mlx_data->bpp, &mlx_data->line_length, &mlx_data->endian);
 }
 
 void    init_fdf_map(t_mlx_data *mlx_data, char *filename)
 {
-    mlx_data->filename = filename;
+	mlx_data->filename = filename;
 	mlx_data->fdf_map = get_fdf_map(mlx_data->filename);
 	if (!mlx_data->fdf_map->array)
-    {
-        // free something idk.
-        // but id need to free everything.
-        free(mlx_data);
-        // probably exit and perror too
-        // exit(1);
-        return ;
-    }
-    // initialize some values
-    mlx_data->fdf_map->scale = (WIDTH / 0.6) / (mlx_data->fdf_map->height + mlx_data->fdf_map->width) + mlx_data->fdf_map->scale_offset;
-	mlx_data->fdf_map->offset_x = (WIDTH/ 2);
-	mlx_data->fdf_map->offset_y = (HEIGHT / 2);
+	{
+		// free something idk.
+		// but id need to free everything.
+		free(mlx_data);
+		// probably exit and perror too
+		// exit(1);
+		return ;
+	}
+	// initialize some values
+	mlx_data->fdf_map->scale = (WIDTH / 0.6) / (mlx_data->fdf_map->height + mlx_data->fdf_map->width) + mlx_data->fdf_map->scale_offset;
+	mlx_data->fdf_map->offset_x = (WIDTH/ 4);
+	mlx_data->fdf_map->offset_y = (HEIGHT / 4);
 }
 
-void    init_mlx_and_window_and_fdf_map(t_mlx_data *mlx_data, char *filename)
+t_mlx_data    *init_mlx_and_window_and_fdf_map(char *filename)
 {
-    init_mlx(mlx_data);
-    init_image(mlx_data);
-    init_fdf_map(mlx_data, filename);
+	t_mlx_data *mlx_data;
+
+	mlx_data = init_mlx();
+	init_image(mlx_data);
+	init_fdf_map(mlx_data, filename);
+	return (mlx_data);
 }

@@ -2,6 +2,18 @@ NAME = fdf
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
+SRC = 	ft_get_next_line/get_next_line.c\
+		ft_get_next_line/get_next_line_utils.c\
+		event_handling.c\
+		event_handling_helper.c\
+		fdf.c\
+		helper.c\
+		init_mlx.c\
+		math_functions.c\
+		parse.c\
+		line_algorithm.c
+OBJ = $(SRC:.c=.o)
+
 MINILIB_MAC_DIR = ./minilibx/mlx
 MINILIB_LINUX_DIR = ./minilibx/mlx_linux
 
@@ -15,8 +27,7 @@ FT_PRINTF = $(FT_PRINTF_DIR)/libftprintf.a
 LIBFT = $(LIBFT_DIR)/libft.a
 MINILIBX = $(MINILIB_LINUX_DIR)/libmlx.a
 
-SRC = fdf.c parse.c ft_get_next_line/get_next_line.c ft_get_next_line/get_next_line_utils.c 
-OBJ = $(SRC:.c=.o)
+
 
 all: $(NAME)
 

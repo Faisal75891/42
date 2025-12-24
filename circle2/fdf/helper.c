@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fdf.h"
+
 int	create_color(int r, int g, int b)
 {
 	return (r << 16 | g << 8 | b);
@@ -21,7 +23,7 @@ void	print_map(t_map *fdf_map)
 	{
 		for (int x = 0; x < fdf_map->width; x++)
 		{
-			ft_printf("[%d]", fdf_map->array[y][x]);
+			ft_printf("[%d]", fdf_map->array[y][x].z);
 		}
 		ft_printf(" ");
 		ft_printf("\n");

@@ -47,7 +47,7 @@ void	handle_rotate(int keysym, t_mlx_data *mlx_data)
 void	handle_scaling(int keysym, t_mlx_data *mlx_data)
 {
 	if (keysym == 101)
-		mlx_data->fdf_map->scale_offset++;
+		mlx_data->fdf_map->scale_offset++;	
 	else if (keysym == 113)
 		mlx_data->fdf_map->scale_offset--;
 	clear_image(mlx_data);
@@ -70,7 +70,7 @@ int	handle_exit(int keysym, t_mlx_data *mlx_data)
 		exit(0);
 	}
 	else if (is_scale(keysym))
-		handle_rotate(keysym, mlx_data);
+		handle_scaling(keysym, mlx_data);
 	else if (is_rotate(keysym))
 		handle_rotate(keysym, mlx_data);
 	else if (is_pan(keysym))

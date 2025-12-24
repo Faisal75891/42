@@ -12,33 +12,36 @@
 
 #include "fdf.h"
 
-void	DDA_line(t_mlx_data *mlx_data, t_point line1, t_point line2, int color)
+void	DDA_line(t_mlx_data *mlx_data, t_point point1, t_point point2, int color)
 {
 	int		steps;
 	float	x;
 	float	y;
 	int		i;
 
-	if (fabs(delta_x) > fabs(delta_y))
-		steps = fabs(delta_x);
+	if (abs((point2.x - point1.x)) > abs((point2.y - point1.y)))
+		steps = abs(point2.x - point1.x);
 	else
-		steps = fabs(delta_y);
+		steps = abs(point2.y - point1.y);
 	i = 0;
+	x = point1.x;
+	y = point1.y;
 	while (i <= steps)
 	{
 		my_pixel_put(mlx_data, (int)x, (int)y, color);
-		x += (line2.x - line1.x) / (float)steps;
-		y += (line2.y - line1.y) / (float)steps;
+		x += (point2.x - point1.x) / (float)steps;
+		y += (point2.y - point1.y) / (float)steps;
 		i++;
 	}
 }
 
-t_point	isometric_projection(t_coord p3d, int scale, int offset_x, int offset_y)
+t_point	isometric_projection(t_coord p3d, int scale, int scale_offset, int offset_x, int offset_y)
 {
 	t_point	p;
 
-	p.x = (p3d.x - p3d.y) * cos(0.523599) * scale + offset_x;
-	p.y = ((p3d.x + p3d.y) * sin(0.523599) - p3d.z) * scale + offset_y;
+	p.x = (p3d.x - p3d.y) * cos(0.523599) * (scale + scale_offset) + offset_x;
+	p.y = ((p3d.x + p3d.y) * sin(0.523599) - p3d.z) * (scale + scale_offset) + offset_y;
+	p.color = p3d.color;
 
 	return (p);
 }

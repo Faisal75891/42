@@ -74,9 +74,9 @@ t_map	*get_fdf_map(char *map_name)
 	map->rotate_x = 0;
 	map->rotate_y = 0;
 	map->rotate_z = 0;
-	map->translate_x = 420;
-	map->translate_y = -80;
-	map->scale_offset = -19;
+	map->translate_x = 0;
+	map->translate_y = -0;
+	map->scale_offset = 0;
 	map->height = get_map_height(map_name);
 	fd = open(map_name, O_RDONLY);
 	// if (fd == -1)
@@ -99,6 +99,8 @@ t_map	*get_fdf_map(char *map_name)
 				map->array[map->array_size][i].color = parse_hex_color(ft_strchr(fdf_line[i], ',') + 1);
 			else
 				map->array[map->array_size][i].color = create_color(255,255,255);
+			map->array[map->array_size][i].x = i;
+			map->array[map->array_size][i].y = map->array_size;
 			map->array[map->array_size][i].z = ft_atoi(fdf_line[i]);
 			i++;
 		}
