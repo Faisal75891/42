@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../fdf.h"
+
 int is_rotate(int keysym)
 {
 	return (keysym == 65362 ||keysym == 65364
@@ -26,4 +28,3 @@ int is_pan(int keysym)
 {
 	return (keysym == 115 || keysym == 97 || keysym == 100 || keysym == 119);
 }
-

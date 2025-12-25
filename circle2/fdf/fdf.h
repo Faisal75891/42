@@ -41,7 +41,7 @@ typedef struct s_map
 	t_coord	**array;
 	int		height;
 	int		width;
-	int		array_size;
+	int		rows_filled;
 	int		scale;
 	int		offset_x;
 	int		offset_y;
@@ -70,6 +70,7 @@ typedef struct s_mlx_data
 
 char	*get_next_line(int fd);
 t_map	*get_fdf_map(char *map_name);
+void	free_map(t_map *map);
 void	draw_grid(t_mlx_data *mlx_data);
 void	my_pixel_put(t_mlx_data *data, int x, int y, int color);
 t_point	isometric_projection(t_coord p3d, int scale, int scale_offset, int offset_x, int offset_y);
@@ -96,11 +97,22 @@ int		handle_exit(int keysym, t_mlx_data *mlx_data);
 
 // init
 t_mlx_data	*init_mlx_and_window_and_fdf_map(char *filename);
+t_map		*allocate_and_init_map(char *map_name);
+
 
 // event handling helpers
 int is_rotate(int keysym);
 int is_scale(int keysym);
 int is_pan(int keysym);
+int	handle_events(int keysym, t_mlx_data *mlx_data);
+
+// parsing
+int		get_map_height(char *map_name);
+int		get_line_width(char **line);
+void	free_map(t_map *map);
+void	free_split(char **s);
+int		parse_map(t_map *map, char *map_name);
+void	apply_default_view(t_map *map);
 
 # define HEIGHT 1920
 # define WIDTH 1080

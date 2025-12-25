@@ -12,102 +12,94 @@
 
 #include "fdf.h"
 
-void	free_split(char **s)
+// uses malloc
+t_coord	*fill_line(char **fdf_line, int width, int row_index)
 {
-	int	i;
+	t_coord	*array;
+	int		i;
 
-	if (!s)
-		return ;
+	array = malloc(sizeof(t_coord) * width);
+	if (!array)
+		return (NULL);
 	i = 0;
-	while (s[i])
-		free(s[i++]);
-	free(s);
-	return ;
+	while (i < width)
+	{
+		if (ft_strchr(fdf_line[i], ','))
+			array[i].color = parse_hex_color(ft_strchr(fdf_line[i], ',') + 1);
+		else
+			array[i].color = 0xFFFFFF;
+		array[i].x = i;
+		array[i].y = row_index;
+		array[i].z = ft_atoi(fdf_line[i]);
+		i++;
+	}
+	return (array);
 }
 
-int	get_map_height(char *map_name)
+int	parse_single_line(t_map *map, char *line)
+{
+	char	**fdf_line;
+
+	fdf_line = ft_split(line, ' ');
+	if (!fdf_line)
+		return (0);
+	map->width = get_line_width(fdf_line);
+	if (map->width == 0)
+		return (0);
+	map->array[map->rows_filled] = fill_line(fdf_line, map->width, map->rows_filled);
+	if (!map->array)
+		return (0);
+	map->rows_filled++;
+	free_split(fdf_line);
+	return (1);
+}
+
+int	parse_all_lines(t_map *map, int fd)
 {
 	char	*line;
-	int		height;
-	int		fd;
 
-	height = 0;
-	fd = open(map_name, O_RDONLY);
-	if (fd == -1)
-		return (0);
 	line = get_next_line(fd);
+	if (!line)
+		return (0);
 	while (line)
 	{
-		height++;
+		if (!parse_single_line(map, line))
+		{
+			free(line);
+			return (0);
+		}
 		free(line);
 		line = get_next_line(fd);
 	}
-	close (fd);
-	return (height);
+	return (1);
 }
 
-int	get_line_width(char **line)
+// uses malloc
+int	parse_map(t_map *map, char *map_name)
 {
-	int		width;
+	int	status;
+	int	fd;
 
-	width = 0;
-	while (line[width])
-		width++;
-	return (width);
+	fd = open(map_name, O_RDONLY);
+	if (fd < 0)
+		return (0);
+	status = parse_all_lines(map, fd);
+	close (fd);
+	return (status);
 }
 
+// uses malloc
 t_map	*get_fdf_map(char *map_name)
 {
-	char	*line;
-	char	**fdf_line;
 	t_map	*map;
-	int		fd;
-	int		i;
 
-	// TODO: handle errors and exit.!
-	// TODO: init variables.
-	map = malloc (sizeof(t_map));
-	map->width = 0;
-	map->array_size = 0;
-	map->scale = 0;
-	map->array = NULL;
-	map->rotate_x = 0;
-	map->rotate_y = 0;
-	map->rotate_z = 0;
-	map->translate_x = 0;
-	map->translate_y = -0;
-	map->scale_offset = 0;
-	map->height = get_map_height(map_name);
-	fd = open(map_name, O_RDONLY);
-	// if (fd == -1)
-	// 	return (NULL);
-	map->array = malloc(sizeof(t_coord *) * map->height); //height of fdf map
-	// if (!map->array)
-	// 	return (NULL);
-	line = get_next_line(fd);
-	while (line)
+	map = allocate_and_init_map(map_name);
+	if (!map)
+		return (NULL);
+	if (!parse_map(map, map_name))
 	{
-		fdf_line = ft_split(line, ' ');
-		// if (!fdf_line)
-		// 	return (NULL);
-		i = 0;
-		map->width = get_line_width(fdf_line);
-		map->array[map->array_size] = malloc (sizeof(t_coord) * map->width);
-		while (fdf_line[i])
-		{
-			if (ft_strchr(fdf_line[i], ','))
-				map->array[map->array_size][i].color = parse_hex_color(ft_strchr(fdf_line[i], ',') + 1);
-			else
-				map->array[map->array_size][i].color = create_color(255,255,255);
-			map->array[map->array_size][i].x = i;
-			map->array[map->array_size][i].y = map->array_size;
-			map->array[map->array_size][i].z = ft_atoi(fdf_line[i]);
-			i++;
-		}
-		map->array_size++;
-		free_split(fdf_line);
-		free(line);
-		line = get_next_line(fd);
+		free_map(map);
+		return (NULL);
 	}
 	return (map);
 }

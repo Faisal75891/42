@@ -12,6 +12,26 @@
 
 #include "fdf.h"
 
+int	do_nothing (t_mlx_data *mlx_data)
+{
+	(void) mlx_data;
+	return (0);
+}
+
+int	handle_exit(int keysym, t_mlx_data *mlx_data)
+{
+	if (keysym == 65307)
+	{
+		clear_image(mlx_data);
+		mlx_destroy_window(mlx_data->mlx_ptr, mlx_data->win_ptr);
+		free(mlx_data->mlx_ptr);
+		exit(0);
+	}
+	ft_printf("%d\n", keysym);
+	return (0);
+}
+
+
 t_point	project_point(t_mlx_data *mlx_data, int x, int y)
 {
 	t_coord	p1;
@@ -73,10 +93,18 @@ int	main(int argc, char **argv)
 	// TODO: add mouse interactions
 	// TODO: fix the LINE algorithm
 	mlx_data = init_mlx_and_window_and_fdf_map(argv[1]);
-	draw_grid(mlx_data); // initial grid.
+	if (!mlx_data)
+		return (1);
+	
+	draw_grid(mlx_data);
 
 	mlx_loop_hook(mlx_data->mlx_ptr, &do_nothing, mlx_data);
-	mlx_key_hook(mlx_data->win_ptr, &handle_exit, mlx_data);
+
+	#ifdef BONUS
+		mlx_key_hook(mlx_data->win_ptr, &handle_events, mlx_data);
+	#else
+		mlx_key_hook(mlx_data->win_ptr, &handle_exit, mlx_data);
+	#endif
 
 	mlx_loop(mlx_data->mlx_ptr);
 }

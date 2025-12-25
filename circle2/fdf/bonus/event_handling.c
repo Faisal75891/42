@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../fdf.h"
 
 void	handle_panning(int keysym, t_mlx_data *mlx_data)
 {
@@ -53,28 +53,15 @@ void	handle_scaling(int keysym, t_mlx_data *mlx_data)
 	clear_image(mlx_data);
 	draw_grid(mlx_data);
 }
-
-int	do_nothing (t_mlx_data *mlx_data)
-{
-	(void) mlx_data;
-	return (0);
-}
-
-int	handle_exit(int keysym, t_mlx_data *mlx_data)
+int	handle_events(int keysym, t_mlx_data *mlx_data)
 {
 	if (keysym == 65307)
-	{
-		clear_image(mlx_data);
-		mlx_destroy_window(mlx_data->mlx_ptr, mlx_data->win_ptr);
-		free(mlx_data->mlx_ptr);
-		exit(0);
-	}
+		handle_exit(keysym, mlx_data);
 	else if (is_scale(keysym))
 		handle_scaling(keysym, mlx_data);
 	else if (is_rotate(keysym))
 		handle_rotate(keysym, mlx_data);
 	else if (is_pan(keysym))
 		handle_panning(keysym, mlx_data);
-	ft_printf("key pressed: %d\n", keysym);
 	return (0);
 }
