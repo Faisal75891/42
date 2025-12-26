@@ -75,3 +75,23 @@ int	get_line_width(char **line)
 		width++;
 	return (width);
 }
+
+int	ends_with_fdf(char *map_name)
+{
+	int	i;
+	int	ext_len;
+
+	ext_len = 0;
+	i = 0;
+	if (!map_name)
+		return (1);
+	while (map_name && map_name[i] != '.')
+		i++;
+	if (!map_name[i])
+		return (1);
+	while (map_name[i + ext_len])
+		ext_len++;
+	if (ft_strncmp(map_name + i, ".fdf", ext_len))
+		return (0);
+	return (1);
+}

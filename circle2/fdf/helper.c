@@ -19,14 +19,21 @@ int	create_color(int r, int g, int b)
 
 void	print_map(t_map *fdf_map)
 {
-	for (int y = 0; y < fdf_map->height; y++)
+	int	y;
+	int	x;
+
+	y = 0;
+	while (y < fdf_map->height)
 	{
-		for (int x = 0; x < fdf_map->width; x++)
+		x = 0;
+		while (x < fdf_map->width)
 		{
 			ft_printf("[%d]", fdf_map->array[y][x].z);
+			x++;
 		}
 		ft_printf(" ");
 		ft_printf("\n");
+		y++;
 	}
 }
 
@@ -63,7 +70,7 @@ void	my_pixel_put(t_mlx_data *data, int x, int y, int color)
 	char	*dst;
 	int		offset;
 
-	if (x >= WIDTH || x < 0 || y < 0 ||  y >= HEIGHT)
+	if (x >= WIDTH || x < 0 || y < 0 || y >= HEIGHT)
 		return ;
 	offset = (y * data->line_length + x * (data->bpp / 8));
 	dst = data->addr + offset;

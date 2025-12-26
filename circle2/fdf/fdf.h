@@ -67,54 +67,58 @@ typedef struct s_mlx_data
 	int		endian;
 }   t_mlx_data;
 
-
-char	*get_next_line(int fd);
-t_map	*get_fdf_map(char *map_name);
-void	free_map(t_map *map);
-void	draw_grid(t_mlx_data *mlx_data);
-void	my_pixel_put(t_mlx_data *data, int x, int y, int color);
-t_point	isometric_projection(t_coord p3d, int scale, int scale_offset, int offset_x, int offset_y);
-t_coord	rotate_point(t_coord p, float angle_x, float angle_y, float angle_z);
-void	print_map(t_map *fdf_map);
-void	clear_image(t_mlx_data *data);
-t_point	project_point(t_mlx_data *mlx_data, int x, int y);
+// drawing
+void		draw_grid(t_mlx_data *mlx_data);
+void		my_pixel_put(t_mlx_data *data, int x, int y, int color);
+void		print_map(t_map *fdf_map);
+void		clear_image(t_mlx_data *data);
 
 // colors
-int		create_color(int r, int g, int b);
-int		apply_opacity(int color, float opacity);
-int		parse_hex_color(char *hex);
+int			create_color(int r, int g, int b);
+int			apply_opacity(int color, float opacity);
+int			parse_hex_color(char *hex);
 
 // line algorithm
-void	wu_line(t_mlx_data *data, t_point s, t_point e);
-void	DDA_line(t_mlx_data *mlx_data, t_point point1, t_point point2, int color);
+t_coord		rotate_point(t_coord p, t_mlx_data *data);
+t_point		project_point(t_mlx_data *mlx_data, int x, int y);
+t_point		isometric_projection(t_coord p3d, t_mlx_data *data);
+void		dda_line(t_mlx_data *mlx_data, t_point point1, t_point point2, int color);
 
 // event handling
-void	handle_panning(int keysym, t_mlx_data *mlx_data);
-void	handle_rotate(int keysym, t_mlx_data *mlx_data);
-void	handle_scaling(int keysym, t_mlx_data *mlx_data);
-int		do_nothing (t_mlx_data *mlx_data);
-int		handle_exit(int keysym, t_mlx_data *mlx_data);
+void		handle_panning(int keysym, t_mlx_data *mlx_data);
+void		handle_rotate(int keysym, t_mlx_data *mlx_data);
+void		handle_scaling(int keysym, t_mlx_data *mlx_data);
+void		handle_reset(int keysm, t_mlx_data *mlx_data);
+int			handle_exit(int keysym, t_mlx_data *mlx_data);
+
+// event handling helpers
+int 		is_rotate(int keysym);
+int 		is_scale(int keysym);
+int 		is_pan(int keysym);
+int			do_nothing(t_mlx_data *mlx_data);
+int			handle_events(int keysym, t_mlx_data *mlx_data);
 
 // init
 t_mlx_data	*init_mlx_and_window_and_fdf_map(char *filename);
 t_map		*allocate_and_init_map(char *map_name);
-
-
-// event handling helpers
-int is_rotate(int keysym);
-int is_scale(int keysym);
-int is_pan(int keysym);
-int	handle_events(int keysym, t_mlx_data *mlx_data);
+void		init_image(t_mlx_data *mlx_data);
+void		init_fdf_map(t_mlx_data *mlx_data, char *filename);
+t_map		*allocate_and_init_map(char *map_name);
 
 // parsing
-int		get_map_height(char *map_name);
-int		get_line_width(char **line);
-void	free_map(t_map *map);
-void	free_split(char **s);
-int		parse_map(t_map *map, char *map_name);
-void	apply_default_view(t_map *map);
+int			get_map_height(char *map_name);
+int			get_line_width(char **line);
+char		*get_next_line(int fd);
+t_map		*get_fdf_map(char *map_name);
+int			parse_map(t_map *map, char *map_name);
+void		apply_default_view(t_map *map);
+int			ends_with_fdf(char *map_name);
+void		free_map(t_map *map);
+void		free_split(char **s);
+void		free_map(t_map *map);
 
 # define HEIGHT 1920
 # define WIDTH 1080
+# define HEIGHT_MULTIPLIER 0.1
 
 #endif

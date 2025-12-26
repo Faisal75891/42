@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.c                                              :+:      :+:    :+:   */
+/*   fdf_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/11 18:36:18 by fbaras            #+#    #+#             */
-/*   Updated: 2025/12/18 19:51:13 by fbaras           ###   ########.fr       */
+/*   Created: 2025/12/26 21:37:13 by fbaras            #+#    #+#             */
+/*   Updated: 2025/12/26 21:37:13 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../fdf.h"
 
 int	do_nothing(t_mlx_data *mlx_data)
 {
@@ -36,7 +36,7 @@ int	handle_exit(int keysym, t_mlx_data *mlx_data)
 static void	setup_hooks(t_mlx_data *mlx_data)
 {
 	mlx_loop_hook(mlx_data->mlx_ptr, &do_nothing, mlx_data);
-	mlx_key_hook(mlx_data->win_ptr, &handle_exit, mlx_data);
+	mlx_key_hook(mlx_data->win_ptr, &handle_events, mlx_data);
 }
 
 int	main(int argc, char **argv)

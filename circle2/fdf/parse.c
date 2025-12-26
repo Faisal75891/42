@@ -46,7 +46,8 @@ int	parse_single_line(t_map *map, char *line)
 	map->width = get_line_width(fdf_line);
 	if (map->width == 0)
 		return (0);
-	map->array[map->rows_filled] = fill_line(fdf_line, map->width, map->rows_filled);
+	map->array[map->rows_filled]
+		= fill_line(fdf_line, map->width, map->rows_filled);
 	if (!map->array)
 		return (0);
 	map->rows_filled++;
@@ -74,7 +75,6 @@ int	parse_all_lines(t_map *map, int fd)
 	return (1);
 }
 
-// uses malloc
 int	parse_map(t_map *map, char *map_name)
 {
 	int	status;
@@ -88,11 +88,13 @@ int	parse_map(t_map *map, char *map_name)
 	return (status);
 }
 
-// uses malloc
+// checks for correct file format, returns fdf map or null
 t_map	*get_fdf_map(char *map_name)
 {
 	t_map	*map;
 
+	if (!ends_with_fdf(map_name))
+		return (NULL);
 	map = allocate_and_init_map(map_name);
 	if (!map)
 		return (NULL);

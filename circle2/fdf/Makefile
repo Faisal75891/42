@@ -7,26 +7,28 @@ SRC = 	ft_get_next_line/get_next_line.c\
 		fdf.c\
 		helper.c\
 		init_mlx.c\
+		init_mlx_helper.c\
 		parsing_helpers.c\
 		math_functions.c\
 		parse.c\
-		line_algorithm.c
+		draw_grid.c\
 
 OBJ = $(SRC:.c=.o)
 
-BONUS = ft_get_next_line/get_next_line.c\
-		ft_get_next_line/get_next_line_utils.c\
-		bonus/event_handling.c\
-		bonus/event_handling_helper.c\
-		fdf.c\
-		helper.c\
+BONUS = helper.c\
 		init_mlx.c\
+		init_mlx_helper.c\
 		parsing_helpers.c\
 		math_functions.c\
 		parse.c\
-		line_algorithm.c
-	
-BONUS_OBJ = $(BONUS:.c=_bonus.o)
+		draw_grid.c\
+		ft_get_next_line/get_next_line.c\
+		ft_get_next_line/get_next_line_utils.c\
+		bonus_files/event_handling.c\
+		bonus_files/event_handling_helper.c\
+		bonus_files/fdf_bonus.c\
+
+BONUS_OBJ = $(BONUS:.c=.o)
 
 MINILIB_MAC_DIR = ./minilibx/mlx
 MINILIB_LINUX_DIR = ./minilibx/mlx_linux
@@ -44,19 +46,24 @@ MINILIBX = $(MINILIB_LINUX_DIR)/libmlx.a
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(FT_PRINTF) $(MINILIBX)
+	@rm -f .bonus_built
 	$(CC) $(CFLAGS) $(OBJ) $(FT_PRINTF) $(LIBFT) $(MINILIBX) $(LINUX_FLAGS) -o $(NAME)
 
-bonus: $(BONUS_OBJ) $(LIBFT) $(FT_PRINTF) $(MINILIBX)
+bonus: .bonus_built
+
+.bonus_built: $(BONUS_OBJ) $(LIBFT) $(FT_PRINTF) $(MINILIBX)
 	$(CC) $(CFLAGS) $(BONUS_OBJ) $(FT_PRINTF) $(LIBFT) $(MINILIBX) $(LINUX_FLAGS) -o $(NAME)
+	@touch .bonus_built
 
 %.o: %.c
 	$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
 
-%_bonus.o: %.c
-	$(CC) $(CFLAGS) -DBONUS -I/usr/include -Imlx_linux -O3 -c $< -o $@
-
 install_dependencies_linux:
 	sudo apt-get update && sudo apt-get install xorg libxext-dev zlib1g-dev libbsd-dev
+
+norm:
+	@norminette draw_grid.c  fdf.c  helper.c  init_mlx.c  math_functions.c  parse.c  parsing_helpers.c bonus_files/event_handling.c  bonus_files/event_handling_helper.c \
+	bonus_files/fdf_bonus.c ft_get_next_line/get_next_line.c  ft_get_next_line/get_next_line.h  ft_get_next_line/get_next_line_utils.c
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
@@ -68,7 +75,7 @@ $(MINILIBX):
 	make all -C $(MINILIB_LINUX_DIR)
 
 clean:
-	rm -f $(OBJ) $(OBJ_BONUS)
+	rm -f $(OBJ) $(BONUS_OBJ) .bonus_built
 	make clean -C $(FT_PRINTF_DIR)
 	make clean -C $(LIBFT_DIR)
 
@@ -79,4 +86,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re bonus
