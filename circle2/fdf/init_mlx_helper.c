@@ -15,7 +15,8 @@
 void	init_image(t_mlx_data *mlx_data)
 {
 	mlx_data->img = mlx_new_image(mlx_data->mlx_ptr, WIDTH, HEIGHT);
-	mlx_data->addr = mlx_get_data_addr(mlx_data->img, &mlx_data->bpp, &mlx_data->line_length, &mlx_data->endian);
+	mlx_data->addr = mlx_get_data_addr(mlx_data->img, &mlx_data->bpp,
+			&mlx_data->line_length, &mlx_data->endian);
 }
 
 void	init_fdf_map(t_mlx_data *mlx_data, char *filename)

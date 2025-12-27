@@ -2,33 +2,18 @@ NAME = fdf
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = 	ft_get_next_line/get_next_line.c\
-		ft_get_next_line/get_next_line_utils.c\
-		fdf.c\
-		helper.c\
-		init_mlx.c\
-		init_mlx_helper.c\
-		parsing_helpers.c\
-		math_functions.c\
-		parse.c\
-		draw_grid.c\
+SHARED_FILES = 	draw_grid.c  helper.c  init_mlx.c  init_mlx_helper.c  math_functions.c  parse.c  parsing_helpers.c\
+				ft_get_next_line/get_next_line.c ft_get_next_line/get_next_line_utils.c
+MANDATORY = fdf.c
+BONUS = bonus_files/event_handling.c bonus_files/event_handling_helper.c bonus_files/fdf_bonus.c
+
+SRC = $(SHARED_FILES) $(MANDATORY)
+
+ifeq ($(MAKECMDGOALS), bonus)
+	SRC = $(SHARED_FILES) $(BONUS)
+endif
 
 OBJ = $(SRC:.c=.o)
-
-BONUS = helper.c\
-		init_mlx.c\
-		init_mlx_helper.c\
-		parsing_helpers.c\
-		math_functions.c\
-		parse.c\
-		draw_grid.c\
-		ft_get_next_line/get_next_line.c\
-		ft_get_next_line/get_next_line_utils.c\
-		bonus_files/event_handling.c\
-		bonus_files/event_handling_helper.c\
-		bonus_files/fdf_bonus.c\
-
-BONUS_OBJ = $(BONUS:.c=.o)
 
 MINILIB_MAC_DIR = ./minilibx/mlx
 MINILIB_LINUX_DIR = ./minilibx/mlx_linux
@@ -46,14 +31,9 @@ MINILIBX = $(MINILIB_LINUX_DIR)/libmlx.a
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(FT_PRINTF) $(MINILIBX)
-	@rm -f .bonus_built
 	$(CC) $(CFLAGS) $(OBJ) $(FT_PRINTF) $(LIBFT) $(MINILIBX) $(LINUX_FLAGS) -o $(NAME)
 
-bonus: .bonus_built
-
-.bonus_built: $(BONUS_OBJ) $(LIBFT) $(FT_PRINTF) $(MINILIBX)
-	$(CC) $(CFLAGS) $(BONUS_OBJ) $(FT_PRINTF) $(LIBFT) $(MINILIBX) $(LINUX_FLAGS) -o $(NAME)
-	@touch .bonus_built
+bonus: $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
@@ -62,7 +42,7 @@ install_dependencies_linux:
 	sudo apt-get update && sudo apt-get install xorg libxext-dev zlib1g-dev libbsd-dev
 
 norm:
-	@norminette draw_grid.c  fdf.c  helper.c  init_mlx.c  math_functions.c  parse.c  parsing_helpers.c bonus_files/event_handling.c  bonus_files/event_handling_helper.c \
+	@norminette draw_grid.c  fdf.c  helper.c  init_mlx.c  init_mlx_helper.c  math_functions.c  parse.c  parsing_helpers.c bonus_files/event_handling.c  bonus_files/event_handling_helper.c \
 	bonus_files/fdf_bonus.c ft_get_next_line/get_next_line.c  ft_get_next_line/get_next_line.h  ft_get_next_line/get_next_line_utils.c
 
 $(LIBFT):
@@ -75,7 +55,7 @@ $(MINILIBX):
 	make all -C $(MINILIB_LINUX_DIR)
 
 clean:
-	rm -f $(OBJ) $(BONUS_OBJ) .bonus_built
+	rm -f $(OBJ) $(BONUS:.c=.o)
 	make clean -C $(FT_PRINTF_DIR)
 	make clean -C $(LIBFT_DIR)
 

@@ -18,18 +18,22 @@ int	do_nothing(t_mlx_data *mlx_data)
 	return (0);
 }
 
+static int	handle_close(t_mlx_data *mlx_data)
+{
+	clear_image(mlx_data);
+	mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->img);
+	mlx_destroy_window(mlx_data->mlx_ptr, mlx_data->win_ptr);
+	free_map(mlx_data->fdf_map);
+	free(mlx_data->mlx_ptr);
+	free(mlx_data);
+	exit(0);
+	return (0);
+}
+
 int	handle_exit(int keysym, t_mlx_data *mlx_data)
 {
 	if (keysym == 65307)
-	{
-		clear_image(mlx_data);
-		mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->img);
-		mlx_destroy_window(mlx_data->mlx_ptr, mlx_data->win_ptr);
-		free_map(mlx_data->fdf_map);
-		free(mlx_data->mlx_ptr);
-		free(mlx_data);
-		exit(0);
-	}
+		handle_close(mlx_data);
 	return (0);
 }
 
@@ -37,6 +41,7 @@ static void	setup_hooks(t_mlx_data *mlx_data)
 {
 	mlx_loop_hook(mlx_data->mlx_ptr, &do_nothing, mlx_data);
 	mlx_key_hook(mlx_data->win_ptr, &handle_exit, mlx_data);
+	mlx_hook(mlx_data->win_ptr, 17, 0, &handle_close, mlx_data);
 }
 
 int	main(int argc, char **argv)

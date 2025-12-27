@@ -90,13 +90,13 @@ void		handle_rotate(int keysym, t_mlx_data *mlx_data);
 void		handle_scaling(int keysym, t_mlx_data *mlx_data);
 void		handle_reset(int keysm, t_mlx_data *mlx_data);
 int			handle_exit(int keysym, t_mlx_data *mlx_data);
+int			handle_events(int keysym, t_mlx_data *mlx_data);
 
 // event handling helpers
 int 		is_rotate(int keysym);
 int 		is_scale(int keysym);
 int 		is_pan(int keysym);
 int			do_nothing(t_mlx_data *mlx_data);
-int			handle_events(int keysym, t_mlx_data *mlx_data);
 
 // init
 t_mlx_data	*init_mlx_and_window_and_fdf_map(char *filename);

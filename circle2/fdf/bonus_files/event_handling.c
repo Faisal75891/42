@@ -29,17 +29,17 @@ void	handle_panning(int keysym, t_mlx_data *mlx_data)
 void	handle_rotate(int keysym, t_mlx_data *mlx_data)
 {
 	if (keysym == 65362)
-		mlx_data->fdf_map->rotate_x += 10;
+		mlx_data->fdf_map->rotate_x += 90;
 	else if (keysym == 65364)
-		mlx_data->fdf_map->rotate_x -= 10;
+		mlx_data->fdf_map->rotate_x -= 90;
 	else if (keysym == 65361)
-		mlx_data->fdf_map->rotate_y += 10;
+		mlx_data->fdf_map->rotate_y += 90;
 	else if (keysym == 65363)
-		mlx_data->fdf_map->rotate_y -= 10;
+		mlx_data->fdf_map->rotate_y -= 90;
 	else if (keysym == 122)
-		mlx_data->fdf_map->rotate_z += 10;
+		mlx_data->fdf_map->rotate_z += 90;
 	else if (keysym == 120)
-		mlx_data->fdf_map->rotate_z -= 10;
+		mlx_data->fdf_map->rotate_z -= 90;
 	clear_image(mlx_data);
 	draw_grid(mlx_data);
 }

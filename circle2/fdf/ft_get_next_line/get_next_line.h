@@ -14,7 +14,6 @@
 # define GET_NEXT_LINE_H
 
 # include <unistd.h>
-# include <stdio.h>
 # include <fcntl.h>
 # include <stdlib.h>
 
@@ -30,6 +29,7 @@ char	*gnl_strdup(const char *s);
 char	*gnl_strjoin(char const *s1, char const *s2);
 char	*gnl_strchr(char *s, int c);
 size_t	gnl_strlen(const char *s);
+char	*gnl_strdup(const char *s);
 size_t	gnl_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*read_line(char *stash, char *buffer, int fd);
 

@@ -28,21 +28,3 @@ int	is_pan(int keysym)
 {
 	return (keysym == 115 || keysym == 97 || keysym == 100 || keysym == 119);
 }
-
-#ifdef BONUS
-
-void	setup_hooks(t_mlx_data *mlx_data)
-{
-	mlx_loop_hook(mlx_data->mlx_ptr, &do_nothing, mlx_data);
-	mlx_key_hook(mlx_data->win_ptr, &handle_events, mlx_data);
-}
-
-#else
-
-void	setup_hooks(t_mlx_data *mlx_data)
-{
-	mlx_loop_hook(mlx_data->mlx_ptr, &do_nothing, mlx_data);
-	mlx_key_hook(mlx_data->win_ptr, &handle_exit, mlx_data);
-}
-
-#endif
