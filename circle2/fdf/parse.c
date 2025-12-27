@@ -39,16 +39,19 @@ t_coord	*fill_line(char **fdf_line, int width, int row_index)
 int	parse_single_line(t_map *map, char *line)
 {
 	char	**fdf_line;
+	int		line_width;
 
 	fdf_line = ft_split(line, ' ');
 	if (!fdf_line)
 		return (0);
-	map->width = get_line_width(fdf_line);
-	if (map->width == 0)
+	line_width = get_line_width(fdf_line);
+	if (line_width == 0)
 		return (0);
+	if (map->rows_filled == 0)
+		map->width = line_width;
 	map->array[map->rows_filled]
 		= fill_line(fdf_line, map->width, map->rows_filled);
-	if (!map->array)
+	if (!map->array[map->rows_filled])
 		return (0);
 	map->rows_filled++;
 	free_split(fdf_line);

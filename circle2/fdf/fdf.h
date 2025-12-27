@@ -51,6 +51,7 @@ typedef struct s_map
 	float	rotate_z;
 	int		translate_x;
 	int		translate_y;
+	float	altitude;
 }	t_map;
 
 typedef struct s_mlx_data
@@ -75,7 +76,6 @@ void		clear_image(t_mlx_data *data);
 
 // colors
 int			create_color(int r, int g, int b);
-int			apply_opacity(int color, float opacity);
 int			parse_hex_color(char *hex);
 
 // line algorithm
@@ -83,6 +83,7 @@ t_coord		rotate_point(t_coord p, t_mlx_data *data);
 t_point		project_point(t_mlx_data *mlx_data, int x, int y);
 t_point		isometric_projection(t_coord p3d, t_mlx_data *data);
 void		dda_line(t_mlx_data *mlx_data, t_point point1, t_point point2, int color);
+void		bresenham_line(t_mlx_data *mlx_data, t_point from, t_point to);
 
 // event handling
 void		handle_panning(int keysym, t_mlx_data *mlx_data);
@@ -104,6 +105,7 @@ t_map		*allocate_and_init_map(char *map_name);
 void		init_image(t_mlx_data *mlx_data);
 void		init_fdf_map(t_mlx_data *mlx_data, char *filename);
 t_map		*allocate_and_init_map(char *map_name);
+int			get_z_range(t_map *map);
 
 // parsing
 int			get_map_height(char *map_name);
@@ -119,6 +121,6 @@ void		free_map(t_map *map);
 
 # define HEIGHT 1920
 # define WIDTH 1080
-# define HEIGHT_MULTIPLIER 0.1
+# define WINDOW_NAME "fdf"
 
 #endif

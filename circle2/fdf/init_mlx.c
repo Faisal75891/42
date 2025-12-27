@@ -23,7 +23,7 @@ t_mlx_data	*init_mlx(void)
 	if (!mlx_data->mlx_ptr)
 		return (NULL);
 	mlx_data->win_ptr = mlx_new_window(mlx_data->mlx_ptr,
-			WIDTH, HEIGHT, "sigma");
+			WIDTH, HEIGHT, WINDOW_NAME);
 	if (mlx_data->win_ptr == NULL)
 	{
 		free(mlx_data->mlx_ptr);
@@ -39,7 +39,7 @@ void	apply_default_view(t_map *map)
 	int	initial_width;
 
 	initial_width = WIDTH;
-	initial_height = -(HEIGHT / 4);
+	initial_height = -(HEIGHT * 0.20);
 	map->scale = initial_width / (map->height + map->width) + map->scale_offset;
 	map->offset_x = 0;
 	map->offset_y = initial_height;

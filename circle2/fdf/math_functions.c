@@ -43,7 +43,7 @@ t_point	project_point(t_mlx_data *mlx_data, int x, int y)
 
 	p1.x = x - mlx_data->fdf_map->width / 2;
 	p1.y = y - mlx_data->fdf_map->height / 2;
-	p1.z = mlx_data->fdf_map->array[y][x].z * HEIGHT_MULTIPLIER;
+	p1.z = mlx_data->fdf_map->array[y][x].z;
 	p1.color = mlx_data->fdf_map->array[y][x].color;
 	p1 = rotate_point(p1, mlx_data);
 	coord = isometric_projection(p1, mlx_data);
@@ -62,20 +62,16 @@ typedef struct s_coord				typedef struct s_point
 	x' = (x - y) * cos(30) * scale + offset_x;
 	y' = ((x + y) * sin(30) - z) * scale + offset_y;
 	30degrees = 0.523599 radians.
-
-	0.523599 (30°) = standard isometric
-	0.785398 (45°)
-	40 -> 0.698132
-	50 -> 0.872665
+	45-> 0.785398
 */
 t_point	isometric_projection(t_coord p3d, t_mlx_data *data)
 {
 	t_point	p;
 
-	p.x = (p3d.x - p3d.y) * cos(0.785398)
+	p.x = (p3d.x - p3d.y) * cos(0.523599)
 		* (data->fdf_map->scale + data->fdf_map->scale_offset)
 		+ data->fdf_map->offset_x + data->fdf_map->translate_x + (WIDTH / 2);
-	p.y = ((p3d.x + p3d.y) * sin(0.785398) - p3d.z)
+	p.y = ((p3d.x + p3d.y) * sin(0.523599) - p3d.z)
 		* (data->fdf_map->scale + data->fdf_map->scale_offset)
 		+ data->fdf_map->offset_y + data->fdf_map->translate_y + (HEIGHT / 2);
 	p.color = p3d.color;
