@@ -1,0 +1,54 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/03 17:30:58 by fbaras            #+#    #+#             */
+/*   Updated: 2026/01/03 22:12:58 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PHILO_H
+#define PHILO_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
+// each philosopher can have 3 states
+// 0=thinking, 1=eating, 2=sleeping
+// all 0's=dead. maybe
+typedef struct s_philo
+{
+	int	state[2];
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	time_to_die;
+} t_philo;
+
+// The table has a list of all philosohphers
+// number of forks and
+// the forks that are in use
+typedef struct s_table
+{
+	t_philo **philos;
+	int		philo_num;
+	int		*forks;
+	int		fork_num;
+} t_table;
+
+// free_philo
+void	free_philos(t_philo **table);
+
+// init_philo
+t_philo	**init_philos(int philo_num, char **argv);
+t_table	*init_table_and_philos(char **argv);
+t_philo	*init_philo(char **argv);
+
+// atoi
+int	ft_atoi(char *s);
+
+#endif
