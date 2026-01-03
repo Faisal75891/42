@@ -27,11 +27,15 @@ void	draw_grid(t_mlx_data *mlx_data)
 		{
 			p1 = project_point(mlx_data, x, y);
 			if (x + 1 < mlx_data->fdf_map->width)
+			{
 				p2 = project_point(mlx_data, x + 1, y);
-			dda_line(mlx_data, p1, p2, p1.color);
+				dda_line(mlx_data, p1, p2, p1.color);
+			}
 			if (y + 1 < mlx_data->fdf_map->height)
+			{
 				p2 = project_point(mlx_data, x, y + 1);
-			dda_line(mlx_data, p1, p2, p1.color);
+				dda_line(mlx_data, p1, p2, p1.color);
+			}
 			x++;
 		}
 		y++;

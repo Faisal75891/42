@@ -19,7 +19,6 @@
 # include "./ft_printf/ft_printf.h"
 # include <fcntl.h>
 # include <math.h>
-#include <stdio.h>
 
 typedef struct s_point
 {
