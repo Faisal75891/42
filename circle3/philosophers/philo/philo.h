@@ -6,17 +6,17 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:30:58 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/03 22:12:58 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/04 21:05:13 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <string.h>
 
 // each philosopher can have 3 states
 // 0=thinking, 1=eating, 2=sleeping
@@ -27,18 +27,19 @@ typedef struct s_philo
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	time_to_die;
-} t_philo;
+	int	num_of_times_to_eat;
+}	t_philo;
 
 // The table has a list of all philosohphers
 // number of forks and
 // the forks that are in use
 typedef struct s_table
 {
-	t_philo **philos;
+	t_philo	**philos;
 	int		philo_num;
 	int		*forks;
 	int		fork_num;
-} t_table;
+}	t_table;
 
 // free_philo
 void	free_philos(t_philo **table);
@@ -49,6 +50,6 @@ t_table	*init_table_and_philos(char **argv);
 t_philo	*init_philo(char **argv);
 
 // atoi
-int	ft_atoi(char *s);
+int		ft_atoi(char *s);
 
 #endif

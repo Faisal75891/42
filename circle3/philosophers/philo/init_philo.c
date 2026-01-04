@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 21:13:01 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/03 22:12:51 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/04 21:25:48 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ t_philo	*init_philo(char **argv)
 	philo->time_to_die = ft_atoi(argv[2]);
 	philo->time_to_eat = ft_atoi(argv[3]);
 	philo->time_to_sleep = ft_atoi(argv[4]);
+	if (!argv[5])
+		philo->num_of_times_to_eat = 2147483647;
+	else
+		philo->num_of_times_to_eat = ft_atoi(argv[5]);
 	return (philo);
 }
 
@@ -72,5 +76,5 @@ t_philo	**init_philos(int philo_num, char **argv)
 		}
 		i++;
 	}
-	return (table);	
+	return (table);
 }
