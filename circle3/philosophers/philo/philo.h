@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:30:58 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/04 21:05:13 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/04 22:19:32 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 // all 0's=dead. maybe
 typedef struct s_philo
 {
-	int	state[2];
+	int	state[3];
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	time_to_die;
@@ -51,5 +51,7 @@ t_philo	*init_philo(char **argv);
 
 // atoi
 int		ft_atoi(char *s);
+int		ft_strcmp(char *s1, char *s2);
+
 
 #endif
