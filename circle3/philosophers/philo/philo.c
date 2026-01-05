@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:26:29 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/05 17:40:55 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/05 19:30:30 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,35 @@
 // the basic idea before starting with threads.
 void	philosophers(t_table *table, int i)
 {
+	struct timeval stop;
+	struct timeval start;
+
 	while (table->num_of_times_to_eat > table->philos[i]->num_of_times_eaten)
 	{
+		gettimeofday(&start, NULL);
+
 		change_state(table->philos[i], "thinking");
 		print_state(table->philos[i], i);
+
 		if (table->philos[i]->time_to_eat > 0)
 		{
 			// take fork mutex lock
 			if (!take_fork(table->forks, table->fork_num, i))
 			{
+				gettimeofday(&stop, NULL);
+				if (table->philos[i]->time_to_eat > (stop.tv_usec - start.tv_usec))
+				{
+					printf("philosopher %d died\n", i);
+					// detach all threads if philo dies
+					return ;
+				}
 				change_state(table->philos[i], "eating");
 				print_state(table->philos[i], i);
 				usleep(table->philos[i]->time_to_eat);
 				// put fork. mutex unlock
 				put_fork(table->forks, table->fork_num, i);
+				
+				gettimeofday(&start, NULL);
 			}
 			if (table->philos[i]->time_to_sleep > 0)
 			{
@@ -36,16 +51,13 @@ void	philosophers(t_table *table, int i)
 				print_state(table->philos[i], i);
 				usleep(table->philos[i]->time_to_sleep);
 			}
-		}
-		else
-		{
-			printf("philosopher %d died\n", i);
-			// detach all threads if philo dies
-			return ;
+			change_state(table->philos[i], "thinking");
+			print_state(table->philos[i], i);
 		}
 		printf("\n");
 		table->philos[i]->num_of_times_eaten++;
 	}
+	printf("done eating\n");
 }
 
 void	philo(t_table *table)
