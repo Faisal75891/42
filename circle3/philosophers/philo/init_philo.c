@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 21:13:01 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/04 21:25:48 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/05 17:49:30 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,17 @@ t_philo	*init_philo(char **argv)
 	philo = malloc (sizeof(t_philo));
 	if (!philo)
 		return (NULL);
-	memset(philo->state, 0, 2);
-	philo->state[0] = 1;
+	memset(philo->state, 0, sizeof(philo->state));
 	philo->time_to_die = ft_atoi(argv[2]);
 	philo->time_to_eat = ft_atoi(argv[3]);
 	philo->time_to_sleep = ft_atoi(argv[4]);
-	if (!argv[5])
-		philo->num_of_times_to_eat = 2147483647;
-	else
-		philo->num_of_times_to_eat = ft_atoi(argv[5]);
+	philo->num_of_times_eaten = 0;
 	return (philo);
 }
 
 // fork's array; sets all to 1
 // creates philo table.
-t_table	*init_table_and_philos(char **argv)
+t_table	*init_table_and_philos(char **argv, int optional)
 {
 	t_table	*table;
 
@@ -54,6 +50,10 @@ t_table	*init_table_and_philos(char **argv)
 		return (NULL);
 	}
 	memset(table->forks, 1, table->fork_num);
+	if (!argv[5] || !optional)
+		table->num_of_times_to_eat = 5;
+	else
+		table->num_of_times_to_eat = ft_atoi(argv[5]);
 	return (table);
 }
 

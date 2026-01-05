@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:30:58 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/04 22:19:32 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/05 17:08:00 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_philo
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	time_to_die;
-	int	num_of_times_to_eat;
+	int	num_of_times_eaten;
 }	t_philo;
 
 // The table has a list of all philosohphers
@@ -39,6 +39,7 @@ typedef struct s_table
 	int		philo_num;
 	int		*forks;
 	int		fork_num;
+	int		num_of_times_to_eat;
 }	t_table;
 
 // free_philo
@@ -46,12 +47,20 @@ void	free_philos(t_philo **table);
 
 // init_philo
 t_philo	**init_philos(int philo_num, char **argv);
-t_table	*init_table_and_philos(char **argv);
+t_table	*init_table_and_philos(char **argv, int optional);
 t_philo	*init_philo(char **argv);
 
 // atoi
 int		ft_atoi(char *s);
 int		ft_strcmp(char *s1, char *s2);
+
+// state
+void	print_state(t_philo *philo, int index);
+void	change_state(t_philo *philo, char *state);
+
+// taking forks
+int		take_fork(int *forks, int fork_num, int index);
+void	put_fork(int *forks, int fork_num, int index);
 
 
 #endif
