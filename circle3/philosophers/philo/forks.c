@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 15:36:28 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/05 15:49:04 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/08 13:49:39 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,35 @@
 // mutex locks the fork
 int	take_fork(int *forks, int fork_num, int index)
 {
+	int	left;
+	int	right;
 	// ->
-	if (forks[index] == 1
-		&& forks[(index + 1) % fork_num] == 1)
+
+	left = index;
+	right = (index + 1) % fork_num;
+	if (!forks || fork_num <= 1 || index < 0 || index >= fork_num)
+		return (1);
+	if (forks[left] == 1 && forks[right] == 1)
 	{
-		forks[index] = 0;
-		forks[(index + 1) % fork_num] = 0;
-	}
-	else
+		forks[left] = 0;
+		forks[right] = 0;
 		return (0);
+	}
 	return (1);
 }
 
 // mutex unlocks the fork
 void	put_fork(int *forks, int fork_num, int index)
 {
-	if (forks[index] == 0
-    	&& forks[(index + 1) % fork_num] == 0)
-    {
-		forks[index] = 1;
-		forks[(index + 1) % fork_num] = 1;
+	int	left;
+	int	right;
+
+	left = index;
+	right = (index + 1) % fork_num;
+	if (forks[left] == 0 && forks[right] == 0)
+	{
+		forks[left] = 1;
+		forks[right] = 1;
 	}
 	// ->
 	return ;

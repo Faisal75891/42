@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:30:58 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/05 19:17:10 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/08 15:10:04 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <sys/time.h>
+# include <pthread.h>
 
 // each philosopher can have 3 states
 // 0=thinking, 1=eating, 2=sleeping
@@ -43,6 +44,14 @@ typedef struct s_table
 	int		num_of_times_to_eat;
 }	t_table;
 
+typedef struct s_thread_args
+{
+	t_table	*table;
+	int		index;
+}	t_thread_args;
+
+// threads
+
 // free_philo
 void	free_philos(t_philo **table);
 
@@ -50,6 +59,7 @@ void	free_philos(t_philo **table);
 t_philo	**init_philos(int philo_num, char **argv);
 t_table	*init_table_and_philos(char **argv, int optional);
 t_philo	*init_philo(char **argv);
+int		*init_forks(int fork_num);
 
 // atoi
 int		ft_atoi(char *s);
@@ -63,5 +73,9 @@ void	change_state(t_philo *philo, char *state);
 int		take_fork(int *forks, int fork_num, int index);
 void	put_fork(int *forks, int fork_num, int index);
 
+// actions
+int		philo_eat(t_philo *philo, int *forks, int fork_num, int i, struct timeval start);
+void	philo_sleep(t_philo *philo, int i);
+void	philo_die(int i);
 
 #endif

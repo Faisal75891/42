@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:26:29 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/05 19:30:30 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/08 15:19:41 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,64 +15,57 @@
 // the basic idea before starting with threads.
 void	philosophers(t_table *table, int i)
 {
-	struct timeval stop;
 	struct timeval start;
 
 	while (table->num_of_times_to_eat > table->philos[i]->num_of_times_eaten)
 	{
-		gettimeofday(&start, NULL);
-
 		change_state(table->philos[i], "thinking");
 		print_state(table->philos[i], i);
-
+		gettimeofday(&start, NULL);
 		if (table->philos[i]->time_to_eat > 0)
 		{
-			// take fork mutex lock
-			if (!take_fork(table->forks, table->fork_num, i))
+			if (!philo_eat(table->philos[i], table->forks, table->fork_num, i, start))
 			{
-				gettimeofday(&stop, NULL);
-				if (table->philos[i]->time_to_eat > (stop.tv_usec - start.tv_usec))
-				{
-					printf("philosopher %d died\n", i);
-					// detach all threads if philo dies
-					return ;
-				}
-				change_state(table->philos[i], "eating");
-				print_state(table->philos[i], i);
-				usleep(table->philos[i]->time_to_eat);
-				// put fork. mutex unlock
-				put_fork(table->forks, table->fork_num, i);
-				
-				gettimeofday(&start, NULL);
+				printf("didnt eat\n");
+				philo_die(i);
+				return ;
 			}
-			if (table->philos[i]->time_to_sleep > 0)
-			{
-				change_state(table->philos[i], "sleeping");
-				print_state(table->philos[i], i);
-				usleep(table->philos[i]->time_to_sleep);
-			}
-			change_state(table->philos[i], "thinking");
-			print_state(table->philos[i], i);
+			gettimeofday(&start, NULL); // restart the time
+			philo_sleep(table->philos[i], i);
 		}
 		printf("\n");
 		table->philos[i]->num_of_times_eaten++;
 	}
-	printf("done eating\n");
+	
+}
+
+void	*routine(void *args)
+{
+	t_thread_args *arg = (t_thread_args *)args;
+	
+	philosophers(arg->table, arg->index);
+	return (0);
 }
 
 void	philo(t_table *table)
 {
-	int	index;
+	pthread_t		th;
+	t_thread_args	*args;
 
-	index = 0;
-	while (table->philos[index])
+	args = malloc (sizeof(args));
+	if (!args)
+		return ;
+	args->table = table;
+	args->index = 0;
+	while (args->index < table->philo_num)
 	{
 		// create thread.
-		philosophers(table, index);
-		index++;
+		pthread_create(&th, NULL, &routine, (void *)args);
+		//philosophers(table, index);
+		args->index++;
 	}
 	// join thread
-	
+	pthread_join(th, NULL);
 }
 
 // not using threads yet...
@@ -91,7 +84,10 @@ int	main(int argc, char **argv)
 	if (argc == 6)
 		optional = 1;
 	table = init_table_and_philos(argv, optional);
-
+	if (!table)
+	{
+		return (0);
+	}
 	philo(table);
 
 	return (0);

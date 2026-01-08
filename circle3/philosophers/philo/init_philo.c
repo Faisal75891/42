@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_philo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 21:13:01 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/05 17:49:30 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/07 14:56:54 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,23 @@ t_philo	*init_philo(char **argv)
 	return (philo);
 }
 
+int	*init_forks(int fork_num)
+{
+	int	*forks;
+	int	i;
+
+	forks = malloc (sizeof(int) * fork_num);
+	if (!forks)
+		return (NULL);
+	i = 0;
+	while (i < fork_num)
+	{
+		forks[i] = 1;
+		i++;
+	}
+	return (forks);
+}
+
 // fork's array; sets all to 1
 // creates philo table.
 t_table	*init_table_and_philos(char **argv, int optional)
@@ -40,20 +57,21 @@ t_table	*init_table_and_philos(char **argv, int optional)
 		return (NULL);
 	table->philo_num = ft_atoi(argv[1]);
 	table->fork_num = ft_atoi(argv[1]);
-	table->philos = init_philos(table->philo_num, argv);
-	if (!table->philos)
-		return (NULL);
-	table->forks = malloc (sizeof(int) * table->fork_num);
-	if (!table->forks)
-	{
-		free_philos(table->philos);
-		return (NULL);
-	}
-	memset(table->forks, 1, table->fork_num);
 	if (!argv[5] || !optional)
 		table->num_of_times_to_eat = 5;
 	else
 		table->num_of_times_to_eat = ft_atoi(argv[5]);
+	table->philos = init_philos(table->philo_num, argv);
+	if (!table->philos)
+		return (NULL);
+	table->forks = init_forks(table->fork_num);
+	if (!table->forks)
+	{
+		free_philos(table->philos);
+		free(table);
+		return (NULL);
+	}
+
 	return (table);
 }
 
