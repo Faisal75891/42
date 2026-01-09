@@ -8,7 +8,7 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -lpthread -o $(NAME)
 
 clean:
 	rm -rf $(OBJ)

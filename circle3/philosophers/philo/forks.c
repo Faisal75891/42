@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 15:36:28 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/08 13:49:39 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/09 17:02:41 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	take_fork(int *forks, int fork_num, int index)
 
 	left = index;
 	right = (index + 1) % fork_num;
-	if (!forks || fork_num <= 1 || index < 0 || index >= fork_num)
+	if (!forks || index < 0 || index >= fork_num)
 		return (1);
 	if (forks[left] == 1 && forks[right] == 1)
 	{
