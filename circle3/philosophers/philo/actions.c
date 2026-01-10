@@ -12,27 +12,20 @@
 
 #include "philo.h"
 
-int	philo_eat(t_philo *philo, int *forks, int fork_num, struct timeval start, pthread_mutex_t mutex)
+int	philo_eat(t_philo *philo, int *forks, int fork_num, pthread_mutex_t *mutexes)
 {
-	struct timeval stop;
+	struct timeval	now;
 
-	// take fork and mutex lock
-	pthread_mutex_lock(&mutex);
-	if (take_fork(forks, fork_num, philo->id) == 0)
+	if (take_fork(forks, fork_num, philo->id, mutexes) == 0)
 	{
-		gettimeofday(&stop, NULL);
-		if (philo->time_to_die < (stop.tv_usec - start.tv_usec))
-		{
-			put_fork(forks, fork_num, philo->id);
+		gettimeofday(&now, NULL);
+		if (philo->time_to_die < now.tv_usec - philo->last_eaten.tv_usec)
 			return (0);
-		}
 		change_state(philo, "eating");
 		print_state(philo);
 		usleep(philo->time_to_eat);
-		// put fork and mutex unlock
-		put_fork(forks, fork_num, philo->id);
+		put_fork(forks, fork_num, philo->id, mutexes);
 	}
-	pthread_mutex_unlock(&mutex);
 	return (1);
 }
 

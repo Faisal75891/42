@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:30:58 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/09 18:34:01 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/10 18:53:02 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@
 // all 0's=dead. maybe
 typedef struct s_philo
 {
-	int	state[3];
-	int	id;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	time_to_die;
-	int	num_of_times_eaten;
+	int				state[3];
+	int				id;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				time_to_die;
+	int				num_of_times_eaten;
+	struct timeval	last_eaten;
 }	t_philo;
 
 // The table has a list of all philosohphers
@@ -38,46 +39,56 @@ typedef struct s_philo
 // the forks that are in use
 typedef struct s_table
 {
-	t_philo	**philos;
-	int		philos_num;
-	int		*forks;
-	int		fork_num;
-	int		num_of_times_to_eat;
+	t_philo			**philos;
+	int				philos_num;
+	int				*forks;
+	pthread_mutex_t	*fork_mutexes;
+	int				fork_num;
+	int				num_of_times_to_eat;
+	int				terminate;
 }	t_table;
 
 typedef struct s_thread_args
 {
-	t_table			*table;
-	int				index;
-	pthread_mutex_t	mutex;
+	t_table		*table;
+	int			index;
+	pthread_t	thread;
 }	t_thread_args;
 
 // threads
 
 // free_philo
-void	free_philos(t_philo **table);
+void			free_philos(t_philo **table);
 
 // init_philo
-t_philo	**init_philos(int philos_num, char **argv);
-t_table	*init_table_and_philos(char **argv, int optional);
-t_philo	*init_philo(char **argv, int id);
-int		*init_forks(int fork_num);
+t_philo			**init_philos(int philos_num, char **argv);
+t_table			*init_table_and_philos(char **argv, int optional);
+t_philo			*init_philo(char **argv, int id);
+int				*init_forks(int fork_num);
+pthread_mutex_t	*init_mutexes(int fork_num);
 
 // atoi
-int		ft_atoi(char *s);
-int		ft_strcmp(char *s1, char *s2);
+int				ft_atoi(char *s);
+int				ft_strcmp(char *s1, char *s2);
 
 // state
-void	print_state(t_philo *philo);
-void	change_state(t_philo *philo, char *state);
+void			print_state(t_philo *philo);
+void			change_state(t_philo *philo, char *state);
 
 // taking forks
-int		take_fork(int *forks, int fork_num, int index);
-void	put_fork(int *forks, int fork_num, int index);
+void			put_fork(int *forks, int fork_num, int index,
+					pthread_mutex_t *fork_mutexes);
+int				take_fork(int *forks, int fork_num, int index,
+					pthread_mutex_t *fork_mutexes);
 
 // actions
-int		philo_eat(t_philo *philo, int *forks, int fork_num, struct timeval start, pthread_mutex_t mutex);
-void	philo_sleep(t_philo *philo);
-void	philo_die(int i);
+int				philo_eat(t_philo *philo, int *forks, int fork_num,
+					pthread_mutex_t *fork_mutexes);
+void			philo_sleep(t_philo *philo);
+void			philo_die(int i);
+
+// time
+unsigned long	time_stamp(void);
+long long		time_difference(struct timeval then);
 
 #endif
