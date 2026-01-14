@@ -6,12 +6,15 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:30:58 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/10 18:53:02 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/14 18:27:31 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+# define TRUE 1
+# define FALSE 0
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -52,10 +55,8 @@ typedef struct s_thread_args
 {
 	t_table		*table;
 	int			index;
-	pthread_t	thread;
+	pthread_t	*threads;
 }	t_thread_args;
-
-// threads
 
 // free_philo
 void			free_philos(t_philo **table);
@@ -67,11 +68,11 @@ t_philo			*init_philo(char **argv, int id);
 int				*init_forks(int fork_num);
 pthread_mutex_t	*init_mutexes(int fork_num);
 
-// atoi
+// utils
 int				ft_atoi(char *s);
 int				ft_strcmp(char *s1, char *s2);
 
-// state
+// states
 void			print_state(t_philo *philo);
 void			change_state(t_philo *philo, char *state);
 
@@ -90,5 +91,9 @@ void			philo_die(int i);
 // time
 unsigned long	time_stamp(void);
 long long		time_difference(struct timeval then);
+
+// routines
+void			*create_philo(void *args);
+void			*monitor_philos(void *args);
 
 #endif

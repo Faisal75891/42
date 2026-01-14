@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 15:36:28 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/10 16:06:49 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/14 18:56:35 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	take_fork(int *forks, int fork_num, int index, pthread_mutex_t *fork_mutexes
 	int	left;
 	int	right;
 
+	if (fork_num <= 1)
+		return (FALSE);
 	left = index;
 	right = (index + 1) % fork_num;
 	if (forks[left] == 1 && forks[right] == 1)
@@ -27,9 +29,9 @@ int	take_fork(int *forks, int fork_num, int index, pthread_mutex_t *fork_mutexes
 		pthread_mutex_lock(&fork_mutexes[right]);
 		forks[right] = 0;
 		pthread_mutex_unlock(&fork_mutexes[right]);
-		return (0);
+		return (TRUE);
 	}
-	return (1);
+	return (FALSE);
 }
 
 void	put_fork(int *forks, int fork_num, int index, pthread_mutex_t *fork_mutexes)
