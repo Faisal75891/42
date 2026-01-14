@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:30:58 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/14 18:27:31 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/14 22:51:35 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ typedef struct s_table
 	int				fork_num;
 	int				num_of_times_to_eat;
 	int				terminate;
+	int				start;
+	unsigned long	start_time;
 }	t_table;
 
 typedef struct s_thread_args
@@ -73,20 +75,20 @@ int				ft_atoi(char *s);
 int				ft_strcmp(char *s1, char *s2);
 
 // states
-void			print_state(t_philo *philo);
+void			print_state(t_philo *philo, int *terminate, unsigned long start_time);
 void			change_state(t_philo *philo, char *state);
 
 // taking forks
 void			put_fork(int *forks, int fork_num, int index,
 					pthread_mutex_t *fork_mutexes);
-int				take_fork(int *forks, int fork_num, int index,
-					pthread_mutex_t *fork_mutexes);
+int				take_fork(int *forks, int fork_num, int index, pthread_mutex_t *fork_mutexes, int *terminate, unsigned long start_time);
+
 
 // actions
 int				philo_eat(t_philo *philo, int *forks, int fork_num,
-					pthread_mutex_t *fork_mutexes);
-void			philo_sleep(t_philo *philo);
-void			philo_die(int i);
+					pthread_mutex_t *fork_mutexes, int *terminate, unsigned long start_time);
+void			philo_sleep(t_philo *philo, int *terminate, unsigned long start_time);
+void			philo_die(int i, unsigned long start_time);
 
 // time
 unsigned long	time_stamp(void);

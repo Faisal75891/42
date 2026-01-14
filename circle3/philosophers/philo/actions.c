@@ -17,38 +17,35 @@
 // and put fork back
 // return 1
 // else return 0
-int	philo_eat(t_philo *philo, int *forks, int fork_num, pthread_mutex_t *mutexes)
+int	philo_eat(t_philo *philo, int *forks, int fork_num, pthread_mutex_t *mutexes, int *terminate, unsigned long start_time)
 {
-	struct timeval	now;
-
-	if (take_fork(forks, fork_num, philo->id, mutexes) == TRUE)
+	if (take_fork(forks, fork_num, philo->id, mutexes, terminate, start_time) == TRUE)
 	{
-		gettimeofday(&now, NULL);
-		if (philo->time_to_die < now.tv_usec - philo->last_eaten.tv_usec)
+		if (*terminate == 1)
 		{
-			printf("time to die was too low :(\n");
+			put_fork(forks, fork_num, philo->id, mutexes);	
 			return (FALSE);
 		}
 		change_state(philo, "eating");
-		print_state(philo);
-		usleep(philo->time_to_eat);
+		print_state(philo, terminate, start_time);
+		usleep(philo->time_to_eat * 1000);
 		put_fork(forks, fork_num, philo->id, mutexes);
 		return (TRUE);
 	}
 	return (FALSE);
 }
 
-void	philo_sleep(t_philo *philo)
+void	philo_sleep(t_philo *philo, int *terminate, unsigned long start_time)
 {
-	if (philo->time_to_sleep > 0)
+	if (philo->time_to_sleep > 0 && *terminate != 1)
 	{
 		change_state(philo, "sleeping");
-		print_state(philo);
-		usleep(philo->time_to_sleep);
+		print_state(philo, terminate, start_time);
+		usleep(philo->time_to_sleep * 1000);
 	}
 }
 
-void	philo_die(int i)
+void	philo_die(int i, unsigned long start_time)
 {
-	printf("%lu %d died\n", time_stamp(), i);
+	printf("%lu %d died\n", time_stamp() - start_time, i);
 }

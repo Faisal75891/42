@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 15:38:07 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/10 18:54:32 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/14 22:37:13 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void	change_state(t_philo *philo, char *state)
 		printf("bad state\n");
 }
 
-void	print_state(t_philo *philo)
+void	print_state(t_philo *philo, int *terminate, unsigned long start_time)
 {
-	if (!philo)
+	if (!philo || *terminate == 1)
 		return ;
 	if (philo->state[2] == 0 && philo->state[1] == 0 && philo->state[0] == 1)
-		printf("%lu %d is thinking\n",time_stamp(), philo->id);
+		printf("%lu %d is thinking\n", time_stamp() - start_time, philo->id);
 	else if (philo->state[2] == 0 && philo->state[1] == 1 && philo->state[0] == 0)
-		printf("%lu %d is eating\n",time_stamp(), philo->id);
+		printf("%lu %d is eating\n", time_stamp() - start_time, philo->id);
 	else if (philo->state[2] == 1 && philo->state[1] == 0 && philo->state[0] == 0)
-		printf("%lu %d is sleeping\n",time_stamp(), philo->id);
+		printf("%lu %d is sleeping\n", time_stamp() - start_time, philo->id);
 }

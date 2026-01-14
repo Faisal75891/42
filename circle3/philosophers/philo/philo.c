@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:26:29 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/14 18:50:30 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/14 23:09:41 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,37 @@
 
 // calls ¨create_philo¨ function
 // calls ¨monitor_philos¨ function
-static void	start_and_join_threads(t_thread_args *args, t_table table, pthread_t th, pthread_t *monitor)
+static void	start_and_join_threads(t_thread_args *args, t_table *table, pthread_t *th, pthread_t *monitor)
 {
 	int	i;
 
 	i = 0;
-	while (i < table.philos_num)
+	while (i < table->philos_num)
 	{
-		args[i].table = &table;
+		args[i].table = table;
 		args[i].index = i;
-		args[i].threads = &th;
-		if (pthread_create(&th + i, NULL, &create_philo, (void *)&args[i]) != 0)
+		args[i].threads = th;
+		if (pthread_create(&th[i], NULL, &create_philo, (void *)&args[i]) != 0)
 		{
-			printf("thread %d not started\n", i);
+			write(2, "couldn't start thread\n", 23);
 			return ;
 		}
 		i++;
 	}
-	args[i].table = &table;
+	table->start=TRUE;
+	args[i].table = table;
 	args[i].index = i;
-	args[i].threads = &th;
+	args[i].threads = th;
 	if (pthread_create(monitor, NULL, &monitor_philos, (void *)&args[i]) != 0)
 		return ;
 	i = 0;
-	while (i < table.philos_num)
+	while (i < table->philos_num)
 	{
-		if (pthread_join(*(&th + i), NULL) != 0)
+		if (pthread_join(th[i], NULL) != 0)
 			return ;
 		i++;
 	}
-	args[i].table->terminate = 1;
+	//args[i].table->terminate = 1;
 	if (pthread_join(*monitor, NULL) != 0)
 		return ;
 }
@@ -73,7 +74,7 @@ void	philo(t_table *table)
 		free(args);
 		return ;
 	}
-	start_and_join_threads(args, *table, *th, monitor);
+	start_and_join_threads(args, table, th, monitor);
 	free(th);
 	free(monitor);
 	free(args);
@@ -97,7 +98,7 @@ int	main(int argc, char **argv)
 	table = init_table_and_philos(argv, optional);
 	if (!table)
 	{
-		return (0);
+		return (1);
 	}
 	philo(table);
 	free_philos(table->philos);

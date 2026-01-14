@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 21:13:01 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/10 18:57:35 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/14 22:24:57 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ t_philo	*init_philo(char **argv, int id)
 	philo->time_to_sleep = ft_atoi(argv[4]);
 	philo->num_of_times_eaten = 0;
 	philo->id = id;
-	gettimeofday(&philo->last_eaten, NULL);
 	return (philo);
 }
 
@@ -61,6 +60,8 @@ pthread_mutex_t	*init_mutexes(int fork_num)
 	{
 		if (pthread_mutex_init(&fork_mutexes[i], NULL) != 0)
 		{
+			while (--i >= 0)
+				pthread_mutex_destroy(&fork_mutexes[i]);
 			free(fork_mutexes);
 			return (NULL);
 		}
@@ -76,6 +77,8 @@ t_table	*init_table_and_philos(char **argv, int optional)
 	table = malloc (sizeof(t_table));
 	if (!table)
 		return (NULL);
+	table->start = FALSE;
+	table->start_time = time_stamp();
 	table->philos_num = ft_atoi(argv[1]);
 	table->fork_num = ft_atoi(argv[1]);
 	if (!optional)
@@ -84,7 +87,10 @@ t_table	*init_table_and_philos(char **argv, int optional)
 		table->num_of_times_to_eat = ft_atoi(argv[5]);
 	table->philos = init_philos(table->philos_num, argv);
 	if (!table->philos)
+	{
+		free(table);
 		return (NULL);
+	}
 	table->forks = init_forks(table->fork_num);
 	if (!table->forks)
 	{
