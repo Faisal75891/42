@@ -30,24 +30,7 @@ t_philo	*init_philo(char **argv, int id)
 	return (philo);
 }
 
-int	*init_forks(int fork_num)
-{
-	int	*forks;
-	int	i;
-
-	forks = malloc (sizeof(int) * fork_num);
-	if (!forks)
-		return (NULL);
-	i = 0;
-	while (i < fork_num)
-	{
-		forks[i] = 1;
-		i++;
-	}
-	return (forks);
-}
-
-pthread_mutex_t	*init_mutexes(int fork_num)
+pthread_mutex_t	*init_fork_mutex(int fork_num)
 {
 	int				i;
 	pthread_mutex_t	*fork_mutexes;
@@ -68,6 +51,12 @@ pthread_mutex_t	*init_mutexes(int fork_num)
 		i++;
 	}
 	return (fork_mutexes);
+}
+
+t_mutexes	*init_mutexes()
+{
+	// TODO
+	// init_fork_mutex(fork_num);
 }
 
 t_table	*init_table_and_philos(char **argv, int optional)
@@ -91,20 +80,12 @@ t_table	*init_table_and_philos(char **argv, int optional)
 		free(table);
 		return (NULL);
 	}
-	table->forks = init_forks(table->fork_num);
-	if (!table->forks)
+	table->mutexes = init_mutexes();
+	if (!table->mutexes)
 	{
 		free_philos(table->philos);
 		free(table);
-		return (NULL);
-	}
-	table->fork_mutexes = init_mutexes(table->fork_num);
-	if (!table->fork_mutexes)
-	{
-		free_philos(table->philos);
-		free(table->forks);
-		free(table);
-		return (NULL);
+		return (NULL);	
 	}
 	table->terminate = 0;
 	return (table);

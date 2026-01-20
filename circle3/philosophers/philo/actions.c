@@ -17,19 +17,19 @@
 // and put fork back
 // return 1
 // else return 0
-int	philo_eat(t_philo *philo, int *forks, int fork_num, pthread_mutex_t *mutexes, int *terminate, unsigned long start_time)
+int	philo_eat(t_philo *philo, int fork_num, pthread_mutex_t *mutexes, int *terminate, unsigned long start_time)
 {
-	if (take_fork(forks, fork_num, philo->id, mutexes, terminate, start_time) == TRUE)
+	if (take_fork(fork_num, philo->id, mutexes, terminate, start_time) == TRUE)
 	{
 		if (*terminate == 1)
 		{
-			put_fork(forks, fork_num, philo->id, mutexes);	
+			put_fork(fork_num, philo->id, mutexes);	
 			return (FALSE);
 		}
 		change_state(philo, "eating");
 		print_state(philo, terminate, start_time);
 		usleep(philo->time_to_eat * 1000);
-		put_fork(forks, fork_num, philo->id, mutexes);
+		put_fork(fork_num, philo->id, mutexes);
 		return (TRUE);
 	}
 	return (FALSE);

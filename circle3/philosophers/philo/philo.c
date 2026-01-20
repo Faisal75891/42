@@ -102,13 +102,13 @@ int	main(int argc, char **argv)
 	}
 	philo(table);
 	free_philos(table->philos);
-	free(table->forks);
 	i = 0;
 	while (i < table->fork_num)
 	{
 		pthread_mutex_destroy(&table->fork_mutexes[i]);
 		i++;
 	}
+	// TODO: free/destroy mutexes
 	free(table->fork_mutexes);
 	free(table);
 	return (0);

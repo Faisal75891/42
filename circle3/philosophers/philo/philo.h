@@ -25,7 +25,7 @@
 
 // each philosopher can have 3 states
 // 0=thinking, 1=eating, 2=sleeping
-// all 0's=dead. maybe
+// philo data
 typedef struct s_philo
 {
 	int				state[3];
@@ -37,21 +37,30 @@ typedef struct s_philo
 	struct timeval	last_eaten;
 }	t_philo;
 
-// The table has a list of all philosohphers
-// number of forks and
-// the forks that are in use
+// table data
 typedef struct s_table
 {
 	t_philo			**philos;
 	int				philos_num;
-	int				*forks;
-	pthread_mutex_t	*fork_mutexes;
 	int				fork_num;
 	int				num_of_times_to_eat;
-	int				terminate;
-	int				start;
-	unsigned long	start_time;
+	int				terminate_flag;
+	int				start_flag;
+	unsigned long	starting_time;
+	t_mutexes		*mutexes;
 }	t_table;
+
+// mutex data
+// TODO:
+typedef struct s_mutexes
+{
+	pthread_mutex_t	*fork_mutexes;
+	pthread_mutex_t	num_of_times_eaten_mutex;
+	pthread_mutex_t	terminate_mutex;
+	pthread_mutex_t	last_eaten_mutex;
+	pthread_mutex_t	printing_mutex;
+	pthread_mutex_t	start_mutex;
+}	t_mutexes;
 
 typedef struct s_thread_args
 {
@@ -79,13 +88,13 @@ void			print_state(t_philo *philo, int *terminate, unsigned long start_time);
 void			change_state(t_philo *philo, char *state);
 
 // taking forks
-void			put_fork(int *forks, int fork_num, int index,
+void			put_fork(int fork_num, int index,
 					pthread_mutex_t *fork_mutexes);
-int				take_fork(int *forks, int fork_num, int index, pthread_mutex_t *fork_mutexes, int *terminate, unsigned long start_time);
+int				take_fork(int fork_num, int index, pthread_mutex_t *fork_mutexes, int *terminate, unsigned long start_time);
 
 
 // actions
-int				philo_eat(t_philo *philo, int *forks, int fork_num,
+int				philo_eat(t_philo *philo, int fork_num,
 					pthread_mutex_t *fork_mutexes, int *terminate, unsigned long start_time);
 void			philo_sleep(t_philo *philo, int *terminate, unsigned long start_time);
 void			philo_die(int i, unsigned long start_time);

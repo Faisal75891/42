@@ -12,16 +12,23 @@
 
 #include "philo.h"
 
-int	take_fork(int *forks, int fork_num, int index, pthread_mutex_t *fork_mutexes, int *terminate, unsigned long start_time)
+int	take_fork(int fork_num, int index, pthread_mutex_t *fork_mutexes, int *terminate, unsigned long start_time)
 {
-	(void) forks;
 	int	left;
 	int	right;
 
 	if (fork_num <= 1)
 		return (FALSE);
-	left = index;
-	right = (index + 1) % fork_num;
+	if (index < (index + 1) % fork_num)
+	{
+		left = index;
+		right = (index + 1) % fork_num;
+	}
+	else
+	{
+		left = (index + 1) % fork_num;
+		right = index;
+	}
 	
 	// Block here until left fork is available
 	pthread_mutex_lock(&fork_mutexes[left]);
@@ -45,14 +52,25 @@ int	take_fork(int *forks, int fork_num, int index, pthread_mutex_t *fork_mutexes
 	return (TRUE);
 }
 
-void	put_fork(int *forks, int fork_num, int index, pthread_mutex_t *fork_mutexes)
+void	put_fork(int fork_num, int index, pthread_mutex_t *fork_mutexes)
 {
 	int	left;
 	int	right;
 
-	(void)forks;
 	left = index;
 	right = (index + 1) % fork_num;
-	pthread_mutex_unlock(&fork_mutexes[right]);
 	pthread_mutex_unlock(&fork_mutexes[left]);
+	pthread_mutex_unlock(&fork_mutexes[right]);
 }
+
+
+/*
+1. Always lock lower-numbered fork first
+
+or
+
+2. Odd-Even Strategy
+Odd-numbered philosophers pick up left fork first
+Even-numbered philosophers pick up right fork first
+
+*/
