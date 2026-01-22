@@ -11,10 +11,10 @@
 pipex
 push_swap
 checker
-fdf
-fdf_linux
 philo
 philo_bonus
+fdf
+fdf_linux
 
 # Temporary files
 *.swp
