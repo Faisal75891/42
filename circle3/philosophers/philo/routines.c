@@ -31,12 +31,13 @@ static void	philosopher(t_table *table, int i)
 void	*create_philo(void *args)
 {
 	t_thread_args	*arg;
-	
+
 	arg = (t_thread_args *)args;
 	while (arg->table->start_flag == FALSE)
 		usleep(1);
 	set_last_eaten_now(arg->table, arg->index);
-	if (get_num_times_eaten(arg->table, arg->index) >= arg->table->num_of_times_to_eat)
+	if (get_num_times_eaten(arg->table, arg->index)
+		>= arg->table->num_of_times_to_eat)
 	{
 		set_terminate_flag(arg->table, 1);
 		return (0);
@@ -44,11 +45,24 @@ void	*create_philo(void *args)
 	if (get_terminate_flag(arg->table) == 1)
 		return (0);
 	while (get_terminate_flag(arg->table) != 1
-		&& get_num_times_eaten(arg->table, arg->index) < arg->table->num_of_times_to_eat)
+		&& get_num_times_eaten(arg->table, arg->index)
+		< arg->table->num_of_times_to_eat)
 	{
 		philosopher(arg->table, arg->index);
 	}
 	return (0);
+}
+
+static void	detach_all_threads(t_thread_args *arg)
+{
+	int	i;
+
+	i = 0;
+	while (i < arg->table->philos_num)
+	{
+		pthread_detach(arg->threads[i]);
+		i++;
+	}
 }
 
 void	*monitor_philos(void *args)
@@ -63,7 +77,8 @@ void	*monitor_philos(void *args)
 		i = 0;
 		while (i < arg->table->philos_num)
 		{
-			if (time_difference(get_last_eaten(arg->table, i)) > arg->table->philos[i]->time_to_die)
+			if (time_difference(get_last_eaten(arg->table, i))
+				> arg->table->philos[i]->time_to_die)
 			{
 				philo_die(arg->table, i);
 				set_terminate_flag(arg->table, 1);
@@ -72,12 +87,6 @@ void	*monitor_philos(void *args)
 			i++;
 		}
 	}
-	i = 0;
-	while (i < arg->table->philos_num)
-	{
-		// sometimes some threads dont get freed. idk why??
-		pthread_detach(arg->threads[i]);
-		i++;
-	}
+	detach_all_threads(args);
 	return (0);
 }

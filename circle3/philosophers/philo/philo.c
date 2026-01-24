@@ -14,7 +14,23 @@
 
 // calls ¨create_philo¨ function
 // calls ¨monitor_philos¨ function
-static void	start_and_join_threads(t_thread_args *args, t_table *table, pthread_t *th, pthread_t *monitor)
+static void	wait_threads(t_table *table, pthread_t *th, pthread_t *monitor)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->philos_num)
+	{
+		if (pthread_join(th[i], NULL) != 0)
+			return ;
+		i++;
+	}
+	if (pthread_join(*monitor, NULL) != 0)
+		return ;
+}
+
+static void	start_and_join_threads(t_thread_args *args, t_table *table,
+	pthread_t *th, pthread_t *monitor)
 {
 	int	i;
 
@@ -31,22 +47,13 @@ static void	start_and_join_threads(t_thread_args *args, t_table *table, pthread_
 		}
 		i++;
 	}
-	table->start_flag=TRUE;
+	table->start_flag = TRUE;
 	args[i].table = table;
 	args[i].index = i;
 	args[i].threads = th;
 	if (pthread_create(monitor, NULL, &monitor_philos, (void *)&args[i]) != 0)
 		return ;
-	i = 0;
-	while (i < table->philos_num)
-	{
-		if (pthread_join(th[i], NULL) != 0)
-			return ;
-		i++;
-	}
-	//args[i].table->terminate = 1;
-	if (pthread_join(*monitor, NULL) != 0)
-		return ;
+	wait_threads(table, th, monitor);
 }
 
 // mallocs stuff and creates threads
@@ -101,14 +108,7 @@ int	main(int argc, char **argv)
 	}
 	philo(table);
 	free_philos(table->philos);
-	free_forks(table->mutexes->fork_mutexes, table->fork_num);
-	pthread_mutex_destroy(&table->mutexes->last_eaten_mutex);
-	pthread_mutex_destroy(&table->mutexes->num_of_times_eaten_mutex);
-	pthread_mutex_destroy(&table->mutexes->printing_mutex);
-	pthread_mutex_destroy(&table->mutexes->start_mutex);
-	pthread_mutex_destroy(&table->mutexes->state_mutex);
-	pthread_mutex_destroy(&table->mutexes->terminate_mutex);
-	free(table->mutexes);
+	clean_up(table->mutexes, 6, table->fork_num);
 	free(table);
 	return (0);
 }

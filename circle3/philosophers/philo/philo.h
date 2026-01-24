@@ -62,7 +62,6 @@ typedef struct s_table
 	t_mutexes		*mutexes;
 }	t_table;
 
-
 typedef struct s_thread_args
 {
 	t_table		*table;
@@ -73,7 +72,7 @@ typedef struct s_thread_args
 // free_philo
 void			free_philos(t_philo **table);
 void			free_forks(pthread_mutex_t *fork_mutexes, int fork_num);
-
+t_mutexes		*clean_up(t_mutexes *mutexes, int level, int fork_num);
 
 // init_philo
 t_philo			**init_philos(int philos_num, char **argv);
@@ -83,17 +82,16 @@ int				*init_forks(int fork_num);
 pthread_mutex_t	*init_fork_mutex(int fork_num);
 t_mutexes		*init_mutexes(int fork_num);
 
-
 // utils
 int				ft_atoi(char *s);
 int				ft_strcmp(char *s1, char *s2);
 
 // shared state helpers
-int			get_terminate_flag(t_table *table);
+int				get_terminate_flag(t_table *table);
 void			set_terminate_flag(t_table *table, int value);
 void			set_last_eaten_now(t_table *table, int index);
 struct timeval	get_last_eaten(t_table *table, int index);
-int			get_num_times_eaten(t_table *table, int index);
+int				get_num_times_eaten(t_table *table, int index);
 void			increment_num_times_eaten(t_table *table, int index);
 
 // states
@@ -103,7 +101,6 @@ void			change_state(t_table *table, int i, char *state);
 // taking forks
 void			put_fork(t_table *table, int index);
 int				take_fork(t_table *table, int index);
-
 
 // actions
 int				philo_eat(t_table *table, int i);

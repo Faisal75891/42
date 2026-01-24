@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 22:04:24 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/22 19:20:11 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/24 22:39:52 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,3 +42,20 @@ void	free_forks(pthread_mutex_t *fork_mutexes, int fork_num)
 	free(fork_mutexes);
 }
 
+t_mutexes	*clean_up(t_mutexes *mutexes, int level, int fork_num)
+{
+	if (level >= 1)
+		free_forks(mutexes->fork_mutexes, fork_num);
+	if (level >= 2)
+		pthread_mutex_destroy(&mutexes->last_eaten_mutex);
+	if (level >= 3)
+		pthread_mutex_destroy(&mutexes->num_of_times_eaten_mutex);
+	if (level >= 4)
+		pthread_mutex_destroy(&mutexes->printing_mutex);
+	if (level >= 5)
+		pthread_mutex_destroy(&mutexes->start_mutex);
+	if (level >= 6)
+		pthread_mutex_destroy(&mutexes->terminate_mutex);
+	free(mutexes);
+	return (NULL);
+}

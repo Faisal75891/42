@@ -23,7 +23,7 @@ int	philo_eat(t_table *table, int i)
 	{
 		if (get_terminate_flag(table) == 1)
 		{
-			put_fork(table, i);	
+			put_fork(table, i);
 			return (FALSE);
 		}
 		change_state(table, i, "eating");

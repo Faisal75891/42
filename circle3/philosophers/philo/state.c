@@ -51,12 +51,20 @@ void	print_state(t_table *table, int i)
 	pthread_mutex_unlock(&table->mutexes->terminate_mutex);
 	pthread_mutex_lock(&table->mutexes->printing_mutex);
 	pthread_mutex_lock(&table->mutexes->state_mutex);
-	if (table->philos[i]->state[2] == 0 && table->philos[i]->state[1] == 0 && table->philos[i]->state[0] == 1)
-		printf("%lu %d is thinking\n", time_stamp() - table->starting_time, table->philos[i]->id);
-	else if (table->philos[i]->state[2] == 0 && table->philos[i]->state[1] == 1 && table->philos[i]->state[0] == 0)
-		printf("%lu %d is eating\n", time_stamp() - table->starting_time, table->philos[i]->id);
-	else if (table->philos[i]->state[2] == 1 && table->philos[i]->state[1] == 0 && table->philos[i]->state[0] == 0)
-		printf("%lu %d is sleeping\n", time_stamp() - table->starting_time, table->philos[i]->id);
+	if (table->philos[i]->state[2] == 0
+		&& table->philos[i]->state[1] == 0
+		&& table->philos[i]->state[0] == 1)
+		printf("%lu %d is thinking\n",
+			time_stamp() - table->starting_time, table->philos[i]->id);
+	else if (table->philos[i]->state[2] == 0
+		&& table->philos[i]->state[1] == 1 && table->philos[i]->state[0] == 0)
+		printf("%lu %d is eating\n",
+			time_stamp() - table->starting_time, table->philos[i]->id);
+	else if (table->philos[i]->state[2] == 1
+		&& table->philos[i]->state[1] == 0
+		&& table->philos[i]->state[0] == 0)
+		printf("%lu %d is sleeping\n",
+			time_stamp() - table->starting_time, table->philos[i]->id);
 	pthread_mutex_unlock(&table->mutexes->state_mutex);
 	pthread_mutex_unlock(&table->mutexes->printing_mutex);
 }

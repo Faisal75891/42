@@ -12,16 +12,6 @@
 
 #include "philo.h"
 
-// time difference of then until now
-// returns time in ms
-// long long	time_difference(struct timeval then)
-// {
-// 	struct timeval now;
-	
-// 	gettimeofday(&now, NULL);
-// 	return (now.tv_sec - then.tv_sec) * 1000000 + now.tv_usec - then.tv_usec;
-// }
-
 long long	time_difference(struct timeval last_time)
 {
 	struct timeval	now;
@@ -35,8 +25,8 @@ long long	time_difference(struct timeval last_time)
 
 unsigned long	time_stamp(void)
 {
-	struct timeval now;
-	
+	struct timeval	now;
+
 	gettimeofday(&now, NULL);
 	return (now.tv_sec * 1000LL + (now.tv_usec / 1000LL));
 }
