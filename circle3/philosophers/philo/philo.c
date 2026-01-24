@@ -84,7 +84,6 @@ int	main(int argc, char **argv)
 {
 	t_table	*table;
 	int		optional;
-	//int		i;
 
 	optional = 0;
 	if (argc < 5)
@@ -102,15 +101,14 @@ int	main(int argc, char **argv)
 	}
 	philo(table);
 	free_philos(table->philos);
-	//i = 0;
-	// TODO: free mutexes.
-	// while (i < table->fork_num)
-	// {
-	// 	pthread_mutex_destroy(&table->fork_mutexes[i]);
-	// 	i++;
-	// }
-	// free/destroy mutexes
-	//free(table->fork_mutexes);
+	free_forks(table->mutexes->fork_mutexes, table->fork_num);
+	pthread_mutex_destroy(&table->mutexes->last_eaten_mutex);
+	pthread_mutex_destroy(&table->mutexes->num_of_times_eaten_mutex);
+	pthread_mutex_destroy(&table->mutexes->printing_mutex);
+	pthread_mutex_destroy(&table->mutexes->start_mutex);
+	pthread_mutex_destroy(&table->mutexes->state_mutex);
+	pthread_mutex_destroy(&table->mutexes->terminate_mutex);
+	free(table->mutexes);
 	free(table);
 	return (0);
 }

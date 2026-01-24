@@ -27,6 +27,7 @@ t_philo	*init_philo(char **argv, int id)
 	philo->time_to_sleep = ft_atoi(argv[4]);
 	philo->num_of_times_eaten = 0;
 	philo->id = id;
+	gettimeofday(&philo->last_eaten, NULL);
 	return (philo);
 }
 
