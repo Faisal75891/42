@@ -53,12 +53,62 @@ pthread_mutex_t	*init_fork_mutex(int fork_num)
 	return (fork_mutexes);
 }
 
-t_mutexes	*init_mutexes()
+// need to norminette
+t_mutexes	*init_mutexes(int fork_num)
 {
-	// TODO
-	// init_fork_mutex(fork_num);
+	t_mutexes	*mutexes;
+
+	mutexes = malloc (sizeof(t_mutexes));
+	if (!mutexes)
+		return (NULL);
+	mutexes->fork_mutexes = init_fork_mutex(fork_num);
+	if (!mutexes->fork_mutexes)
+		return (NULL);
+	if (pthread_mutex_init(&mutexes->last_eaten_mutex, NULL) != 0)
+	{
+		free_forks(mutexes->fork_mutexes, fork_num);
+		return (NULL);
+	}
+	if (pthread_mutex_init(&mutexes->num_of_times_eaten_mutex, NULL) != 0)
+	{
+		free_forks(mutexes->fork_mutexes, fork_num);
+		pthread_mutex_destroy(&mutexes->last_eaten_mutex);
+		return (NULL);
+	}
+	if (pthread_mutex_init(&mutexes->printing_mutex, NULL) != 0)
+	{
+		free_forks(mutexes->fork_mutexes, fork_num);
+		pthread_mutex_destroy(&mutexes->last_eaten_mutex);
+		pthread_mutex_destroy(&mutexes->num_of_times_eaten_mutex);
+	}
+	if (pthread_mutex_init(&mutexes->start_mutex, NULL) != 0)
+	{
+		free_forks(mutexes->fork_mutexes, fork_num);
+		pthread_mutex_destroy(&mutexes->num_of_times_eaten_mutex);
+		pthread_mutex_destroy(&mutexes->printing_mutex);
+		pthread_mutex_destroy(&mutexes->last_eaten_mutex);
+	}
+	if (pthread_mutex_init(&mutexes->terminate_mutex, NULL) != 0)
+	{
+		free_forks(mutexes->fork_mutexes, fork_num);
+		pthread_mutex_destroy(&mutexes->start_mutex);
+		pthread_mutex_destroy(&mutexes->num_of_times_eaten_mutex);
+		pthread_mutex_destroy(&mutexes->printing_mutex);
+		pthread_mutex_destroy(&mutexes->last_eaten_mutex);
+	}
+	if (pthread_mutex_init(&mutexes->state_mutex, NULL) != 0)
+	{
+		free_forks(mutexes->fork_mutexes, fork_num);
+		pthread_mutex_destroy(&mutexes->start_mutex);
+		pthread_mutex_destroy(&mutexes->num_of_times_eaten_mutex);
+		pthread_mutex_destroy(&mutexes->printing_mutex);
+		pthread_mutex_destroy(&mutexes->last_eaten_mutex);
+		pthread_mutex_destroy(&mutexes->terminate_mutex);
+	}
+	return (mutexes);
 }
 
+// table->start_flag is in main.
 t_table	*init_table_and_philos(char **argv, int optional)
 {
 	t_table	*table;
@@ -66,8 +116,8 @@ t_table	*init_table_and_philos(char **argv, int optional)
 	table = malloc (sizeof(t_table));
 	if (!table)
 		return (NULL);
-	table->start = FALSE;
-	table->start_time = time_stamp();
+	table->start_flag = FALSE;
+	table->starting_time = time_stamp();
 	table->philos_num = ft_atoi(argv[1]);
 	table->fork_num = ft_atoi(argv[1]);
 	if (!optional)
@@ -80,14 +130,14 @@ t_table	*init_table_and_philos(char **argv, int optional)
 		free(table);
 		return (NULL);
 	}
-	table->mutexes = init_mutexes();
+	table->mutexes = init_mutexes(table->fork_num);
 	if (!table->mutexes)
 	{
 		free_philos(table->philos);
 		free(table);
-		return (NULL);	
+		return (NULL);
 	}
-	table->terminate = 0;
+	table->terminate_flag = FALSE;
 	return (table);
 }
 

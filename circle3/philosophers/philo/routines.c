@@ -12,24 +12,19 @@
 
 #include "philo.h"
 
-// TODO: use the table directly
-static void	philosopher(t_table *table, t_philo *philo, int fork_num, pthread_mutex_t *mutexes, int *terminate)
+static void	philosopher(t_table *table, int i)
 {
-
-	if (*terminate == 1)
+	if (get_terminate_flag(table) == 1)
 		return ;
-	change_state(philo, "thinking");
-	print_state(philo, terminate, table->start_time);
-	if (philo_eat(philo, fork_num, mutexes, terminate, table->start_time) == TRUE)
+	change_state(table, i, "thinking");
+	print_state(table, i);
+	if (philo_eat(table, i) == TRUE)
 	{
-		philo->num_of_times_eaten++;
-		gettimeofday(&philo->last_eaten, NULL);
-		if (*terminate == 1)
-		{
+		increment_num_times_eaten(table, i);
+		set_last_eaten_now(table, i);
+		if (get_terminate_flag(table) == 1)
 			return ;
-			printf(" dead\n");
-		}
-		philo_sleep(philo, terminate, table->start_time);
+		philo_sleep(table, i);
 	}
 }
 
@@ -38,17 +33,20 @@ void	*create_philo(void *args)
 	t_thread_args	*arg;
 	
 	arg = (t_thread_args *)args;
-	while (arg->table->start == FALSE)
+	while (arg->table->start_flag == FALSE)
 		usleep(1);
-	gettimeofday(&arg->table->philos[arg->index]->last_eaten, NULL);
-	while (arg->table->terminate != 1
-		&& arg->table->philos[arg->index]->num_of_times_eaten < arg->table->num_of_times_to_eat)
+	set_last_eaten_now(arg->table, arg->index);
+	if (get_num_times_eaten(arg->table, arg->index) >= arg->table->num_of_times_to_eat)
 	{
-		philosopher(arg->table,
-			arg->table->philos[arg->index],
-			arg->table->fork_num,
-			arg->table->fork_mutexes,
-			&arg->table->terminate);
+		set_terminate_flag(arg->table, 1);
+		return (0);
+	}
+	if (get_terminate_flag(arg->table) == 1)
+		return (0);
+	while (get_terminate_flag(arg->table) != 1
+		&& get_num_times_eaten(arg->table, arg->index) < arg->table->num_of_times_to_eat)
+	{
+		philosopher(arg->table, arg->index);
 	}
 	return (0);
 }
@@ -59,16 +57,16 @@ void	*monitor_philos(void *args)
 	t_thread_args	*arg;
 
 	arg = (t_thread_args *)args;
-	while (!(arg->table->terminate == 1))
+	while (get_terminate_flag(arg->table) != 1)
 	{
 		usleep(10);
 		i = 0;
 		while (i < arg->table->philos_num)
 		{
-			if (time_difference(arg->table->philos[i]->last_eaten) > arg->table->philos[i]->time_to_die)
+			if (time_difference(get_last_eaten(arg->table, i)) > arg->table->philos[i]->time_to_die)
 			{
-				philo_die(arg->table->philos[i]->id, arg->table->start_time);
-				arg->table->terminate = 1;
+				philo_die(arg->table, i);
+				set_terminate_flag(arg->table, 1);
 				break ;
 			}
 			i++;

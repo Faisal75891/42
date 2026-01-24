@@ -31,7 +31,7 @@ static void	start_and_join_threads(t_thread_args *args, t_table *table, pthread_
 		}
 		i++;
 	}
-	table->start=TRUE;
+	table->start_flag=TRUE;
 	args[i].table = table;
 	args[i].index = i;
 	args[i].threads = th;
@@ -84,7 +84,7 @@ int	main(int argc, char **argv)
 {
 	t_table	*table;
 	int		optional;
-	int		i;
+	//int		i;
 
 	optional = 0;
 	if (argc < 5)
@@ -102,14 +102,15 @@ int	main(int argc, char **argv)
 	}
 	philo(table);
 	free_philos(table->philos);
-	i = 0;
-	while (i < table->fork_num)
-	{
-		pthread_mutex_destroy(&table->fork_mutexes[i]);
-		i++;
-	}
-	// TODO: free/destroy mutexes
-	free(table->fork_mutexes);
+	//i = 0;
+	// TODO: free mutexes.
+	// while (i < table->fork_num)
+	// {
+	// 	pthread_mutex_destroy(&table->fork_mutexes[i]);
+	// 	i++;
+	// }
+	// free/destroy mutexes
+	//free(table->fork_mutexes);
 	free(table);
 	return (0);
 }

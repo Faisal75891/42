@@ -37,6 +37,18 @@ typedef struct s_philo
 	struct timeval	last_eaten;
 }	t_philo;
 
+// mutex data
+typedef struct s_mutexes
+{
+	pthread_mutex_t	*fork_mutexes;
+	pthread_mutex_t	num_of_times_eaten_mutex;
+	pthread_mutex_t	terminate_mutex;
+	pthread_mutex_t	last_eaten_mutex;
+	pthread_mutex_t	printing_mutex;
+	pthread_mutex_t	start_mutex;
+	pthread_mutex_t	state_mutex;
+}	t_mutexes;
+
 // table data
 typedef struct s_table
 {
@@ -50,17 +62,6 @@ typedef struct s_table
 	t_mutexes		*mutexes;
 }	t_table;
 
-// mutex data
-// TODO:
-typedef struct s_mutexes
-{
-	pthread_mutex_t	*fork_mutexes;
-	pthread_mutex_t	num_of_times_eaten_mutex;
-	pthread_mutex_t	terminate_mutex;
-	pthread_mutex_t	last_eaten_mutex;
-	pthread_mutex_t	printing_mutex;
-	pthread_mutex_t	start_mutex;
-}	t_mutexes;
 
 typedef struct s_thread_args
 {
@@ -71,33 +72,43 @@ typedef struct s_thread_args
 
 // free_philo
 void			free_philos(t_philo **table);
+void			free_forks(pthread_mutex_t *fork_mutexes, int fork_num);
+
 
 // init_philo
 t_philo			**init_philos(int philos_num, char **argv);
 t_table			*init_table_and_philos(char **argv, int optional);
 t_philo			*init_philo(char **argv, int id);
 int				*init_forks(int fork_num);
-pthread_mutex_t	*init_mutexes(int fork_num);
+pthread_mutex_t	*init_fork_mutex(int fork_num);
+t_mutexes		*init_mutexes(int fork_num);
+
 
 // utils
 int				ft_atoi(char *s);
 int				ft_strcmp(char *s1, char *s2);
 
+// shared state helpers
+int			get_terminate_flag(t_table *table);
+void			set_terminate_flag(t_table *table, int value);
+void			set_last_eaten_now(t_table *table, int index);
+struct timeval	get_last_eaten(t_table *table, int index);
+int			get_num_times_eaten(t_table *table, int index);
+void			increment_num_times_eaten(t_table *table, int index);
+
 // states
-void			print_state(t_philo *philo, int *terminate, unsigned long start_time);
-void			change_state(t_philo *philo, char *state);
+void			print_state(t_table *table, int i);
+void			change_state(t_table *table, int i, char *state);
 
 // taking forks
-void			put_fork(int fork_num, int index,
-					pthread_mutex_t *fork_mutexes);
-int				take_fork(int fork_num, int index, pthread_mutex_t *fork_mutexes, int *terminate, unsigned long start_time);
+void			put_fork(t_table *table, int index);
+int				take_fork(t_table *table, int index);
 
 
 // actions
-int				philo_eat(t_philo *philo, int fork_num,
-					pthread_mutex_t *fork_mutexes, int *terminate, unsigned long start_time);
-void			philo_sleep(t_philo *philo, int *terminate, unsigned long start_time);
-void			philo_die(int i, unsigned long start_time);
+int				philo_eat(t_table *table, int i);
+void			philo_sleep(t_table *table, int i);
+void			philo_die(t_table *table, int i);
 
 // time
 unsigned long	time_stamp(void);

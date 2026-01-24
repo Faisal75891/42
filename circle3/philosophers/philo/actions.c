@@ -17,35 +17,39 @@
 // and put fork back
 // return 1
 // else return 0
-int	philo_eat(t_philo *philo, int fork_num, pthread_mutex_t *mutexes, int *terminate, unsigned long start_time)
+int	philo_eat(t_table *table, int i)
 {
-	if (take_fork(fork_num, philo->id, mutexes, terminate, start_time) == TRUE)
+	if (take_fork(table, i) == TRUE)
 	{
-		if (*terminate == 1)
+		if (get_terminate_flag(table) == 1)
 		{
-			put_fork(fork_num, philo->id, mutexes);	
+			put_fork(table, i);	
 			return (FALSE);
 		}
-		change_state(philo, "eating");
-		print_state(philo, terminate, start_time);
-		usleep(philo->time_to_eat * 1000);
-		put_fork(fork_num, philo->id, mutexes);
+		change_state(table, i, "eating");
+		print_state(table, i);
+		usleep(table->philos[i]->time_to_eat * 1000);
+		put_fork(table, i);
 		return (TRUE);
 	}
 	return (FALSE);
 }
 
-void	philo_sleep(t_philo *philo, int *terminate, unsigned long start_time)
+void	philo_sleep(t_table *table, int i)
 {
-	if (philo->time_to_sleep > 0 && *terminate != 1)
+	if (get_terminate_flag(table) == 1)
+		return ;
+	if (table->philos[i]->time_to_sleep > 0)
 	{
-		change_state(philo, "sleeping");
-		print_state(philo, terminate, start_time);
-		usleep(philo->time_to_sleep * 1000);
+		change_state(table, i, "sleeping");
+		print_state(table, i);
+		usleep(table->philos[i]->time_to_sleep * 1000);
 	}
 }
 
-void	philo_die(int i, unsigned long start_time)
+void	philo_die(t_table *table, int i)
 {
-	printf("%lu %d died\n", time_stamp() - start_time, i);
+	pthread_mutex_lock(&table->mutexes->printing_mutex);
+	printf("%lu %d died\n", time_stamp() - table->starting_time, i);
+	pthread_mutex_unlock(&table->mutexes->printing_mutex);
 }

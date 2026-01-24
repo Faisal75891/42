@@ -12,61 +12,68 @@
 
 #include "philo.h"
 
-int	take_fork(int fork_num, int index, pthread_mutex_t *fork_mutexes, int *terminate, unsigned long start_time)
+int	take_fork(t_table *table, int index)
 {
 	int	left;
 	int	right;
 
-	if (fork_num <= 1)
+	if (table->fork_num <= 1)
 		return (FALSE);
-	if (index < (index + 1) % fork_num)
+	left = index;
+	right = (index + 1) % table->fork_num;
+	if (index % 2 == 0)
 	{
-		left = index;
-		right = (index + 1) % fork_num;
+		pthread_mutex_lock(&table->mutexes->fork_mutexes[left]);
+		if (get_terminate_flag(table))
+		{
+			pthread_mutex_unlock(&table->mutexes->fork_mutexes[left]);
+			return (FALSE);
+		}
+		pthread_mutex_lock(&table->mutexes->printing_mutex);
+		printf("%lu %d has taken a fork\n", time_stamp() - table->starting_time, index);
+		pthread_mutex_unlock(&table->mutexes->printing_mutex);
+		pthread_mutex_lock(&table->mutexes->fork_mutexes[right]);
 	}
 	else
 	{
-		left = (index + 1) % fork_num;
-		right = index;
+		pthread_mutex_lock(&table->mutexes->fork_mutexes[right]);
+		if (get_terminate_flag(table))
+		{
+			pthread_mutex_unlock(&table->mutexes->fork_mutexes[right]);
+			return (FALSE);
+		}
+		pthread_mutex_lock(&table->mutexes->printing_mutex);
+		printf("%lu %d has taken a fork\n", time_stamp() - table->starting_time, index);
+		pthread_mutex_unlock(&table->mutexes->printing_mutex);
+		pthread_mutex_lock(&table->mutexes->fork_mutexes[left]);
 	}
-	
-	// Block here until left fork is available
-	pthread_mutex_lock(&fork_mutexes[left]);
-	if (*terminate)
+	if (get_terminate_flag(table))
 	{
-		pthread_mutex_unlock(&fork_mutexes[left]);
+		pthread_mutex_unlock(&table->mutexes->fork_mutexes[left]);
+		pthread_mutex_unlock(&table->mutexes->fork_mutexes[right]);
 		return (FALSE);
 	}
-	printf("%lu %d has taken a fork\n", time_stamp() - start_time, index);
-	
-	// Block here until right fork is available
-	pthread_mutex_lock(&fork_mutexes[right]);
-	if (*terminate)
-	{
-		pthread_mutex_unlock(&fork_mutexes[right]);
-		pthread_mutex_unlock(&fork_mutexes[left]);
-		return (FALSE);
-	}
-	printf("%lu %d has taken a fork\n", time_stamp() - start_time, index);
-	
+	pthread_mutex_lock(&table->mutexes->printing_mutex);
+	printf("%lu %d has taken a fork\n", time_stamp() - table->starting_time, index);
+	pthread_mutex_unlock(&table->mutexes->printing_mutex);
 	return (TRUE);
 }
 
-void	put_fork(int fork_num, int index, pthread_mutex_t *fork_mutexes)
+void	put_fork(t_table *table, int index)
 {
 	int	left;
 	int	right;
 
 	left = index;
-	right = (index + 1) % fork_num;
-	pthread_mutex_unlock(&fork_mutexes[left]);
-	pthread_mutex_unlock(&fork_mutexes[right]);
+	right = (index + 1) % table->fork_num;
+	pthread_mutex_unlock(&table->mutexes->fork_mutexes[left]);
+	pthread_mutex_unlock(&table->mutexes->fork_mutexes[right]);
 }
 
 
 /*
 1. Always lock lower-numbered fork first
-
+terminate_flag 
 or
 
 2. Odd-Even Strategy
