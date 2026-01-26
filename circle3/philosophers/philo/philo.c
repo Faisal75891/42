@@ -83,6 +83,21 @@ void	philo(t_table *table)
 	free(args);
 }
 
+int	check_user_intput(char **argv, int optional)
+{
+	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[1]) > 2147483646)
+		return (0);
+	if (ft_atoi(argv[2]) <= 0 || ft_atoi(argv[2]) > 2147483646)
+		return (0);
+	if (ft_atoi(argv[3]) <= 0 || ft_atoi(argv[3]) > 2147483646)
+		return (0);
+	if (ft_atoi(argv[4]) <= 0 || ft_atoi(argv[4]) > 2147483646) 
+		return (0);
+	if (optional && (ft_atoi(argv[5]) < 0 || ft_atoi(argv[5]) > 2147483646))
+		return (0);
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
 	t_table	*table;
@@ -97,6 +112,11 @@ int	main(int argc, char **argv)
 	}
 	else if (argc == 6)
 		optional = 1;
+	if (!check_user_intput(argv, optional))
+	{
+		write(2, "Invalid input\n", 15);
+		return (1);
+	}
 	table = init_table_and_philos(argv, optional);
 	if (!table)
 	{
