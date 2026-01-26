@@ -21,6 +21,7 @@ int	philo_eat(t_table *table, int i)
 			put_fork(table, i);
 			return (FALSE);
 		}
+		set_last_eaten_now(table, i);
 		change_state(table, i, "eating");
 		print_state(table, i);
 		usleep(table->philos[i]->time_to_eat * 1000);

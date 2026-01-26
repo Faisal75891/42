@@ -14,18 +14,6 @@
 
 static void	wait_threads(t_table *table, pthread_t *th, pthread_t *monitor)
 {
-	//int	i;
-	// i = 0;
-	// while (i < table->philos_num)
-	// {
-	// 	printf("reached here\n");
-	// 	if (pthread_join(th[i], NULL) != 0)
-	// 	{
-	// 		printf("jjoined threads\n");
-	// 		return ;
-	// 	}
-	// 	i++;
-	// }
 	(void)th;
 	(void)table;
 	if (pthread_join(*monitor, NULL) != 0)

@@ -106,11 +106,17 @@ void			change_state(t_table *table, int i, char *state);
 // taking forks
 void			put_fork(t_table *table, int index);
 int				take_fork(t_table *table, int index);
+int				handle_one_philo(t_table *table, int index, int left);
 
 // actions
 int				philo_eat(t_table *table, int i);
 void			philo_sleep(t_table *table, int i);
 void			philo_die(t_table *table, int i);
+int				take_left_fork_first(t_table *table, int index,
+					int left, int right);
+int				take_right_fork_first(t_table *table, int index,
+					int left, int right);
+void			safe_print(t_table *table, int index);
 
 // time
 unsigned long	time_stamp(void);
