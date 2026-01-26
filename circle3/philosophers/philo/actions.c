@@ -47,4 +47,5 @@ void	philo_die(t_table *table, int i)
 	pthread_mutex_lock(&table->mutexes->printing_mutex);
 	printf("%lu %d died\n", time_stamp() - table->starting_time, i);
 	pthread_mutex_unlock(&table->mutexes->printing_mutex);
+	set_terminate_flag(table, 1);
 }

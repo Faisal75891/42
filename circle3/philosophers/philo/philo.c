@@ -14,15 +14,20 @@
 
 static void	wait_threads(t_table *table, pthread_t *th, pthread_t *monitor)
 {
-	int	i;
-
-	i = 0;
-	while (i < table->philos_num)
-	{
-		if (pthread_join(th[i], NULL) != 0)
-			return ;
-		i++;
-	}
+	//int	i;
+	// i = 0;
+	// while (i < table->philos_num)
+	// {
+	// 	printf("reached here\n");
+	// 	if (pthread_join(th[i], NULL) != 0)
+	// 	{
+	// 		printf("jjoined threads\n");
+	// 		return ;
+	// 	}
+	// 	i++;
+	// }
+	(void)th;
+	(void)table;
 	if (pthread_join(*monitor, NULL) != 0)
 	{
 		printf("joined threads.\n");
@@ -50,12 +55,12 @@ static void	start_and_join_threads(t_thread_args *args, t_table *table,
 		}
 		i++;
 	}
-	table->start_flag = TRUE;
 	args[i].table = table;
 	args[i].index = i;
 	args[i].threads = th;
 	if (pthread_create(monitor, NULL, &monitor_philos, (void *)&args[i]) != 0)
 		return ;
+	set_start_flag(table, TRUE);
 	wait_threads(table, th, monitor);
 }
 

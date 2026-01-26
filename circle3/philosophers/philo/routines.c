@@ -16,8 +16,11 @@ static void	philosopher(t_table *table, int i)
 {
 	if (get_terminate_flag(table) == 1)
 		return ;
-	change_state(table, i, "thinking");
-	print_state(table, i);
+	if (get_state(table, i) != 0)
+	{
+		change_state(table, i, "thinking");
+		print_state(table, i);
+	}
 	if (philo_eat(table, i) == TRUE)
 	{
 		increment_num_times_eaten(table, i);
@@ -38,13 +41,12 @@ void	*create_philo(void *args)
 	t_thread_args	*arg;
 
 	arg = (t_thread_args *)args;
-	while (arg->table->start_flag == FALSE)
+	while (get_start_flag(arg->table) == FALSE)
 		usleep(1);
 	set_last_eaten_now(arg->table, arg->index);
 	if (get_num_times_eaten(arg->table, arg->index)
 		>= arg->table->num_of_times_to_eat)
 	{
-		pthread_join(arg->threads[arg->index], NULL);
 		return (0);
 	}
 	if (get_terminate_flag(arg->table) == 1)
@@ -66,7 +68,9 @@ static void	join_all_threads(t_thread_args *arg)
 	while (i < arg->table->philos_num)
 	{
 		if (pthread_join(arg->threads[i], NULL) != 0)
+		{
 			return ;
+		}
 		i++;
 	}
 }
@@ -75,10 +79,8 @@ void	*monitor_philos(void *args)
 {
 	int				i;
 	t_thread_args	*arg;
-	int				eating;
 	int				all_done;
 
-	eating = 1;
 	arg = (t_thread_args *)args;
 	while (get_terminate_flag(arg->table) != 1)
 	{
@@ -87,16 +89,12 @@ void	*monitor_philos(void *args)
 		all_done = 1;
 		while (i < arg->table->philos_num)
 		{
-			if (!finished_eating(arg->table, i))
+			if (!finished_eating(arg->table, i) && /*get_state(arg->table, i) != eating &&*/ time_difference(get_last_eaten(arg->table, i))
+				> arg->table->philos[i]->time_to_die)
 			{
 				all_done = 0;
-				if (get_state(arg->table, i) != eating && time_difference(get_last_eaten(arg->table, i))
-					> arg->table->philos[i]->time_to_die)
-				{
-					philo_die(arg->table, i);
-					set_terminate_flag(arg->table, 1);
-					break ;
-				}
+				philo_die(arg->table, i);
+				break ;
 			}
 			i++;
 		}

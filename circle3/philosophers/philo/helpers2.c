@@ -43,7 +43,7 @@ int	get_state(t_table *table, int i)
 {
 	pthread_mutex_lock(&table->mutexes->state_mutex);
 	if (table->philos[i]->state[0] == 1)
-	{	
+	{
 		pthread_mutex_unlock(&table->mutexes->state_mutex);
 		return (0);
 	}
@@ -60,7 +60,7 @@ int	get_state(t_table *table, int i)
 	else
 	{
 		pthread_mutex_unlock(&table->mutexes->state_mutex);
-		return(-1);
+		return (-1);
 	}
 }
 

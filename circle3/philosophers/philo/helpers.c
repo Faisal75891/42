@@ -35,3 +35,20 @@ void	set_last_eaten_now(t_table *table, int index)
 	gettimeofday(&table->philos[index]->last_eaten, NULL);
 	pthread_mutex_unlock(&table->mutexes->last_eaten_mutex);
 }
+
+int	get_start_flag(t_table *table)
+{
+	int	flag;
+
+	pthread_mutex_lock(&table->mutexes->start_mutex);
+	flag = table->start_flag;
+	pthread_mutex_unlock(&table->mutexes->start_mutex);
+	return (flag);
+}
+
+void	set_start_flag(t_table *table, int flag)
+{
+	pthread_mutex_lock(&table->mutexes->start_mutex);
+	table->start_flag = flag;
+	pthread_mutex_unlock(&table->mutexes->start_mutex);
+}

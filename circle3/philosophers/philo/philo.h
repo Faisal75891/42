@@ -96,7 +96,8 @@ int				get_num_times_eaten(t_table *table, int index);
 void			increment_num_times_eaten(t_table *table, int index);
 int				get_state(t_table *table, int i);
 int				finished_eating(t_table *table, int i);
-
+int				get_start_flag(t_table *table);
+void			set_start_flag(t_table *table, int flag);
 
 // states
 void			print_state(t_table *table, int i);
