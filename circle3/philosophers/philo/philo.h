@@ -73,6 +73,7 @@ typedef struct s_thread_args
 void			free_philos(t_philo **table);
 void			free_forks(pthread_mutex_t *fork_mutexes, int fork_num);
 t_mutexes		*clean_up(t_mutexes *mutexes, int level, int fork_num);
+void			free_table(t_table *table);
 
 // init_philo
 t_philo			**init_philos(int philos_num, char **argv);
@@ -93,6 +94,9 @@ void			set_last_eaten_now(t_table *table, int index);
 struct timeval	get_last_eaten(t_table *table, int index);
 int				get_num_times_eaten(t_table *table, int index);
 void			increment_num_times_eaten(t_table *table, int index);
+int				get_state(t_table *table, int i);
+int				finished_eating(t_table *table, int i);
+
 
 // states
 void			print_state(t_table *table, int i);

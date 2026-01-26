@@ -12,8 +12,6 @@
 
 #include "philo.h"
 
-// calls ¨create_philo¨ function
-// calls ¨monitor_philos¨ function
 static void	wait_threads(t_table *table, pthread_t *th, pthread_t *monitor)
 {
 	int	i;
@@ -26,9 +24,14 @@ static void	wait_threads(t_table *table, pthread_t *th, pthread_t *monitor)
 		i++;
 	}
 	if (pthread_join(*monitor, NULL) != 0)
+	{
+		printf("joined threads.\n");
 		return ;
+	}
 }
 
+// calls ¨create_philo¨ function
+// and ¨monitor_philos¨ function
 static void	start_and_join_threads(t_thread_args *args, t_table *table,
 	pthread_t *th, pthread_t *monitor)
 {
@@ -56,9 +59,9 @@ static void	start_and_join_threads(t_thread_args *args, t_table *table,
 	wait_threads(table, th, monitor);
 }
 
-// mallocs stuff and creates threads
-// calls start and join threads()
-// calls monitor()
+// mallocs threads
+// mallocs args which will hold all values.
+// calls start and join threads() 
 void	philo(t_table *table)
 {
 	pthread_t		*th;
@@ -107,8 +110,6 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	philo(table);
-	free_philos(table->philos);
-	clean_up(table->mutexes, 6, table->fork_num);
-	free(table);
+	free_table(table);
 	return (0);
 }

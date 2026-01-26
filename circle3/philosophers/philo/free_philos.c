@@ -6,25 +6,25 @@
 /*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 22:04:24 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/24 22:39:52 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/01/26 08:38:20 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_philos(t_philo **table)
+void	free_philos(t_philo **philo)
 {
 	int	i;
 
-	if (!table)
+	if (!philo)
 		return ;
 	i = 0;
-	while (table[i])
+	while (philo[i])
 	{
-		free(table[i]);
+		free(philo[i]);
 		i++;
 	}
-	free (table);
+	free (philo);
 }
 
 void	free_forks(pthread_mutex_t *fork_mutexes, int fork_num)
@@ -58,4 +58,11 @@ t_mutexes	*clean_up(t_mutexes *mutexes, int level, int fork_num)
 		pthread_mutex_destroy(&mutexes->terminate_mutex);
 	free(mutexes);
 	return (NULL);
+}
+
+void	free_table(t_table *table)
+{
+	clean_up(table->mutexes, 6, table->fork_num);
+	free_philos(table->philos);
+	free(table);
 }

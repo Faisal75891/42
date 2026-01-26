@@ -38,3 +38,33 @@ void	increment_num_times_eaten(t_table *table, int index)
 	table->philos[index]->num_of_times_eaten++;
 	pthread_mutex_unlock(&table->mutexes->num_of_times_eaten_mutex);
 }
+
+int	get_state(t_table *table, int i)
+{
+	pthread_mutex_lock(&table->mutexes->state_mutex);
+	if (table->philos[i]->state[0] == 1)
+	{	
+		pthread_mutex_unlock(&table->mutexes->state_mutex);
+		return (0);
+	}
+	else if (table->philos[i]->state[1] == 1)
+	{
+		pthread_mutex_unlock(&table->mutexes->state_mutex);
+		return (1);
+	}
+	else if (table->philos[i]->state[2] == 1)
+	{
+		pthread_mutex_unlock(&table->mutexes->state_mutex);
+		return (2);
+	}
+	else
+	{
+		pthread_mutex_unlock(&table->mutexes->state_mutex);
+		return(-1);
+	}
+}
+
+int	finished_eating(t_table *table, int i)
+{
+	return (get_num_times_eaten(table, i) >= table->num_of_times_to_eat);
+}

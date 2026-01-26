@@ -12,11 +12,6 @@
 
 #include "philo.h"
 
-// if can take fork
-// and gave time to eat
-// and put fork back
-// return 1
-// else return 0
 int	philo_eat(t_table *table, int i)
 {
 	if (take_fork(table, i) == TRUE)
