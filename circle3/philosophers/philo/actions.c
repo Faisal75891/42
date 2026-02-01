@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/07 13:01:48 by fbaras            #+#    #+#             */
-/*   Updated: 2026/01/07 13:01:48 by fbaras           ###   ########.fr       */
+/*   Created: 2026/01/26 19:34:49 by fbaras            #+#    #+#             */
+/*   Updated: 2026/01/26 19:34:49 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	philo_eat(t_table *table, int i)
 		set_last_eaten_now(table, i);
 		change_state(table, i, "eating");
 		print_state(table, i);
-		usleep(table->philos[i]->time_to_eat * 1000);
+		ft_usleep(table->philos[i]->time_to_eat);
 		put_fork(table, i);
 		return (TRUE);
 	}
@@ -39,14 +39,14 @@ void	philo_sleep(t_table *table, int i)
 	{
 		change_state(table, i, "sleeping");
 		print_state(table, i);
-		usleep(table->philos[i]->time_to_sleep * 1000);
+		ft_usleep(table->philos[i]->time_to_sleep);
 	}
 }
 
 void	philo_die(t_table *table, int i)
 {
 	pthread_mutex_lock(&table->mutexes->printing_mutex);
-	printf("%lu %d died\n", time_stamp() - table->starting_time, i);
+	printf("%lu %d died\n", time_stamp() - table->starting_time, i + 1);
 	pthread_mutex_unlock(&table->mutexes->printing_mutex);
 	set_terminate_flag(table, 1);
 }

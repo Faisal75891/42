@@ -1,8 +1,8 @@
 NAME = philo
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 CC = cc
 
-SRC = forks.c  free_philos.c  ft_atoi.c  init_philo.c  philo.c  state.c  actions.c  time_stamp.c  routines.c  helpers.c  helpers2.c  init_mutexes.c  forks_helpers.c
+SRC = forks.c  free_philos.c  ft_atoi.c  init_philo.c  philo.c  state.c  actions.c  time_stamp.c  routines.c  helpers.c  helpers2.c  init_mutexes.c  forks_helpers.c  validate_args.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

@@ -121,9 +121,14 @@ void			safe_print(t_table *table, int index);
 // time
 unsigned long	time_stamp(void);
 long long		time_difference(struct timeval then);
+void			ft_usleep(unsigned long ms);
 
 // routines
 void			*create_philo(void *args);
 void			*monitor_philos(void *args);
+
+// validate args
+int				validate_args(int argc, char **argv);
+int				is_valid_number(char *s);
 
 #endif

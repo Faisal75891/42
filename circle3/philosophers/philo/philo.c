@@ -12,13 +12,10 @@
 
 #include "philo.h"
 
-static void	wait_threads(t_table *table, pthread_t *th, pthread_t *monitor)
+static void	wait_threads(pthread_t *monitor)
 {
-	(void)th;
-	(void)table;
 	if (pthread_join(*monitor, NULL) != 0)
 	{
-		printf("joined threads.\n");
 		return ;
 	}
 }
@@ -36,6 +33,7 @@ static void	start_and_join_threads(t_thread_args *args, t_table *table,
 		args[i].table = table;
 		args[i].index = i;
 		args[i].threads = th;
+		set_last_eaten_now(table, i);
 		if (pthread_create(&th[i], NULL, &create_philo, (void *)&args[i]) != 0)
 		{
 			write(2, "couldn't start thread\n", 23);
@@ -48,8 +46,9 @@ static void	start_and_join_threads(t_thread_args *args, t_table *table,
 	args[i].threads = th;
 	if (pthread_create(monitor, NULL, &monitor_philos, (void *)&args[i]) != 0)
 		return ;
+	table->starting_time = time_stamp();
 	set_start_flag(table, TRUE);
-	wait_threads(table, th, monitor);
+	wait_threads(monitor);
 }
 
 // mallocs threads
@@ -83,40 +82,21 @@ void	philo(t_table *table)
 	free(args);
 }
 
-int	check_user_intput(char **argv, int optional)
-{
-	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[1]) > 2147483646)
-		return (0);
-	if (ft_atoi(argv[2]) <= 0 || ft_atoi(argv[2]) > 2147483646)
-		return (0);
-	if (ft_atoi(argv[3]) <= 0 || ft_atoi(argv[3]) > 2147483646)
-		return (0);
-	if (ft_atoi(argv[4]) <= 0 || ft_atoi(argv[4]) > 2147483646) 
-		return (0);
-	if (optional && (ft_atoi(argv[5]) < 0 || ft_atoi(argv[5]) > 2147483646))
-		return (0);
-	return (1);
-}
-
 int	main(int argc, char **argv)
 {
 	t_table	*table;
 	int		optional;
 
 	optional = 0;
-	if (argc < 5)
+	if (!validate_args(argc, argv))
 	{
-		printf("USAGE: ./philo number_of_philosophers time_to_die time_to_eat\
-			time_to_sleep [number_of_times_each_philosopher_must_eat]\n");
+		printf("Error: Invalid arguments\n");
+		printf("USAGE: ./philo number_of_philosophers time_to_die time_to_eat");
+		printf(" time_to_sleep [number_of_times_each_philosopher_must_eat]\n");
 		return (1);
 	}
-	else if (argc == 6)
+	if (argc == 6)
 		optional = 1;
-	if (!check_user_intput(argv, optional))
-	{
-		write(2, "Invalid input\n", 15);
-		return (1);
-	}
 	table = init_table_and_philos(argv, optional);
 	if (!table)
 	{

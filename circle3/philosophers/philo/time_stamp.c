@@ -31,12 +31,11 @@ unsigned long	time_stamp(void)
 	return (now.tv_sec * 1000LL + (now.tv_usec / 1000LL));
 }
 
-// int	main(void)
-// {
-// 	struct timeval then;
+void	ft_usleep(unsigned long ms)
+{
+	unsigned long	start;
 
-// 	gettimeofday(&then, NULL);
-// 	sleep(1);
-// 	printf("%lld\n", time_difference(then));
-// 	printf("%lu\n", time_stamp());
-// }
+	start = time_stamp();
+	while (time_stamp() - start < ms)
+		usleep(500);
+}

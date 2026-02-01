@@ -38,7 +38,7 @@ static void	quick_setup(t_table *table, char **argv, int optional)
 	table->philos_num = ft_atoi(argv[1]);
 	table->fork_num = ft_atoi(argv[1]);
 	if (!optional)
-		table->num_of_times_to_eat = 5;
+		table->num_of_times_to_eat = 2147483647;
 	else
 		table->num_of_times_to_eat = ft_atoi(argv[5]);
 	table->terminate_flag = FALSE;
