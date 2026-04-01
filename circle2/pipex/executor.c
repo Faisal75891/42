@@ -102,7 +102,6 @@ void	child_process(t_gl_variable *glv, int prev_pipe,
 		close_if_open(&glv->heredoc_pipe[1]);
 	if (glv->arg_index == 0)
 		setup_input(glv);
-	else
 		dup_and_close(prev_pipe, STDIN_FILENO);
 	if (glv->arg_index == num_of_commands - 1)
 	{
