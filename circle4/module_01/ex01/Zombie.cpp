@@ -1,52 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Zombie.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/04 22:04:25 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/04 22:04:25 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Zombie.h"
 
-Zombie	*newZombie( std::string name );
-Zombie  *zombieHorde(int N, string name);
-void	randomChump( std::string name );
-
-int	main(void)
+Zombie::Zombie()
 {
-	Zombie  *z = zombieHorde(3, "gurrrr");
-    
-    for (int i = 0; i < 3; i++)
-    {
-        z[i].announce();
-    }
-    // for (int i = 0; i < 3; i++)
-    //     delete &z[i];
-    delete[] z;
-	return (1);
 }
 
-void	randomChump( std::string name)
+Zombie::~Zombie()
 {
-	Zombie	*zombie = newZombie(name);
-	if (!zombie)
-		return ;
-	zombie->announce();
-	delete zombie;
+	std::cout << name << ": died :(\n";
 }
 
-Zombie	*newZombie( std::string name )
+void	Zombie::announce(void)
 {
-	Zombie	*newZombie;
-
-	newZombie = new Zombie;
-	newZombie->setName(name);
-
-	return (newZombie);
+	std::cout << name << ": BraiiiiiiinnnzzzZ...\n"; 
 }
 
-Zombie  *zombieHorde(int N, string name)
+std::string	Zombie::getName( void ) const
 {
-    Zombie  *zombies;
-    int     i = 0;
+	return name ;
+}
 
-    zombies = new Zombie[N];
-    while (i < N)
-    {
-        zombies[i].setName(name);
-        i++;
-    }
-    return (zombies);
+void	Zombie::setName( const std::string &n)
+{
+	name = n;
 }

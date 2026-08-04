@@ -1,30 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Weapon.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/04 23:10:06 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/04 23:10:06 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #ifndef WEAPON_H
 # define WEAPON_H
 
 #include <iostream>
 #include <string>
-using namespace std;
 
 class Weapon
 {
 	private:
-		string	type;
+		std::string	type;
 	public:
-		Weapon(string type);
+		Weapon(std::string type);
 		~Weapon();
-		string	getType(void) const { return type; }
-		void	setType(string new_type) { type = new_type; }
+		std::string	getType(void) const;
+		void	setType(std::string new_type);
 };
-
-Weapon::Weapon(string type)
-{
-	type = type;
-}
-
-Weapon::~Weapon()
-{
-	//cout << type << " got destroyed!\n";
-}
 
 #endif

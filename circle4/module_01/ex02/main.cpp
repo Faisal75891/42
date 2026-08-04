@@ -1,21 +1,20 @@
 #include <string>
 #include <iostream>
-using namespace std;
 
 int	main(void)
 {
-	string	s("HI THIS IS BRAIN");
-	string	*stringPTR = &s;
-	string	&stringREF = s;
+	std::string	s("HI THIS IS BRAIN");
+	std::string	*stringPTR = &s;
+	std::string	&stringREF = s;
 
-	cout 
-	<< "Address of string: " << &s << endl 
-	<< "Address of ptr: " << &stringPTR << endl
-	<< "Address of reference: " << &stringREF << endl << endl;
+	std::cout 
+	<< "Address of string: " << &s << std::endl 
+	<< "Address of ptr: " << &stringPTR << std::endl
+	<< "Address of reference: " << &stringREF << std::endl << std::endl;
 
-	cout 
-	<< "string: " << s << endl 
-	<< "ptr: " << stringPTR << endl
-	<< "reference: " << stringREF << endl;
+	std::cout 
+	<< "string: " << s << std::endl 
+	<< "ptr: " << stringPTR << std::endl
+	<< "reference: " << stringREF << std::endl;
 
 }

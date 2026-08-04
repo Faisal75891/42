@@ -1,22 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   HumanB.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/04 23:10:19 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/04 23:10:19 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #ifndef HUMANB_H
 #define HUMANB_H
 
+#include <iostream>
+#include <string>
 #include "Weapon.h"
 
 class HumanB
 {
 	private:
-		string	name;
+		std::string	name;
 		Weapon	*weapon;
 	public:
-		HumanB(string name);
-		void    attack() { cout << name << " attacks their " << weapon->getType() << endl; }
-		void	setWeapon(Weapon new_weapon) { *weapon = new_weapon; }
+		HumanB(std::string name);
+		~HumanB();
+		void	attack();
+		void	setWeapon(Weapon &new_weapon);
 };
-
-HumanB::HumanB(string name) : name(name)
-{
-}
 
 #endif

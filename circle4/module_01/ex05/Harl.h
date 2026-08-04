@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Harl.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/04 23:50:33 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/04 23:50:33 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #ifndef HARL_H
 #define HARL_H
 
 #include <iostream>
 #include <string>
-using namespace std;
 
 class Harl
 {
@@ -16,7 +27,7 @@ private:
 public:
 	Harl(/* args */);
 	~Harl();
-	void	complain(string level);
+	void	complain(std::string level);
 };
 
 #endif

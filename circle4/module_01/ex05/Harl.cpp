@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/04 23:52:30 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/04 23:58:23 by fbaras           ###   ########.fr       */
+/*   Created: 2026/08/04 23:45:57 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/04 23:50:10 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	Harl::error( void )
 void	Harl::complain(std::string level)
 {
 	void	(Harl::*ptr[4])(void) = {&Harl::debug, &Harl::info, &Harl::warning, &Harl::error};
-	
+
 	if (level == "DEBUG")
 		(this->*ptr[0])();
 	else if (level == "INFO")
@@ -52,4 +52,6 @@ void	Harl::complain(std::string level)
 		(this->*ptr[2])();
 	else if (level == "ERROR")
 		(this->*ptr[3])();
+	// else
+	// 	(this->*ptr[3])();
 }

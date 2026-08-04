@@ -1,38 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/04 23:58:09 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/04 23:58:09 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Harl.h"
-
-void	Harl::debug( void )
-{
-	cout << "Debug\n";
-}
-
-void	Harl::info( void )
-{
-	cout << "Info\n";
-}
-
-void	Harl::warning( void )
-{
-	cout << "warning\n";
-}
-
-void	Harl::error( void )
-{
-	cout << "error\n";
-}
-
-void	Harl::complain(string level)
-{
-	void	(Harl::*ptr[4])(void) = {&Harl::debug, &Harl::info, &Harl::warning, &Harl::error};
-	
-	if (level == "DEBUG")
-		(this->*ptr[0])();
-	else if (level == "INFO")
-		(this->*ptr[1])();
-	else if (level == "WARNING")
-		(this->*ptr[2])();
-	else if (level == "ERROR")
-		(this->*ptr[3])();
-}
 
 int main(int argc, char **argv)
 {
@@ -40,7 +18,7 @@ int main(int argc, char **argv)
 	Harl	h;
 	if (argc != 2)
 	{
-		cout << "./harlfilter \"LOG LEVEL\"\n";
+		std::cout << "./harlfilter \"LOG LEVEL\"\n";
 		return (1);
 	}
 	if (!strcmp(argv[1], "DEBUG"))
@@ -56,24 +34,24 @@ int main(int argc, char **argv)
 	switch (level)
 	{
 	case 0:
-		cout << "[ DEBUG ]\n";
+		std::cout << "[ DEBUG ]\n";
 		h.complain("DEBUG");
-		cout << endl;
+		std::cout << std::endl;
 	case 1:
-		cout << "[ INFO ]\n";
+		std::cout << "[ INFO ]\n";
 		h.complain("INFO");
-		cout << endl;
+		std::cout << std::endl;
 	case 2:
-		cout << "[ WARNING ]\n";
+		std::cout << "[ WARNING ]\n";
 		h.complain("WARNING");
-		cout << endl;
+		std::cout << std::endl;
 	case 3:
-		cout << "[ ERROR ]\n";
+		std::cout << "[ ERROR ]\n";
 		h.complain("ERROR");
-		cout << endl;
+		std::cout << std::endl;
 		break;
 	default:
-		cout << "[ Probably complaining about insignificant problems ]\n";
+		std::cout << "[ Probably complaining about insignificant problems ]\n";
 		break;
 	}
 }

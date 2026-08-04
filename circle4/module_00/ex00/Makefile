@@ -5,7 +5,7 @@ OBJ = megaphone.o
 all: $(NAME)
 
 $(NAME): $(SRC)
-	g++ -Wall -Wextra -Werror $(SRC)
+	g++ -Wall -Wextra -Werror -std=c++98 $(SRC)
 
 clean:
 	rm -rf $(OBJ)

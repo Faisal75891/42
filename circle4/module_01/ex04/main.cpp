@@ -1,66 +1,56 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-using namespace std;
 
-void	copy_file(istream &infile, ofstream &outfile, string s1, string s2);
+void	copy_file(std::istream &infile, std::ofstream &outfile, std::string s1, std::string s2);
 
 int	main(void)
 {
-	string	filename, s1, s2;
+	std::string	filename, s1, s2;
+	// const	std::string filename; cin doesnt work when filename is const
 
-	if (!(cin >> filename >> s1 >> s2))
+	if (!(std::cin >> filename >> s1 >> s2))
 	{
-		cout << "Nigga\n";
+		std::cout << "Enter in this format: [filename] [string1] [string2] \n";
 	}
-	string	outfile = filename + ".replace";
-	ifstream file(filename);
+	std::string	outfile = filename + ".replace";
+	std::ifstream file(filename.c_str()); // this makes filename a const string
 	if (!file)
 	{
-		cerr << "Error occured when opening file: "
-			<< filename << endl;
+		std::cerr << "Error occured when opening file: "
+			<< filename << " Does the file exist?" << std::endl;
 		return (2);
 	}
-	ofstream file_replace(outfile);
+	std::ofstream file_replace(outfile.c_str()); // this makes outfile variable a const string
 	if (!file_replace.is_open())
 	{
-		cerr << "Error opening file " << outfile << endl;
+		std::cerr << "Error opening file " << outfile << std::endl;
 		return (3);
 	}
 	copy_file(file, file_replace, s1, s2);
-	// char	line[80];
-	// ifstream nigga(outfile);
-	// while (nigga.getline(line, 80))
-	// {
-	// 	cout << line << endl;
-	// }
-	// if (!file.eof())
-	// {
-	// 	cerr << "Error reading file: " << filename << endl;
-	// }
 	return (0);
 }
 
-void	copy_file(istream &infile, ofstream &outfile, const string s1, const string s2)
+void	copy_file(std::istream &infile, std::ofstream &outfile, const std::string s1, const std::string s2)
 {
 	char	c;
-	string	word;
-	int	i = 0;
+	std::string	word;
 	while (infile.get(c))
 	{
 		if (isspace(c))
 		{
+			// std::cout << word << std::endl;
 			if (word == s1)
 			{
 				outfile << s2;
-				cout << s2;
+				std::cout << s2;
 			}
 			else
 			{
 				outfile << word;
-				cout << word;
+				std::cout << word;
 			}
-			cout << c;
+			std::cout << c;
 			outfile << c;
 			word = "";
 		}
@@ -72,11 +62,11 @@ void	copy_file(istream &infile, ofstream &outfile, const string s1, const string
 	if (word == s1)
 	{
 		outfile << s2;
-		cout << s2;
+		std::cout << s2;
 	}
 	else
 	{
 		outfile << word;
-		cout << word;
+		std::cout << word;
 	}
 }

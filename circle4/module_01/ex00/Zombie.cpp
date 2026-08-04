@@ -1,40 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Zombie.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/04 19:57:28 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/04 19:57:28 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Zombie.h"
 
-Zombie	*newZombie( std::string name );
-void	randomChump( std::string name );
-
-int	main(void)
+Zombie::Zombie(std::string n) : name(n)
 {
-	Zombie	*nigga0, *niggarito;
-	
-	niggarito = newZombie("");
-	nigga0 = newZombie("real nigga");
-	cout << nigga0->getName() << endl;
-	cout << niggarito->getName() << endl;
-	randomChump("nigga");
-	randomChump("nigga2");
-	randomChump("nigga3");
-	randomChump("nigga4");
-	randomChump("nigga5");
-	delete nigga0, niggarito;
-	return (1);
 }
 
-void	randomChump( std::string name)
+Zombie::~Zombie()
 {
-	Zombie	*zombie = newZombie(name);
-	if (!zombie)
-		return ;
-	zombie->announce();
-	delete zombie;
+	std::cout << name << ": died :(\n";
 }
 
-Zombie	*newZombie( std::string name )
+void	Zombie::announce(void)
 {
-	Zombie	*newZombie;
+	std::cout << name << ": BraiiiiiiinnnzzzZ...\n"; 
+}
 
-	newZombie = new Zombie;
-	newZombie->setName(name);
+std::string	Zombie::getName( void ) const
+{
+	return name ;
+}
 
-	return (newZombie);
+void	Zombie::setName( const std::string &n)
+{
+	name = n;
 }

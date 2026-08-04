@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HumanB.cpp                                         :+:      :+:    :+:   */
+/*   zombieHorde.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/04 23:08:03 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/04 23:23:19 by fbaras           ###   ########.fr       */
+/*   Created: 2026/08/04 21:59:08 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/04 22:09:54 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HumanB.h"
+#include "Zombie.h"
 
-HumanB::HumanB(std::string name) : name(name)
+Zombie  *zombieHorde(int N, std::string name)
 {
-	std::cout << name << " joined the server\n";
-	// weapon = NULL;
-}
+    Zombie  *zombies;
+    int     i = 0;
 
-HumanB::~HumanB()
-{
-	std::cout << name << " died\n";
-}
-
-void	HumanB::attack()
-{
-	std::cout << name << " attacks with their " << weapon->getType() << std::endl;
-}
-
-void	HumanB::setWeapon(Weapon &new_weapon)
-{
-	this->weapon = &new_weapon;
+    if (N < 1)
+    {
+        std::cout << "Can't have 0 or negative zombies\n";
+        return (NULL);
+    }
+    zombies = new Zombie[N];
+    while (i < N)
+    {
+        zombies[i].setName(name);
+        i++;
+    }
+    return (zombies);
 }
