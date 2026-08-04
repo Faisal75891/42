@@ -1,6 +1,4 @@
 #include <iostream>
-using namespace std;
-
 
 int	to_upper(char c)
 {
@@ -28,7 +26,7 @@ int	main(int argc, char **argv)
 
 	if (argc == 1)
 	{
-		cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << endl;
+		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
 	}
 	else
 	{
@@ -36,10 +34,10 @@ int	main(int argc, char **argv)
 		while (i < argc)
 		{
 			to_upper(argv[i]);
-			cout << argv[i];
+			std::cout << argv[i];
 			i++;
 		}
-		cout << endl;
+		std::cout << std::endl;
 	}
 	return (1);
 }
