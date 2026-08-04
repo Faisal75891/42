@@ -1,0 +1,34 @@
+#include "ScavTrap.h"
+
+ScavTrap::ScavTrap() : ClapTrap()
+{
+	this->name = "ScavTrap";
+	this->hp = 100;
+	this->ad = 20;
+	this->ep = 50;
+}
+
+ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
+{
+	std::cout << "ScavTrap is created\n";
+	this->hp = 100;
+	this->ad = 20;
+	this->ep = 50;
+}
+
+ScavTrap::~ScavTrap()
+{
+	std::cout << "ScavTrap is destroyed!\n";
+}
+
+void	ScavTrap::attack(const std::string& target)
+{
+	std::cout << "ClapTrap " << name
+	<< " attacks " << target << ", causing " << ad << " points of damage!\n";
+}
+
+void	ScavTrap::guardGate(void)
+{
+	std::cout << "ScavTrap is now in Gate keeper mode!\n";
+	gateMode = true;
+}
