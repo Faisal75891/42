@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Fixed.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/05 21:37:15 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/05 21:37:15 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #ifndef FIXED_H
 #define FIXED_H
@@ -26,25 +38,18 @@ public:
 
 	Fixed	&operator=(const Fixed &src);
 
-	// Fixed	&operator>(const Fixed &f1, const Fixed &f2);
-	// Fixed	&operator<(const Fixed &f1, const Fixed &f2);
-	// Fixed	&operator>=(const Fixed &f1, const Fixed &f2);
-	// Fixed	&operator<=(const Fixed &f1, const Fixed &f2);
-	// Fixed	&operator==(const Fixed &f1, const Fixed &f2);
-	// Fixed	&operator!=(const Fixed &f1, const Fixed &f2);
-
 	static Fixed	&min(Fixed &n, Fixed &i);
 	static Fixed	&min(const Fixed &n, const Fixed &i);
 	static Fixed	&max(Fixed &n, Fixed &i);
 	static Fixed	&max(const Fixed &n, const Fixed &i);
+	
 	Fixed	&operator++(void);
 	Fixed	&operator--(void);
 	Fixed	operator++(int);
-	Fixed	&operator--(int);
+	Fixed	operator--(int);
 };
 
 std::ostream& operator<<(std::ostream &os, const Fixed &src);
-std::ostream& operator<<(std::ostream &os, const char src[2]);
 
 Fixed	operator+(const Fixed &f1, const Fixed &f2);
 Fixed	operator-(const Fixed &f1, const Fixed &f2);

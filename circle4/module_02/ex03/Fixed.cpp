@@ -1,5 +1,16 @@
-#include "Fixed.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Fixed.cpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/05 21:37:10 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/05 21:37:10 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "Fixed.h"
 
 Fixed::Fixed() : fixed_val(0)
 {
@@ -20,19 +31,15 @@ Fixed::Fixed(const float n)
 
 float	Fixed::toFloat( void ) const
 {
-	int	ya = getRawBits();
 	float	float_val = 0.0;
 
-	float_val = float(ya) / (1 << f_bits);
+	float_val = (float)this->fixed_val / (1 << f_bits);
 	return (float_val);
 }
 
 int		Fixed::toInt(void) const
-{	
-	int	ya = getRawBits();
-
-	ya = ya >> f_bits;
-	return (int(ya));
+{
+	return (this->fixed_val / (1 << f_bits));
 }
 
 Fixed::~Fixed()
@@ -68,109 +75,44 @@ Fixed& Fixed::operator=(const Fixed &src)
 	return *this;
 }
 
-bool    operator>(const Fixed &f1, const Fixed &f2)
-{
-	return (f1.getRawBits() > f2.getRawBits());
-}
-
-bool    operator<(const Fixed &f1, const Fixed &f2)
-{
-	return (f1.getRawBits() < f2.getRawBits());
-}
-
-bool    operator>=(const Fixed &f1, const Fixed &f2)
-{
-	return (f1.getRawBits() >= f2.getRawBits());
-}
-
-bool    operator<=(const Fixed &f1, const Fixed &f2)
-{
-	return (f1.getRawBits() <= f2.getRawBits());
-}
-
-bool    operator==(const Fixed &f1, const Fixed &f2)
-{
-	return (f1.getRawBits() == f2.getRawBits());
-}
-
-bool    operator!=(const Fixed &f1, const Fixed &f2)
-{
-	return (f1.getRawBits() != f2.getRawBits());
-}
-
-Fixed	operator+(const Fixed &f1, const Fixed &f2)
-{
-	float	sum;
-	Fixed	temp;
-
-	sum = f1.toFloat() - f2.toFloat();
-	temp = sum;
-	return (temp);
-}
-
-Fixed	operator-(const Fixed &f1, const Fixed &f2)
-{
-	float	sum;
-	Fixed	temp;
-
-	sum = f1.toFloat() - f2.toFloat();
-	temp = sum;
-	return (temp);
-}
-
-Fixed	operator*(const Fixed &f1, const Fixed &f2)
-{
-	float	sum;
-	Fixed	temp;
-
-	sum = f1.toFloat() * f2.toFloat();
-	temp = sum;
-	return (temp);
-}
-
-Fixed	operator/(const Fixed &f1, const Fixed &f2)
-{
-	float	sum;
-	Fixed	temp;
-
-	sum = f1.toFloat() / f2.toFloat();
-	temp = sum;
-	return (temp);
-}
-
-Fixed& Fixed::operator++(void)
-{
-	float n = float(this->toFloat()) + 1.0 / (1 << f_bits);
-	fixed_val = n * (1 << f_bits);
-	return *this;
-}
-
-Fixed& Fixed::operator--(void)
-{
-	float n = float(this->toFloat()) - 1.0 / (1 << f_bits);
-	fixed_val = n * (1 << f_bits);
-	return *this;
-}
-
-Fixed Fixed::operator++(int)
-{
-	Fixed	temp;
-
-	temp.fixed_val = fixed_val;
-	float n = float(this->toFloat()) + 1.0 / (1 << f_bits);
-	fixed_val = n * (1 << f_bits);
-	return temp;
-}
-
-Fixed& Fixed::operator--(int)
-{
-	float n = float(this->toFloat()) - 1.0 / (1 << f_bits);
-	fixed_val = n * (1 << f_bits);
-	return *this;
-}
-
 std::ostream& operator<<(std::ostream &os, const Fixed &src)
 {
 	os << src.toFloat();
 	return (os);
+}
+
+Fixed	&Fixed::min(Fixed &n, Fixed &i)
+{
+	if (n > i)
+	{
+		return (i);
+	}
+	return (n);
+}
+
+Fixed	&Fixed::min(const Fixed &n, const Fixed &i)
+{
+	if (n > i)
+	{
+		return ((Fixed &)i);
+	}
+	return ((Fixed &)n);
+}
+
+Fixed	&Fixed::max(Fixed &n, Fixed &i)
+{
+	if (n > i)
+	{
+		return (n);
+	}
+	return (i);
+}
+
+Fixed	&Fixed::max(const Fixed &n, const Fixed &i)
+{
+	if (n > i)
+	{
+		return ((Fixed &)n);
+	}
+	return ((Fixed &)i);
 }

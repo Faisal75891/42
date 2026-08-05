@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Point.cpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/05 22:22:11 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/05 22:22:11 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Point.h"
 
 Point::Point() : x(0), y(0)
@@ -41,11 +53,11 @@ float	Point::getY(void) const
 
 Point::~Point()
 {
-	// std::cout << "nigga\n";
+	// std::cout << "A Point got deleted\n";
 }
 
 std::ostream	&operator<<(std::ostream &os, const Point &in)
 {
-	os << "P(" << in.getX() << " " << in.getY() << ") ";
+	os << "P(" << in.getX() << " " << in.getY() << ")";
 	return (os);
 }

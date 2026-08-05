@@ -5,14 +5,14 @@
 #                                                     +:+ +:+         +:+      #
 #    By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/08/05 21:37:34 by fbaras            #+#    #+#              #
-#    Updated: 2026/08/05 21:37:34 by fbaras           ###   ########.fr        #
+#    Created: 2026/08/05 19:37:22 by fbaras            #+#    #+#              #
+#    Updated: 2026/08/05 19:37:22 by fbaras           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = f
-SRC = Fixed.cpp main.cpp arithmetic.cpp comparison.cpp crements.cpp
-OBJ =  Fixed.o main.o arithmetic.o comparison.o crements.o
+SRC = main.cpp Fixed.cpp
+OBJ = main.o Fixed.o
 
 FLAGS = -Wall -Wextra -Werror -std=c++98
 
@@ -29,4 +29,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean fclean re all
+.PHONY: all clean fclean re

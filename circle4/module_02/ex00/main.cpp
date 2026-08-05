@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Point.h                                            :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/05 22:23:15 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/05 22:23:15 by fbaras           ###   ########.fr       */
+/*   Created: 2026/08/05 21:36:36 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/05 21:36:36 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#ifndef POINT_H
-#define POINT_H
-
 #include "Fixed.h"
 
-class Point
+int	main( void )
 {
-	private:
-		Fixed const	x, y;
-	public:
-		Point();
-		Point(const float x, const float y);
-		Point(const Point &src);
-		Point	&operator=(const Point &src);
+	Fixed a;
+	Fixed b (a);
+	Fixed c;
 
-		// Add getters and setters here maybe - NAH
-		float	getX(void) const;
-		float	getY(void) const;
-		~Point();
-};
+	c = b;
 
-std::ostream	&operator<<(std::ostream &os, const Point &in);
-
-#endif
+	std::cout << a.getRawBits() << std::endl;
+	std::cout << b.getRawBits() << std::endl;
+	std::cout << c.getRawBits() << std::endl;
+	return (0);
+}

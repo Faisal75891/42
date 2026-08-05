@@ -5,42 +5,23 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/05 21:36:47 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/05 21:36:47 by fbaras           ###   ########.fr       */
+/*   Created: 2026/08/05 21:36:30 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/05 21:36:30 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.h"
 
 
-Fixed::Fixed() : val(0)
+Fixed::Fixed() : raw_bits(0)
 {
 	std::cout << "Default Constructor called" << std::endl;
 }
 
-Fixed::Fixed(const int n)
+Fixed::Fixed(int n)
 {
-	std::cout << "Int Constructor called" << std::endl;
-	val = n << f_bits;
-}
-
-Fixed::Fixed(const float n)
-{
-	std::cout << "Float Constructor called" << std::endl;
-	val = n * (1 << f_bits);
-}
-
-float	Fixed::toFloat( void ) const
-{
-	float	float_val = 0.0;
-
-	float_val = (float)this->val / (1 << f_bits);
-	return (float_val);
-}
-
-int		Fixed::toInt(void) const
-{
-	return (this->val / (1 << f_bits));
+	std::cout << "int Constructor called" << std::endl;
+	raw_bits = n;
 }
 
 Fixed::~Fixed()
@@ -50,16 +31,16 @@ Fixed::~Fixed()
 
 int Fixed::getRawBits(void) const
 {
-	// std::cout << "getRawBits member function called" << std::endl;
+	std::cout << "getRawBits member function called" << std::endl;
 
-	return (val);
+	return (raw_bits);
 }
 
-void Fixed::setRawBits ( int const raw )
+void Fixed::setRawBits ( int const raw_bits )
 {
-	// std::cout << "setRawBits member function called" << std::endl;
+	std::cout << "setRawBits member function called" << std::endl;
 
-	val = raw;
+	this->raw_bits = raw_bits;
 }
 
 Fixed::Fixed(const Fixed &src)
@@ -74,10 +55,4 @@ Fixed& Fixed::operator=(const Fixed &src)
 	std::cout << "Copy assignment operator called" << std::endl;
 	this->setRawBits(src.getRawBits());
 	return *this;
-}
-
-std::ostream& operator<<(std::ostream &os, const Fixed &src)
-{
-	os << src.toFloat();
-	return (os);
 }
