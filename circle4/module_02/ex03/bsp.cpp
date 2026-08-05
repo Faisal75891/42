@@ -14,7 +14,7 @@
 
 float	cross_product(Point const a, Point const b, Point const p)
 {
-	// ab . ap
+	// ab.ap
 	return ( (b.getX() - a.getX()) // b.x - a.x = u1
 			* (p.getY() - a.getY()) // p.y - a.y = v2
 			- (b.getY() - a.getY()) // b.y - a.y = u2

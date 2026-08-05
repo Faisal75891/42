@@ -12,8 +12,6 @@
 
 #include "Point.h"
 
-bool	bsp(Point const a, Point const b, Point const c, Point const point);
-
 int	main(void)
 {
 	Point	a,b(5.0, 0.0), c(5.0, 10.0);
