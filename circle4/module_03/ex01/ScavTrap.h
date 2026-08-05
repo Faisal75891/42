@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ScavTrap.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/05 22:47:49 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/05 22:47:49 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #ifndef SCAVTRAP_H
 #define SCAVTRAP_H
@@ -15,6 +27,5 @@ class ScavTrap : public ClapTrap
 		void	guardGate();
 		void	attack(const std::string& target);
 };
-
 
 #endif

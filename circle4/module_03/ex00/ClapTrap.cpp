@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ClapTrap.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/05 22:46:41 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/05 22:46:41 by fbaras           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ClapTrap.h"
 
 ClapTrap::ClapTrap(std::string name) : name(name), hp(10), ad(0), ep(10)
 {
-	std::cout << "Contructor called\n";
+	std::cout << "ClapTrap contructor called\n";
 }
 
 ClapTrap::~ClapTrap()
 {
-	std::cout << "Destructor called\n";
+	std::cout << "ClapTrap Destructor called\n";
 }
 
 void	ClapTrap::attack(const std::string& target)
