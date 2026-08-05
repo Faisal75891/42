@@ -16,5 +16,4 @@ int	main(void)
 	<< "string: " << s << std::endl 
 	<< "ptr: " << stringPTR << std::endl
 	<< "reference: " << stringREF << std::endl;
-
 }

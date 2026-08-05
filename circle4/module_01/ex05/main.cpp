@@ -17,6 +17,9 @@ int	main(void)
 	Harl h;
 
 	h.complain("INFO");
+	h.complain("WARNING");
+	h.complain("DEBUG");
+	h.complain("ERROR");
 	h.complain("ffasjflkas");
 	return (0);
 }

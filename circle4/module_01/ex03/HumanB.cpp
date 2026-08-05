@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 23:08:03 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/04 23:23:19 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/08/05 17:01:20 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ void	HumanB::attack()
 
 void	HumanB::setWeapon(Weapon &new_weapon)
 {
-	this->weapon = &new_weapon;
+	weapon = &new_weapon;
 }

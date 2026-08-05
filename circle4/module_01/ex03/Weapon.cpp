@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 23:06:10 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/04 23:25:19 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/08/05 17:00:09 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ Weapon::~Weapon()
     std::cout << type << " lost its durability\n";
 }
 
-std::string	Weapon::getType(void) const
+const std::string	&Weapon::getType(void) const
 {
 	return type;
 }
 
 void	Weapon::setType(std::string new_type)
 {
-	this->type = new_type;
+	type = new_type;
 }

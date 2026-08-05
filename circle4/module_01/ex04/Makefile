@@ -6,13 +6,13 @@
 #    By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/04 23:34:21 by fbaras            #+#    #+#              #
-#    Updated: 2026/08/04 23:35:32 by fbaras           ###   ########.fr        #
+#    Updated: 2026/08/05 18:43:28 by fbaras           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = s
 SRC = main.cpp
-OBJ = main.OBJ
+OBJ = main.o
 CLFAGS = -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)

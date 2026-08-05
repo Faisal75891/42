@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 19:57:37 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/04 20:09:46 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/08/05 16:28:47 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	main(void)
 	a = newZombie("real man");
 	a->announce();
 	b->announce();
-	cout << a->getName() << endl;
-	cout << b->getName() << endl;
+	std::cout << a->getName() << std::endl;
+	std::cout << b->getName() << std::endl;
 	randomChump("man");
 	randomChump("man2");
 	randomChump("man3");

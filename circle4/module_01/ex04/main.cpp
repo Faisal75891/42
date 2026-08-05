@@ -2,71 +2,67 @@
 #include <string>
 #include <fstream>
 
-void	copy_file(std::istream &infile, std::ofstream &outfile, std::string s1, std::string s2);
+std::string	search_replace(std::string line, const std::string s1, const std::string s2);
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	std::string	filename, s1, s2;
-	// const	std::string filename; cin doesnt work when filename is const
+	std::string	filename, line, s1, s2;
 
-	if (!(std::cin >> filename >> s1 >> s2))
+	if (argc != 4)
 	{
-		std::cout << "Enter in this format: [filename] [string1] [string2] \n";
+		std::cout << "Invalid Input!\nUsage: ./s infile <search> <replace>\n";
+		return (1);
 	}
-	std::string	outfile = filename + ".replace";
-	std::ifstream file(filename.c_str()); // this makes filename a const string
-	if (!file)
-	{
-		std::cerr << "Error occured when opening file: "
-			<< filename << " Does the file exist?" << std::endl;
-		return (2);
-	}
-	std::ofstream file_replace(outfile.c_str()); // this makes outfile variable a const string
-	if (!file_replace.is_open())
-	{
-		std::cerr << "Error opening file " << outfile << std::endl;
-		return (3);
-	}
-	copy_file(file, file_replace, s1, s2);
-	return (0);
-}
+	filename = argv[1];
+	s1 = argv[2];
+	s2 = argv[3];
+	std::ifstream	infile;
+	std::ofstream	outfile;
 
-void	copy_file(std::istream &infile, std::ofstream &outfile, const std::string s1, const std::string s2)
-{
-	char	c;
-	std::string	word;
-	while (infile.get(c))
+	infile.open(filename.c_str());
+	if (infile.is_open())
 	{
-		if (isspace(c))
+		const std::string out = filename + ".replace";
+		outfile.open(out.c_str(), std::ios::out | std::ios::trunc);
+		if (outfile.is_open())
 		{
-			// std::cout << word << std::endl;
-			if (word == s1)
+			while (getline(infile, line))
 			{
-				outfile << s2;
-				std::cout << s2;
+				line = search_replace(line, s1, s2);
+				outfile << line;
+				if (!infile.eof())
+					outfile << std::endl;
 			}
-			else
-			{
-				outfile << word;
-				std::cout << word;
-			}
-			std::cout << c;
-			outfile << c;
-			word = "";
+			outfile.close();
 		}
 		else
-			word += c;
-		// outfile.put(c);
-	}
-	// checking the last word
-	if (word == s1)
-	{
-		outfile << s2;
-		std::cout << s2;
+		{
+			std::cerr << "couldn't open/create " << filename + ".replace" << std::endl;
+			infile.close();
+			return (1);
+		}
+		infile.close();
 	}
 	else
 	{
-		outfile << word;
-		std::cout << word;
+		std::cerr << "There was a problem opening: " << filename << std::endl;
+		return (1);
 	}
+	return (0);
+}
+
+std::string	search_replace(std::string line, const std::string s1, const std::string s2)
+{
+	int	erase_len = s1.length();
+	int	replace_len = s2.length();
+	size_t	i = 0;
+
+	i = line.find(s1);
+	while (i != std::string::npos)
+	{
+		line.erase(i, erase_len);
+		line.insert(i, s2);
+		i = line.find(s1, i + replace_len);
+	}
+	return (line);
 }

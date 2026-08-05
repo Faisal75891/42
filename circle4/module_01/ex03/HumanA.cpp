@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 23:09:07 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/04 23:24:04 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/08/05 16:54:03 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 HumanA::HumanA(std::string name, Weapon &weapon) : name(name), weapon(weapon)
 {
 	std::cout << name << " joined the lobby\n";
-
 }
 
 HumanA::~HumanA()

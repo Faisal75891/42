@@ -6,7 +6,7 @@
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 22:04:15 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/04 22:10:08 by fbaras           ###   ########.fr       */
+/*   Updated: 2026/08/05 16:49:45 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int	main(void)
 {
-	Zombie  *z = zombieHorde(10, "gurrrr");
+    int zombieSize = 1;
+	Zombie  *z = zombieHorde(zombieSize, "gurrrr");
     
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < zombieSize; i++)
     {
         z[i].announce();
     }
