@@ -1,30 +1,80 @@
-NAME = m
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
+NAME		= minishell
+INCLUDES	= -I./include -I./libft
 
-S = minishell.c
-O = $(S:.c=.o)
+SRC_DIR		= src
+LIBFT_DIR	= libft
 
-LIBFT = ./libft/libft.a
+SRCS		= test_executor.c \
+              $(SRC_DIR)/main/init.c \
+              $(SRC_DIR)/parsing/parser.c \
+              $(SRC_DIR)/parsing/parser_init.c \
+              $(SRC_DIR)/parsing/parser_command.c \
+              $(SRC_DIR)/parsing/parser_redirect.c \
+              $(SRC_DIR)/parsing/lexer.c \
+              $(SRC_DIR)/parsing/lexer_functions.c \
+              $(SRC_DIR)/parsing/quotes.c \
+              $(SRC_DIR)/parsing/quote_utils.c \
+              $(SRC_DIR)/parsing/expansion.c \
+              $(SRC_DIR)/execution/executor.c \
+              $(SRC_DIR)/execution/args.c \
+              $(SRC_DIR)/execution/pipes.c \
+              $(SRC_DIR)/execution/redirects.c \
+              $(SRC_DIR)/builtins/cd.c \
+              $(SRC_DIR)/builtins/echo.c \
+              $(SRC_DIR)/builtins/env.c \
+              $(SRC_DIR)/builtins/export.c \
+              $(SRC_DIR)/builtins/pwd.c \
+              $(SRC_DIR)/builtins/unset.c \
+              $(SRC_DIR)/builtins/exit.c \
+              $(SRC_DIR)/signals/signals.c \
+              $(SRC_DIR)/signals/signal_utils.c \
+              $(SRC_DIR)/utils/path_utils.c \
+              $(SRC_DIR)/utils/cleanup.c \
+              $(SRC_DIR)/utils/env_utils.c \
+              $(SRC_DIR)/utils/error_utils.c \
+              $(SRC_DIR)/utils/redirect_utils.c \
+              $(SRC_DIR)/utils/pipe_utils.c \
+              $(SRC_DIR)/utils/char_utils.c \
+              $(SRC_DIR)/utils/str_utils.c \
+              $(SRC_DIR)/utils/lexer_utils.c \
+              $(SRC_DIR)/utils/expansion_utils.c \
+
+UNAME_S := $(shell uname -s)
+
+OBJS		= $(SRCS:.c=.o)
+LIBFT		= $(LIBFT_DIR)/libft.a
+
+CC			= cc
+CFLAGS		= -g #-Wall -Wextra -Werror -g
+LDFLAGS     =
+
+ifeq ($(UNAME_S), Linux)
+    LDFLAGS += -lreadline
+else ifeq ($(UNAME_S), Darwin)
+    READLINE_PATH = $(shell brew --prefix readline)
+    CFLAGS += -I$(READLINE_PATH)/include
+    LDFLAGS += -L$(READLINE_PATH)/lib -lreadline
+endif
 
 all: $(NAME)
 
-$(NAME): $(O) $(LIBFT)
-	$(CC) $(CFLAGS) $(O) $(LIBFT) -o $(NAME)
+$(NAME): $(LIBFT) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) -o $(NAME)
 
-%.c: %.o
-	$(CC) $(CFLAGS) -c $< -o $@
+$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT):
-	make -C ./libft
+	make -C $(LIBFT_DIR)
 
 clean:
-	make clean -C ./libft
-	rm -rf $(O)
+	rm -f $(OBJS)
+	make -C $(LIBFT_DIR) clean
 
-fclean: $(clean)
-	rm -rf $(NAME)
+fclean: clean
+	rm -f $(NAME)
+	make -C $(LIBFT_DIR) fclean
 
-re: $(fclean) $(all)
+re: fclean all
 
-.PHONEY: all clean fclean re
+.PHONY: all clean fclean re
