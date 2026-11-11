@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/05 22:46:49 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/05 22:46:49 by fbaras           ###   ########.fr       */
+/*   Created: 2026/11/10 16:22:59 by fbaras            #+#    #+#             */
+/*   Updated: 2026/11/10 16:22:59 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,26 @@
 
 int	main(void)
 {
+	ClapTrap	d;
+	ClapTrap	hi("Hi");
+	ClapTrap	hello(hi);
 	ClapTrap	t("me"); 
 	const ClapTrap target("target");
+
+	d = hello;
+	ClapTrap c = ClapTrap("whaaat");
+
+	d.display();
+	hi.display();
+	hello.display();
+	c.display();
+	t.display();
+	target.display();
 
 	t.attack("target");
 	t.takeDamage(2);
 	t.beRepaired(1);
 
 	t.display();
-
-	// target.attack("t");
-	// target.takeDamage(0);
-	// target.beRepaired(20);
-	target.display();
 	return (0);
 }

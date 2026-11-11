@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/05 23:02:24 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/05 23:02:24 by fbaras           ###   ########.fr       */
+/*   Created: 2026/08/05 22:57:40 by fbaras            #+#    #+#             */
+/*   Updated: 2026/08/05 22:57:40 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 class FragTrap  : public virtual ClapTrap
 {
 	public:
-		FragTrap(std::string name);
 		FragTrap();
-		~FragTrap();
+		FragTrap(const FragTrap& src);
+		FragTrap&	operator=(const FragTrap& src);
+		FragTrap(std::string name);
+		virtual ~FragTrap();
 		void	highFiveGuys(void) const;
 };

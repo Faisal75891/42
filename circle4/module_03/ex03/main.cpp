@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/05 23:02:30 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/05 23:02:30 by fbaras           ###   ########.fr       */
+/*   Created: 2026/11/10 19:47:32 by fbaras            #+#    #+#             */
+/*   Updated: 2026/11/10 19:47:32 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,29 @@
 
 int	main(void)
 {
+	DiamondTrap	a;
+	std::cout<<std::endl;
 	DiamondTrap	f("g");
+	DiamondTrap	c(a);
+	DiamondTrap	temp("new DiamondTrap");
+	std::cout<<std::endl;
 
-	f.attack("him");
-	f.highFiveGuys();
-	// f.ad = 3;
-	f.beRepaired(1);
-	std::cout << std::endl;
+	a.whoAmI();
+	std::cout<<std::endl;
+	a = temp;
+	a.attack("f");
+	std::cout<<std::endl;
+	c.whoAmI();
+	std::cout<<std::endl;
+	c.attack("g");
+	std::cout<<std::endl;
 	f.whoAmI();
-	f.display();
-	std::cout << std::endl;
+	std::cout<<std::endl;
+
+	{
+		ClapTrap	*a = new DiamondTrap("Yoooo");
+		delete a;
+		std::cout << "\n";
+	}
 	return (0);
 }

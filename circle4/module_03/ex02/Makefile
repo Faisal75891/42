@@ -10,8 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = s
-CC = g++
+NAME = c
+CC = c++
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 SRC = ClapTrap.cpp main.cpp ScavTrap.cpp FragTrap.cpp
 OBJ =   ClapTrap.o main.o ScavTrap.o FragTrap.o

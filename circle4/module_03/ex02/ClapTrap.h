@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ClapTrap.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/05 22:57:35 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/05 22:57:35 by fbaras           ###   ########.fr       */
+/*   Created: 2026/11/10 16:36:03 by fbaras            #+#    #+#             */
+/*   Updated: 2026/11/10 16:36:03 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,16 @@ class ClapTrap
 		std::string	name;
 		int	hp, ad, ep;
 	public:
-		// ClapTrap();
-		ClapTrap(std::string name);
 		ClapTrap();
-		~ClapTrap();
+		ClapTrap(const ClapTrap &src);
+		ClapTrap(std::string name);
+		virtual ~ClapTrap();
 		void	attack(const std::string& target);
 		void	takeDamage(unsigned int amount);
 		void	beRepaired(unsigned int amount);
 		void	display() const;
+
+		ClapTrap&	operator=(const ClapTrap& src);
 };
 
 #endif

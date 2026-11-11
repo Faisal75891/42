@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   ScavTrap.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/05 22:47:49 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/05 22:47:49 by fbaras           ###   ########.fr       */
+/*   Created: 2026/11/10 16:38:13 by fbaras            #+#    #+#             */
+/*   Updated: 2026/11/10 16:38:13 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef SCAVTRAP_H
 #define SCAVTRAP_H
@@ -23,9 +22,11 @@ class ScavTrap : public ClapTrap
 	public:
 		ScavTrap(std::string name);
 		ScavTrap();
+		ScavTrap(const ScavTrap& src);
 		~ScavTrap();
 		void	guardGate();
 		void	attack(const std::string& target);
+		ScavTrap&	operator=(const ScavTrap& src);
 };
 
 #endif

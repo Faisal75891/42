@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbaras <fbaras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fbaras <fbaras@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/05 22:54:41 by fbaras            #+#    #+#             */
-/*   Updated: 2026/08/05 22:54:41 by fbaras           ###   ########.fr       */
+/*   Created: 2026/11/10 16:36:15 by fbaras            #+#    #+#             */
+/*   Updated: 2026/11/10 16:36:15 by fbaras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,28 @@
 
 int	main(void)
 {
-	ClapTrap	t("me"); 
-	// const ClapTrap target("target");
-	ScavTrap	s("Scavtrap");
+	ClapTrap	t("me");
+	ScavTrap	s("sssssssssssss");
 
+	ScavTrap	test = ScavTrap("yeye");
+
+	test.display();
+	std::cout << "\n";
+	ScavTrap j = test;
+	std::cout << "\n";
+	j.display();
+	std::cout << "\n";
 	s.guardGate();
 	s.attack("him");
 	s.beRepaired(3);
 	s.takeDamage(2);
 
-	// s.display();
+	s.display();
 
 	t.attack("target");
 	t.takeDamage(2);
 	t.beRepaired(1);
 
-	// t.display();
+	t.display();
 	return (0);
 }
