@@ -6,29 +6,58 @@
 
 int main()
 {
-    const Animal* meta = new Animal();
-    const Animal* j = new Dog();
-    const Animal* i = new Cat();
-    // std::cout << j->getType() << " " << std::endl;
-    // std::cout << i->getType() << " " << std::endl;
-    // i->makeSound(); //will output the cat sound!
-    // j->makeSound();
-    // meta->makeSound();
+    {
+        Animal animal;
+        Animal animalCopy(animal);
+        Animal animalAssigned;
+        animalAssigned = animal;
+        animal.makeSound();
+    }
+    {
+        Dog dog;
+        Dog dogCopy(dog);
+        Dog dogAssigned;
+        dogAssigned = dog;
+        dog.makeSound();
+    }
+    {
+        Cat cat;
+        Cat catCopy(cat);
+        Cat catAssigned;
+        catAssigned = cat;
+        cat.makeSound();
+    }
+    {
+        WrongAnimal wrongAnimal;
+        WrongAnimal wrongAnimalCopy(wrongAnimal);
+        WrongAnimal wrongAnimalAssigned;
+        wrongAnimalAssigned = wrongAnimal;
+        wrongAnimal.makeSound();
+    }
+    {
+        WrongCat wrongCat;
+        WrongCat wrongCatCopy(wrongCat);
+        WrongCat wrongCatAssigned;
+        wrongCatAssigned = wrongCat;
+        wrongCat.makeSound();
+    }
+    {
+        const Animal* animal = new Animal();
+        const Animal* dog = new Dog();
+        const Animal* cat = new Cat();
+        const WrongAnimal* wrongAnimal = new WrongAnimal();
+        const WrongAnimal* wrongCat = new WrongCat();
 
-    const   WrongAnimal *cat = new WrongCat();
-    const   WrongAnimal &kitty = *cat;
-    const   WrongAnimal *a = new WrongAnimal();
-    const   WrongAnimal &b = *a;
+        animal->makeSound();
+        dog->makeSound();
+        cat->makeSound();
+        wrongAnimal->makeSound();
+        wrongCat->makeSound();
 
-    a->makeSound();
-    cat->makeSound();
-
-    kitty.makeSound();
-    b.makeSound();
-
-    delete cat;
-    delete  a;
-    delete meta;
-    delete j;
-    delete i;
+        delete animal;
+        delete dog;
+        delete cat;
+        delete wrongAnimal;
+        delete wrongCat;
+    }
 }

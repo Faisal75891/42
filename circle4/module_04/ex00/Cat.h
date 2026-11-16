@@ -6,7 +6,9 @@
 class Cat : public Animal
 {
     public:
-        Cat(std::string n = "Cat");
+        Cat();
+        Cat(const Cat& other);
+        Cat& operator=(const Cat& other);
         virtual ~Cat();
         void    makeSound() const;
 };

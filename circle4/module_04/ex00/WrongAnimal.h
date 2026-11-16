@@ -9,7 +9,9 @@ class WrongAnimal
 	protected:
 		std::string	type;
 	public:
-		WrongAnimal(std::string="wrong animal");
+		WrongAnimal();
+		WrongAnimal(const WrongAnimal& other);
+		WrongAnimal& operator=(const WrongAnimal& other);
 		virtual	~WrongAnimal();
 		virtual	void	makeSound() const;
 };

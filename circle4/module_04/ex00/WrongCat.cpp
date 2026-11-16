@@ -1,9 +1,24 @@
 #include "WrongCat.h"
 
 
-WrongCat::WrongCat(std::string t) : WrongAnimal(t)
+WrongCat::WrongCat() : WrongAnimal()
 {
+	type = "WrongCat";
 	std::cout << "Wrong Cat is born\n";
+}
+
+WrongCat::WrongCat(const WrongCat& other) : WrongAnimal(other)
+{
+    std::cout << "Copy WrongCat constructor called\n";
+
+}
+
+WrongCat& WrongCat::operator=(const WrongCat& other)
+{
+	if (this != &other)
+		WrongAnimal::operator=(other);
+    std::cout << "Assignment WrongCat constructor called\n";
+	return *this;
 }
 
 WrongCat::~WrongCat()
