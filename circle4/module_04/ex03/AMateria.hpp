@@ -12,6 +12,7 @@ class AMateria
 	protected:
 		std::string	type;
 	public:
+        AMateria();
 		AMateria(std::string const & type);
 		virtual	~AMateria();
 		std::string const 	&getType() const;
@@ -20,6 +21,8 @@ class AMateria
 		virtual	void		use(ICharacter& target);
 
 		// TODO: Copy and assign thing - Maybe not needed
+        AMateria(const AMateria& src);
+        AMateria&   operator=(const AMateria& src);
 };
 
 #endif

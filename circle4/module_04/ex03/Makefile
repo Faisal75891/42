@@ -1,7 +1,7 @@
 NAME = n
 SRC = AMateria.cpp  Character.cpp  Cure.cpp  Ice.cpp  Materia.cpp  MateriaSource.cpp  main.cpp
 OBJ = $(SRC:.cpp=.o)
-CXX = clanc++
+CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)

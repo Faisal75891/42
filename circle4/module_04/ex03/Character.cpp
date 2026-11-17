@@ -1,5 +1,15 @@
 #include "Character.hpp"
 
+Character::Character()
+{
+    this->name = "Default character";
+    for (int i = 0; i < MAX_MATRIA; i++)
+    {
+        this->matria[i] = new Materia();
+    }
+    this->idx = 0;
+}
+
 Character::Character(std::string n) : name(n)
 {
 	for (int i = 0; i < MAX_MATRIA; i++)
@@ -33,16 +43,16 @@ void	Character::equip(AMateria *m)
 //decrement idx??? Can't delete so idk
 void	Character::unequip(int	idx)
 {
-	if (idx <= 0)
+	if (idx > MAX_MATRIA || idx <= 0)
 		return ;
 	this->idx--;
 }
 
 void	Character::use(int idx, ICharacter& target)
 {
-	if (idx > MAX_MATRIA)
+	if (idx > MAX_MATRIA || idx < 0 || !this->matria[idx])
 		return ;
-	this->matria[idx]->AMateria::use(target);
+	this->matria[idx]->use(target);
 }
 
 Character	&Character::operator=(Character &src)

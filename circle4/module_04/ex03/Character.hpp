@@ -2,7 +2,7 @@
 #pragma once
 
 #include "ICharacter.hpp"
-#include "Materia.hpp"
+#include "AMateria.hpp"
 
 #define MAX_MATRIA 4
 
@@ -13,6 +13,7 @@ class Character : public ICharacter
 		int				idx; // should it be size_t??
 		std::string		name;
 	public:
+        Character();
 		Character(std::string n);
 		~Character();
 		std::string const	&getName() const;

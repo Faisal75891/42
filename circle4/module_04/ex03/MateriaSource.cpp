@@ -7,13 +7,44 @@ MateriaSource::MateriaSource()
 	this->idx = 0;
 }
 
+MateriaSource::MateriaSource(const MateriaSource& src)
+{
+    for (int i = 0; i < MAX_MATRIA; i++)
+    {
+        if (src.materia[i])
+		    this->materia[i] = src.materia[i]->clone();
+        else
+            this->materia[i] = NULL;
+    }
+	this->idx = src.idx;
+}
+
+MateriaSource& MateriaSource::operator=(const MateriaSource& src)
+{
+    if (this != &src)
+    {
+        for (int i = 0; i < MAX_MATRIA; i++)
+        {
+            delete this->materia[i];
+            this->materia[i] = NULL;
+            if (src.materia[i])
+		        this->materia[i] = src.materia[i]->clone();
+            else
+                this->materia[i] = NULL;
+        }
+	    this->idx = src.idx;
+    }
+    return (*this);
+}
+
 MateriaSource::~MateriaSource()
 {
     for (int i = 0; i < MAX_MATRIA; i++)
 	{
-		if (this->materia[i] != NULL)
-			delete this->materia[i];
+		delete this->materia[i];
+		// if (this->materia[i] != NULL)
 	}
+    // delete[] this->materia;
 }
 
 void        MateriaSource::learnMateria(AMateria* m)
@@ -25,10 +56,11 @@ void        MateriaSource::learnMateria(AMateria* m)
     {
         if (this->materia[i] == NULL)
         {
-            this->materia[i] = m->clone();
+            this->materia[i] = m;
             return ;
         }
     }
+    delete m;
 }
 
 AMateria    *MateriaSource::createMateria(std::string const & type) const

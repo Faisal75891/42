@@ -1,6 +1,11 @@
 #include "AMateria.hpp"
 #include "ICharacter.hpp"
 
+AMateria::AMateria() : type(" ")
+{
+    
+}
+
 AMateria::AMateria(std::string const & type) : type(type)
 {
  // check for valid type??   
@@ -10,6 +15,19 @@ AMateria::~AMateria()
 {
     
 }
+
+AMateria::AMateria(const AMateria& src) : type(src.type)
+{
+
+}
+
+AMateria&   AMateria::operator=(const AMateria& src)
+{
+    if (this != &src)
+        this->type = src.type;
+    return (*this);
+}
+
 
 std::string const 	&AMateria::getType() const
 {

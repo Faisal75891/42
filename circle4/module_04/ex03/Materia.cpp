@@ -1,13 +1,30 @@
 #include "Materia.hpp"
 
-Materia::Materia(std::string n) : AMateria(n)
+Materia::Materia() : AMateria()
 {
 
 }
 
+Materia::Materia(const Materia& src) : AMateria(src)
+{
+    
+}
+
+Materia::Materia(std::string n) : AMateria(n)
+{
+    
+}
+
 Materia::~Materia()
 {
-	
+    
+}
+
+Materia&    Materia::operator=(const Materia& src)
+{
+    if (this != &src)
+        AMateria::operator=(src);
+    return (*this);
 }
 
 AMateria	*Materia::clone() const
