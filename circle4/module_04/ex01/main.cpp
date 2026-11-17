@@ -45,5 +45,3 @@ int main()
 	delete (b);
 	delete (a);
 }
-
-// valgrind ./a

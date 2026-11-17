@@ -1,8 +1,21 @@
 #include "Animal.h"
 
-Animal::Animal(std::string t) : type(t)
+Animal::Animal() : type("Animal")
 {
-    std::cout << "a " << t << " is born\n";
+    std::cout << "a " << type << " is born\n";
+}
+
+Animal::Animal(const Animal& other) : type(other.type)
+{
+    std::cout << "Copy Animal constructor called\n";
+}
+
+Animal& Animal::operator=(const Animal& other)
+{
+    if (this != &other)
+        type = other.type;
+    std::cout << "Assignment Animal constructor called\n";
+    return *this;
 }
 
 Animal::~Animal()

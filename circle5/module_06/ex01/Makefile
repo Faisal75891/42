@@ -13,7 +13,7 @@
 NAME = s
 SRC = Data.cpp  Serializer.cpp  main.cpp
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
-CXX = g++
+CXX = c++
 
 all: $(NAME)
 

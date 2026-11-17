@@ -9,13 +9,15 @@ class Brain
 	private:
 		std::string	ideas[100];
 	public:
-		Brain(/* args */);
+		Brain();
+		Brain(const Brain& src);
 		virtual	~Brain();
-		// Add copy and assignment constructors???
-		// NAH
+
 		const	std::string	getIdea(size_t i) const;
 		void	setIdea(size_t i, std::string idea);
 		void	getIdeas() const;
+
+		Brain&  operator=(const Brain& src);
 };
 
 #endif

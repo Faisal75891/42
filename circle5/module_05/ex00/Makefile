@@ -1,7 +1,7 @@
 NAME = b
 SRC = main.cpp Bureaucrat.cpp
 OBJ = main.o Bureaucrat.o
-CXX = g++
+CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)

@@ -5,6 +5,24 @@ Brain::Brain(/* args */)
     std::cout << "Brain constructed\n";
 }
 
+Brain::Brain(const Brain& src)
+{
+    for (int i = 0; i < 100; i++)
+        ideas[i] = src.ideas[i];
+    std::cout << "Brain copy constructor\n";
+}
+
+Brain&  Brain::operator=(const Brain& src)
+{
+    if (this != &src)
+    {
+        for (int i = 0; i < 100; i++)
+            ideas[i] = src.ideas[i];
+    }
+    std::cout << "Brain copy assignment constructor\n";
+    return (*this);
+}
+
 Brain::~Brain()
 {
     std::cout << "Brain Destructed\n";
@@ -33,7 +51,6 @@ void	Brain::getIdeas() const
         if (this->ideas[i] != "")
         {
             std::cout << this->ideas[i] << " ";
-
         }
     }
     std::cout << std::endl;

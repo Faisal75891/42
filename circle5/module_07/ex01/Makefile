@@ -2,7 +2,7 @@ NAME = i
 SRC = main.cpp
 OBJ = main.o
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
-CXX = g++
+CXX = c++
 
 all: $(NAME)
 

@@ -9,8 +9,10 @@ class Dog : public Animal
 	private:
 		Brain *brain;
 	public:
-		Dog(std::string n = "Dog");
-		~Dog();
+		Dog();
+		virtual ~Dog();
+        Dog(const Dog& other);
+        Dog& operator=(const Dog& other);
 		void  				makeSound() const;
 		void    			setIdea(size_t i, std::string idea);
 		const std::string	getIdea(size_t i) const;

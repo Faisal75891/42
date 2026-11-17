@@ -1,9 +1,25 @@
 #include "Cat.h"
 
-Cat::Cat(std::string n) : Animal(n)
+Cat::Cat() : Animal()
 {
+    type = "Cat";
     std::cout << "Hello i am cat\n";
     this->brain = new Brain();
+}
+
+Cat::Cat(const Cat& other) : Animal(other)
+{
+    this->brain = new Brain();
+    std::cout << "Copy Cat constructor called\n";
+}
+
+Cat& Cat::operator=(const Cat& other)
+{
+    if (this != &other)
+        Animal::operator=(other);
+    this->brain = new Brain();
+    std::cout << "Copy Cat constructor called\n";
+    return *this;
 }
 
 Cat::~Cat()

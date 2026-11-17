@@ -1,8 +1,21 @@
 #include "WrongAnimal.h"
 
-WrongAnimal::WrongAnimal(std::string a) : type(a)
+WrongAnimal::WrongAnimal() : type("WrongAnimal")
 {
-        std::cout << "a " << a << " is born\n";
+        std::cout << "a " << type << " is born\n";
+}
+
+WrongAnimal::WrongAnimal(const WrongAnimal& other) : type(other.type)
+{
+    std::cout << "Copy WrongAnimal constructor called\n";
+}
+
+WrongAnimal& WrongAnimal::operator=(const WrongAnimal& other)
+{
+    if (this != &other)
+        type = other.type;
+    std::cout << "Assignment WrongAnimal constructor called\n";
+    return *this;
 }
 
 WrongAnimal::~WrongAnimal()

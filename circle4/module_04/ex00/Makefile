@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98
 all: $(NAME)
 
 $(NAME):
-	g++ $(CFLAGS) $(SRC) -o $(NAME)
+	c++ $(CFLAGS) $(SRC) -o $(NAME)
 
 clean:
 	rm -rf $(OBJ)
