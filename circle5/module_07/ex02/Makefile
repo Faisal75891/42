@@ -1,7 +1,7 @@
 NAME = a
 SRC = main.cpp
-OBJ = main.o  Array.o
-CXXFLAGS = -Wall -Wextra -Werror -g -std=c++98
+OBJ = main.o
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 CXX = g++
 
 all: $(NAME)
