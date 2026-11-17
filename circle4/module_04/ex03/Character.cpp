@@ -1,20 +1,15 @@
 #include "Character.hpp"
 
-Character::Character()
+Character::Character() : name("Default character")
 {
-    this->name = "Default character";
     for (int i = 0; i < MAX_MATRIA; i++)
-    {
-        this->matria[i] = new Materia();
-    }
-    this->idx = 0;
+        this->matria[i] = NULL;
 }
 
 Character::Character(std::string n) : name(n)
 {
 	for (int i = 0; i < MAX_MATRIA; i++)
-		this->matria[i] = new Materia(n);
-	this->idx = 0;
+		this->matria[i] = NULL;
 }
 
 Character::~Character()
@@ -34,41 +29,39 @@ std::string const	&Character::getName() const
 
 void	Character::equip(AMateria *m)
 {
-	if (idx > MAX_MATRIA || !m)
+	if (!m)
 		return ;
-	this->matria[this->idx] = m->clone();
-	this->idx++;
+	for (int i = 0; i < MAX_MATRIA; i++)
+	{
+		if (this->matria[i] == NULL)
+		{
+			this->matria[i] = m;
+			return ;
+		}
+	}
 }
 
-//decrement idx??? Can't delete so idk
 void	Character::unequip(int	idx)
 {
-	if (idx > MAX_MATRIA || idx <= 0)
+	if (idx < 0 || idx >= MAX_MATRIA)
 		return ;
-	this->idx--;
+	this->matria[idx] = NULL;
 }
 
 void	Character::use(int idx, ICharacter& target)
 {
-	if (idx > MAX_MATRIA || idx < 0 || !this->matria[idx])
+	if (idx < 0 || idx >= MAX_MATRIA || !this->matria[idx])
 		return ;
 	this->matria[idx]->use(target);
 }
 
-Character	&Character::operator=(Character &src)
+Character	&Character::operator=(const Character &src)
 {
-	// check if this == src
-
-	// create new matria
-	// copy matrias
-	// delete old Matria
-
 	if (this != &src)
 	{
 		for (int i = 0; i < MAX_MATRIA; i++)
 		{
-			if (this->matria[i] != NULL)
-				delete this->matria[i];
+			delete this->matria[i];
 			this->matria[i] = NULL;
 		}
 		for (int i = 0; i < MAX_MATRIA; i++)
@@ -78,26 +71,19 @@ Character	&Character::operator=(Character &src)
 			else
 				this->matria[i] = NULL;
 		}
-		this->idx = src.idx;
 		this->name = src.name;
 	}
 
 	return (*this);
 }
 
-Character::Character(Character &src)
+Character::Character(const Character &src) : name(src.name)
 {
-	if (this != &src)
+	for (int i = 0; i < MAX_MATRIA; i++)
 	{
-		for (int i = 0; i < MAX_MATRIA; i++)
-		{
-			if (this->matria[i] != NULL)
-				delete this->matria[i];
-			this->matria[i] = NULL;
-		}
-		for (int i = 0; i < MAX_MATRIA; i++)
+		if (src.matria[i] != NULL)
 			this->matria[i] = src.matria[i]->clone();
-		this->idx = src.idx;
-		this->name = src.name;
+		else
+			this->matria[i] = NULL;
 	}
 }

@@ -7,6 +7,25 @@
 
 int main()
 {
+	{
+		std::cout << "\n= Deep copy test= \n";
+		Cat	basic;
+		basic.setIdea(0, "Hii");
+		basic.setIdea(1, "Hello");
+		basic.setIdea(2, "H");
+		Cat	tmp = static_cast<Cat>(basic);
+		tmp.setIdea(0, "HELOOOO");
+		std::cout << tmp.getIdea(0) << std::endl;
+		std::cout << tmp.getIdea(1) << std::endl;
+		std::cout << tmp.getIdea(2) << std::endl;
+	}
+	{
+		std::cout << "\n= Destructor chaining test =\n";
+		Animal	*chiwawa = new Dog();
+		chiwawa->makeSound();
+		delete chiwawa;
+	}
+	std::cout << "\n= Main Test =\n";
 	const	Animal	*zoo[10];
 
 	for (int i = 0; i < 10; i++)

@@ -12,7 +12,7 @@ class Cat : public Animal
         Cat();
         Cat(const Cat& other);
         Cat& operator=(const Cat& other);
-        virtual ~Cat();
+        ~Cat();
         void    makeSound() const;
         void    			setIdea(size_t i, std::string idea);
         const std::string	getIdea(size_t i) const;

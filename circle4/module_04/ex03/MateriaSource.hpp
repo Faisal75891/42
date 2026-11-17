@@ -10,7 +10,6 @@ class MateriaSource : public IMateriaSource
 {
     private:
         AMateria    *materia[MAX_MATRIA];
-        int         idx;
     public:
         MateriaSource();
         MateriaSource(const MateriaSource& src);
