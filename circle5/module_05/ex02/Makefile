@@ -13,13 +13,14 @@
 NAME = b
 SRC = AForm.cpp  Bureaucrat.cpp  PresidentialPardonForm.cpp  RobotomyRequestForm.cpp  ShrubberyCreationForm.cpp  main.cpp
 OBJ = AForm.o  Bureaucrat.o  PresidentialPardonForm.o  RobotomyRequestForm.o  ShrubberyCreationForm.o  main.o		
+HEADERS = AForm.hpp  PresidentialPardonForm.hpp  ShrubberyCreationForm.hpp  Bureaucrat.hpp  RobotomyRequestForm.hpp
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)
 
-$(NAME) : $(SRC)
-	$(CXX) $(CXXFLAGS) $(SRC) -o $(NAME)
+$(NAME) : $(SRC) $(HEADERS)
+	$(CXX) $(CXXFLAGS) -I. $(SRC) -o $(NAME)
 
 clean:
 	rm -rf $(OBJ)

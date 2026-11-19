@@ -26,7 +26,13 @@ int	main(void)
 	}
 	Bureaucrat alice("Alice", 10);
 	Form document("Document", 20, 30);
+    Form test;
+    Form test2(document);
 
+    test = document;
+
+    alice.signForm(test);
+    alice.signForm(test2);
 	alice.signForm(document); // Alice signed Document
 	return (0);
 }

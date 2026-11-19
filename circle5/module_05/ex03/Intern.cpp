@@ -15,8 +15,19 @@
 #include "RobotomyRequestForm.hpp"
 #include "PresidentialPardonForm.hpp"
 
-Intern::Intern(/* args */)
+Intern::Intern()
 {
+}
+
+Intern::Intern(const Intern& other)
+{
+    (void)other;
+}
+
+Intern& Intern::operator=(const Intern& other)
+{
+    (void)other;
+    return (*this);        
 }
 
 Intern::~Intern()
@@ -25,7 +36,7 @@ Intern::~Intern()
 
 const char	*Intern::FormDoesNotExistException::what() const throw()
 {
-	return ("Form not found! you silly intern.");
+	return ("Form not found");
 }
 
 static AForm *createShrubbery(std::string target)
@@ -59,7 +70,7 @@ AForm	*Intern::makeForm(std::string target, std::string form)
 	};
 	for (int i = 0; i < 3; i++)
 	{
-		if (form == names[i])
+		if (form.compare(names[i]) == false)
 		{
 			std::cout << "Intern creates " << form << std::endl;
 			return (forms[i](target));

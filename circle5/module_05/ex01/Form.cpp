@@ -23,6 +23,25 @@ const char	*Form::GradeTooLowException::what() const throw()
 	return ("form grade too low");
 }
 
+Form::Form() : name(""), gradeSign(150), gradeExecute(150), isSigned(false)
+{
+    
+}
+
+Form::Form(const Form& src) : name(src.name), gradeSign(src.gradeSign), gradeExecute(src.gradeExecute), isSigned(src.isSigned)
+{
+    
+}
+
+Form& Form::operator=(const Form& src)
+{
+    if (this != &src)
+    {
+        this->isSigned = src.isSigned;
+    }
+    return (*this);
+}
+
 Form::Form(std::string name, int grade_sign, int grade_execute) 
 	: name(name), gradeSign(grade_sign), gradeExecute(grade_execute), isSigned(false)
 {
@@ -65,3 +84,11 @@ void    Form::beSigned(const Bureaucrat& b)
 	isSigned = true;
 }
 
+std::ostream& operator<<(std::ostream &os, const Form &f)
+{
+    os << "Form: <" << f.getName()
+        << ">, grade to sign: " << f.get_grade_sign()
+        << ", grade to execute: " << f.get_grade_execute()
+        << "signed: " << f.get_IsSigned() << std::endl;
+    return (os);
+}

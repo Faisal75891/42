@@ -20,15 +20,20 @@
 int	main(void)
 {
 	Bureaucrat	b("sigma", 45);
-	ShrubberyCreationForm shrub("sigma_document");
-    RobotomyRequestForm bo("hiiii");
     Intern  randomBo;
-    AForm	*wo;
 
-    wo = randomBo.makeForm("New form", "ShrubberyCreationForm");
+    try
+    {
+        AForm *form = randomBo.makeForm("New form", "ShrubberyCreationFormasdsada");
+        b.executeForm(*form);
+        b.signForm(*form);
+        b.executeForm(*form);
 
-	b.signForm(*wo);
-    b.executeForm(*wo);
-
-	delete wo;
+        delete form;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
 }

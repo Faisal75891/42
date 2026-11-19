@@ -28,14 +28,17 @@ class AForm
 	protected:
 		virtual void	doExecute(const Bureaucrat& bureaucrat) const = 0;
 	public:
+        AForm();
+        AForm(const AForm& src);
+        AForm& operator=(const AForm& src);
 		AForm(std::string name, int gradeToSign, int gradeToExecute);
-		~AForm();
-		const std::string&	getName() const;
-		int	getGradeToSign() const;
-		int	getGradeToExecute() const;
+		virtual ~AForm();
+		const       std::string&	getName() const;
+		int	        getGradeToSign() const;
+		int	        getGradeToExecute() const;
 		int			get_IsSigned() const;
 		void    	beSigned(const Bureaucrat& b);
-		void	execute(Bureaucrat const & executor) const;
+		void	    execute(Bureaucrat const & executor) const;
 		class FormNotSignedException : public std::exception
 		{
 			public:

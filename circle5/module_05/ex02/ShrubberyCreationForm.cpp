@@ -17,8 +17,32 @@ ShrubberyCreationForm::ShrubberyCreationForm(std::string target) : AForm(target,
 {
 }
 
+ShrubberyCreationForm::ShrubberyCreationForm() : AForm("Default Shrubbery Form", 145, 137)
+{
+
+}
+
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& src) : AForm(src)
+{
+
+}
+
+ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationForm& other)
+{
+    if (this != &other)
+    {
+        AForm::operator=(other);
+    }
+    return (*this);
+}
+
 ShrubberyCreationForm::~ShrubberyCreationForm()
 {
+}
+
+const char *ShrubberyCreationForm::FileOpenException::what() const throw()
+{
+    return ("Could not create shrubbery file");
 }
 
 void	ShrubberyCreationForm::doExecute(const Bureaucrat& bureaucrat) const
@@ -27,9 +51,11 @@ void	ShrubberyCreationForm::doExecute(const Bureaucrat& bureaucrat) const
 
 	// write something to file "<target>_shrubbery" idk;
     std::string fileName = (getName() + "_shrubbery");
+
+    // TODO: raise exception on error
 	std::ofstream	f(fileName.c_str());
 	if (!f)
-		return ;
+		throw (FileOpenException());
 
 	f << "###########################'`################################\n";
 	f << "###########################  V##'############################\n";

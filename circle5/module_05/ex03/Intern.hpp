@@ -15,15 +15,15 @@
 
 class Intern
 {
-	private:
-		/* data */
 	public:
 		class FormDoesNotExistException : public std::exception
 		{
 			public:
 				virtual const char	*what() const throw();
 		};
-		Intern(/* args */);
+		Intern();
+		Intern(const Intern& );
+		Intern& operator=(const Intern& );
 		~Intern();
 		AForm	*makeForm(std::string target, std::string form);
 };

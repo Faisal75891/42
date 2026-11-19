@@ -12,14 +12,15 @@
 
 NAME = b
 SRC = main.cpp Bureaucrat.cpp Form.cpp
-OBJ = main.o Bureaucrat.o Form.o		
+OBJ = main.o Bureaucrat.o Form.o
+HEADERS = Bureaucrat.hpp  Form.hpp		
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)
 
-$(NAME) : $(SRC)
-	$(CXX) $(CXXFLAGS) $(SRC) -o $(NAME)
+$(NAME) : $(SRC) $(HEADERS)
+	$(CXX) $(CXXFLAGS) -I. $(SRC) -o $(NAME)
 
 clean:
 	rm -rf $(OBJ)

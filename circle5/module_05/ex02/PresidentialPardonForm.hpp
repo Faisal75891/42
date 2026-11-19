@@ -19,6 +19,9 @@ class PresidentialPardonForm : public AForm
 	private:
 		/* data */
 	public:
+        PresidentialPardonForm();
+        PresidentialPardonForm(const PresidentialPardonForm& );
+        PresidentialPardonForm& operator=(const PresidentialPardonForm& );
 		PresidentialPardonForm(std::string target);
 		~PresidentialPardonForm();
 	protected:

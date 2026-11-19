@@ -19,6 +19,13 @@ class ShrubberyCreationForm : public AForm
 	private:
 		/* data */
 	public:
+		class FileOpenException : public std::exception
+		{
+			virtual const char	*what() const throw();
+		};
+		ShrubberyCreationForm();
+		ShrubberyCreationForm(const ShrubberyCreationForm& );
+		ShrubberyCreationForm& operator=(const ShrubberyCreationForm& );
 		ShrubberyCreationForm(std::string target);
 		~ShrubberyCreationForm();
 	protected:

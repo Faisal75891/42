@@ -19,6 +19,9 @@ class RobotomyRequestForm : public AForm
 	private:
 		/* data */
 	public:
+        RobotomyRequestForm();
+        RobotomyRequestForm(const RobotomyRequestForm& );
+        RobotomyRequestForm& operator=(const RobotomyRequestForm& );
 		RobotomyRequestForm(std::string target);
 		~RobotomyRequestForm();
 	protected:

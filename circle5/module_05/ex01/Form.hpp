@@ -35,12 +35,14 @@ class Form
 			public:
 				virtual const char	*what() const throw();
 		};
-
+        Form();
+        Form(const Form& src);
+        Form& operator=(const Form& src);
 		Form(std::string name, int gradeSign, int gradeExecute);
 		~Form();
-		const	std::string& getName() const;
-		int	get_grade_sign() const;
-		int	get_grade_execute() const;
+		const	    std::string& getName() const;
+		int	        get_grade_sign() const;
+		int	        get_grade_execute() const;
 		int			get_IsSigned() const;
 		void    	beSigned(const Bureaucrat& b);
 };

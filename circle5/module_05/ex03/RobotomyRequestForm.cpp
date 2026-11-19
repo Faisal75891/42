@@ -11,11 +11,30 @@
 /* ************************************************************************** */
 
 #include "RobotomyRequestForm.hpp"
-#include <bits/stdc++.h>
+#include <cstdlib>
 
 RobotomyRequestForm::RobotomyRequestForm(std::string target)
 	: AForm (target, 72, 45)
 {
+}
+
+RobotomyRequestForm::RobotomyRequestForm() : AForm("", 72, 45)
+{
+
+}
+
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& src) : AForm (src)
+{
+
+}
+
+RobotomyRequestForm& RobotomyRequestForm::operator=(const RobotomyRequestForm& other)
+{
+    if (this != &other)
+    {
+        AForm::operator=(other);
+    }
+    return (*this);
 }
 
 RobotomyRequestForm::~RobotomyRequestForm()
@@ -31,7 +50,7 @@ void	RobotomyRequestForm::doExecute(const Bureaucrat &bureaucrat) const
 	std::srand(time(0));
 	if (std::rand() % 2)
     {
-        std::cout << "Success! " << getName() << " has robotomized succefully\n";
+        std::cout << "Success! " << getName() << " has robotomized successfully\n";
     }
     else
     {
