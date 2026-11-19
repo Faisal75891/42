@@ -10,7 +10,7 @@ Materia::Materia(const Materia& src) : AMateria(src)
     
 }
 
-Materia::Materia(std::string n) : AMateria(n)
+Materia::Materia(const std::string &n) : AMateria(n)
 {
     
 }
@@ -29,7 +29,7 @@ Materia&    Materia::operator=(const Materia& src)
 
 AMateria	*Materia::clone() const
 {
-	return new Materia(this->getType());
+	return new Materia(*this);
 }
 
 std::string const 	&Materia::getType() const

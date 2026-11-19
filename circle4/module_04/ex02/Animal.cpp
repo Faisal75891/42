@@ -20,7 +20,7 @@ Animal& Animal::operator=(const Animal& other)
 
 Animal::~Animal()
 {
-    std::cout << type << " is no more :(\n";
+    std::cout << "Animal " << type << " is no more :(\n";
 }
 
 void Animal::makeSound() const

@@ -8,7 +8,6 @@ AMateria::AMateria() : type(" ")
 
 AMateria::AMateria(std::string const & type) : type(type)
 {
- // check for valid type??   
 }
 
 AMateria::~AMateria()
@@ -34,7 +33,7 @@ std::string const 	&AMateria::getType() const
     return (type);
 }
 
-void    AMateria::setType(const std::string a)
+void    AMateria::setType(const std::string &a)
 {
     this->type = a;
 }

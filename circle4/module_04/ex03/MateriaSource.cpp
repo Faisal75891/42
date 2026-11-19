@@ -4,7 +4,6 @@ MateriaSource::MateriaSource()
 {
     for (int i = 0; i < MAX_MATRIA; i++)
 		this->materia[i] = NULL;
-	this->idx = 0;
 }
 
 MateriaSource::MateriaSource(const MateriaSource& src)
@@ -16,7 +15,6 @@ MateriaSource::MateriaSource(const MateriaSource& src)
         else
             this->materia[i] = NULL;
     }
-	this->idx = src.idx;
 }
 
 MateriaSource& MateriaSource::operator=(const MateriaSource& src)
@@ -32,7 +30,6 @@ MateriaSource& MateriaSource::operator=(const MateriaSource& src)
             else
                 this->materia[i] = NULL;
         }
-	    this->idx = src.idx;
     }
     return (*this);
 }
@@ -40,11 +37,9 @@ MateriaSource& MateriaSource::operator=(const MateriaSource& src)
 MateriaSource::~MateriaSource()
 {
     for (int i = 0; i < MAX_MATRIA; i++)
-	{
-		delete this->materia[i];
-		// if (this->materia[i] != NULL)
-	}
-    // delete[] this->materia;
+    {
+    	delete this->materia[i];
+    }
 }
 
 void        MateriaSource::learnMateria(AMateria* m)

@@ -9,15 +9,20 @@ Cat::Cat() : Animal()
 
 Cat::Cat(const Cat& other) : Animal(other)
 {
-    this->brain = new Brain();
+    this->brain = new Brain(*other.brain);
+
     std::cout << "Copy Cat constructor called\n";
 }
 
 Cat& Cat::operator=(const Cat& other)
 {
     if (this != &other)
+    {
         Animal::operator=(other);
-    this->brain = new Brain();
+        Brain *newBrain = new Brain(*other.brain);
+        delete this->brain;
+        this->brain = newBrain;
+    }
     std::cout << "Copy Cat constructor called\n";
     return *this;
 }

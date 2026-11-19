@@ -11,7 +11,7 @@ class Brain
 	public:
 		Brain();
 		Brain(const Brain& src);
-		virtual	~Brain();
+		~Brain();
 
 		const	std::string	getIdea(size_t i) const;
 		void	setIdea(size_t i, std::string idea);

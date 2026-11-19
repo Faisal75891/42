@@ -22,6 +22,5 @@ Cure& Cure::operator=(const Cure& src)
 
 AMateria	*Cure::clone() const
 {   
-    return new Cure();
+    return new Cure(*this);
 }
-

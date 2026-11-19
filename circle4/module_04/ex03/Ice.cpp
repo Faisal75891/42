@@ -22,5 +22,5 @@ Ice&    Ice::operator=(const Ice& src)
 
 AMateria	*Ice::clone() const
 {
-    return new Ice();
+    return new Ice(*this);
 }

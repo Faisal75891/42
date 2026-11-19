@@ -10,7 +10,7 @@ class Dog : public Animal
 		Brain *brain;
 	public:
 		Dog();
-		virtual ~Dog();
+		~Dog();
         Dog(const Dog& other);
         Dog& operator=(const Dog& other);
 		void  				makeSound() const;
@@ -18,4 +18,3 @@ class Dog : public Animal
 		const std::string	getIdea(size_t i) const;
 		void				getIdeas() const;
 };
-

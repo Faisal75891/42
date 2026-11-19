@@ -19,4 +19,6 @@ class Animal
 		virtual void		makeSound() const = 0;
 };
 
+
+
 #endif
