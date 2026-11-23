@@ -22,8 +22,11 @@ int	main(void)
 {
     std::srand(std::time(NULL));
 
-	Base *p = Base::generate();
-	Base::identify(p);
-	Base::identify(*p);
-	delete p;
+    for (int i = 0; i < 10; i++)
+    {
+        Base *p = Base::generate();
+        Base::identify(p);
+        Base::identify(*p);
+        delete p;
+    }
 }

@@ -17,6 +17,22 @@ Data::Data() : a(0), b(0), c(0)
 
 }
 
+Data::Data(const Data& src) : a(src.a), b(src.b), c(src.c)
+{
+
+}
+
+Data& Data::operator=(const Data& src)
+{
+    if (this != &src)
+    {
+        a = src.a;
+        b = src.b;
+        c = src.c;
+    }
+    return (*this);
+}
+
 Data::~Data()
 {
 

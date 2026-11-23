@@ -36,14 +36,14 @@ Base&	Base::operator=(const Base& s)
 
 Base*	Base::generate(void)
 {
-    int roll = std::rand() % 100 + 1;
+    int roll = std::rand() % 3;
 
-    if (roll <= 30)
+    if (roll == 0)
     {
         // 30% chance
         return (new A());
     }
-    else if (roll > 30 && roll <= 60)
+    else if (roll == 1)
     {
         return (new B());
     }
@@ -82,7 +82,7 @@ void	Base::identify(Base& p)
     }
     try
     {
-        dynamic_cast<B&>(p);
+        static_cast<void>(dynamic_cast<B&>(p));
         std::cout << "B\n";
         return ;
     }
@@ -91,7 +91,7 @@ void	Base::identify(Base& p)
     }
     try
     {
-        dynamic_cast<C&>(p);
+        static_cast<void>(dynamic_cast<C&>(p));
         std::cout << "C\n";
         return ;
     }

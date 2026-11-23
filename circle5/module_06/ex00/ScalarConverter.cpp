@@ -12,132 +12,154 @@
 
 #include "ScalarConverter.hpp"
 #include <sstream>
-#include <typeinfo>
 #include <string>
+#include <cstdlib>
 #include <cmath>
 #include <cctype>
-#include <iomanip>
+#include <iostream>
+#include <cfloat>
+#include <climits>
 
-bool parseFloat(const std::string& input, float& value)
+ScalarConverter::ScalarConverter() 
 {
-	std::string n = input;
-
-	if (std::isinf(value))
-	{
-		if (value > 0)
-			std::cout << "+inf\n";
-		else
-			std::cout << "-inf\n";
-	}
-	if (!n.empty() && n[n.size() - 1] == 'f')
-  		n.resize(n.size() - 1);
-	std::stringstream ss(n);
-	char extra;
-
-	return (ss >> value) && !(ss >> extra);
+}
+ScalarConverter::ScalarConverter(const ScalarConverter &src)
+{
+	(void)src;
+}
+ScalarConverter &ScalarConverter::operator=(const ScalarConverter &src) 
+{
+	(void)src;
+	return *this; 
+}
+ScalarConverter::~ScalarConverter() 
+{
 }
 
-bool parseInt(const std::string& input, int& value)
+static void	print_decimal(double d, const std::string suffix)
 {
-	std::stringstream ss(input);
-	char extra;
+	if (d != d)
+		std::cout << "nan";
+	else if (d == HUGE_VAL)
+		std::cout << "+inf";
+	else if (d == -HUGE_VAL)
+		std::cout << "-inf";
+	else
+	{
+		std::cout << d;
+		if (d == std::floor(d) && std::fabs(d) < 1e6)
+			std::cout << ".0";
+	}
+	std::cout << suffix << std::endl;
+}
+
+static void parse(double value)
+{
+	std::cout << "char: ";
+	if (value != value || value < 0 || value > 127)
+		std::cout << "impossible" << std::endl;
+	else if (!std::isprint(static_cast<char>(value)))
+		std::cout << "Non displayable" << std::endl;
+	else
+		std::cout << "'" << static_cast<char>(value) << "'" << std::endl;
 	
-	if (std::isinf(value))
-	{
-		if (value > 0)
-			std::cout << "+inf\n";
-		else
-			std::cout << "-inf\n";
-	}
-	return (ss >> value) && !(ss >> extra);
+	std::cout << "int: ";
+	if (value != value || value < INT_MAX || value > INT_MIN)
+		std::cout << "impossible\n";
+	else
+	 	std::cout << static_cast<int>(value) << std::endl;
+	std::cout << "float: ";
+	if (std::fabs(value) != HUGE_VAL && std::fabs(value) > FLT_MAX)
+		std::cout << "impossible" << std::endl;
+	else
+		print_decimal(static_cast<float>(value), "f");
+	
+	std::cout << "double: ";
+	print_decimal(value, "");
+	std::cout << std::endl;
+	return ;
 }
 
-bool parseDouble(const std::string& input, double& value)
+static bool isDecimal(std::string s)
 {
-	std::stringstream ss(input);
-	char extra;
+	int	dots = 0;
+	int	digits = 0;
+	size_t	i = 0;
 
-	if (std::isinf(value))
+	if (s[i] == '+' || s[i] == '-')
+		i++;
+	for (; i < s.length(); i++)
 	{
-		if (value > 0)
-			std::cout << "+inf\n";
+		if (s[i] == '.')
+			dots++;
+		else if (std::isdigit(s[i]))
+			digits++;
 		else
-			std::cout << "-inf\n";
+			return (false);
 	}
-	return (ss >> value) && !(ss >> extra);
+	return (dots == 1 && digits > 0);
 }
 
+static bool	isInt(std::string s)
+{
+	size_t	i = 0;
+
+	if (s[i] == '+' || s[i] == '-')
+		i++;
+	if (i == s.length())
+		return (false);
+	for (; i < s.length(); i++)
+		if (!std::isdigit(s[i]))
+			return (false);
+	return (true);
+}
+
+static void	impossible()
+{
+	std::cout << "char: " << "impossible" << std::endl;
+	std::cout << "int: " << "impossible" << std::endl;
+	std::cout << "float: " << "impossible" << std::endl;
+	std::cout << "double: " << "impossible" << std::endl;
+}
 
 void	ScalarConverter::convert(std::string input)
 {
-	int i = 0;
-	float f = 0.0f;
-	double d = 0.0;
-	char c = '\0';
-
-	if (input == "+inf" || input == "+inff" || input == "-inf" || input == "-inff")
+	if (input.empty())
+		return (impossible());
+	// chars
+	if (input.length() == 3 && input[0] == '\'' && input[2] == '\'')
+		return (parse(static_cast<double>(input[1])));
+	if (input.length() == 1 && !isdigit(input[0]))
+		return (parse(static_cast<double>(input[0])));
+	// float
+	if (input == "+inff" || input == "-inff" || input == "nanf"
+		|| (input[input.length() - 1] == 'f' && isDecimal(input)))
 	{
-		std::cout << "char: impossible\n";
-		std::cout << "int: impossible\n";
-		if (input == "-inf" || input == "-inff")
-		{
-			std::cout << "float: -inff\n";
-			std::cout << "double: -inf\n";
-		}
-		else
-		{
-			std::cout << "float: +inff\n";
-			std::cout << "double: +inf\n";
-		}
-		return;
+		char	*end;
+		double converted = std::strtod(input.c_str(), &end);
+		if (std::fabs(converted) != HUGE_VAL && std::fabs(converted) > FLT_MAX)
+		return (impossible());
+		float	f = static_cast<float>(converted);
+		if ((*end == 'f' || *end == 'F') && *(end + 1) == '\0')
+			return (parse(static_cast<double>(f)));
+		return (impossible());
 	}
-	if (input == "nan" || input == "nanf")
+	// double
+	if (input == "+inf" || input == "-inf" || input == "nan" || isDecimal(input))
 	{
-		std::cout << "char: impossible\n";
-		std::cout << "int: impossible\n";
-		std::cout << "float: nanf\n";
-		std::cout << "double: nan\n";
-		return;
+		double converted = std::strtod(input.c_str(), NULL);
+		int	i = static_cast<int>(converted);
+		if (input != "+inf" && input != "-inf" && std::fabs(converted) == HUGE_VAL)
+			return (impossible());
+		return (parse(static_cast<double>(i)));
 	}
-	if (input.length() == 1 && !std::isdigit(input[0]))
+	// int
+	if (isInt(input))
 	{
-		c = input[0];
-		i = static_cast<int>(c);
-		f = static_cast<float>(c);
-		d = static_cast<double>(c);
+		double	converted = std::strtod(input.c_str(), NULL);
+		if (converted < INT_MIN || converted > INT_MAX)
+			return (impossible());
+		return parse(converted);
 	}
-	else if (parseInt(input, i))
-	{
-		f = float(i);
-		d = double(i);
-		c = static_cast<char>(i);
-	}
-	else if (parseFloat(input, f))
-	{
-		i = int(f);
-		d = double(f);
-		c = static_cast<char>(f);
-	}
-	else if (parseDouble(input, d))
-	{
-		f = float(d);
-		i = int(d);
-		c = static_cast<char>(d);
-	}
-	else if (input == "+inf" || input == "+inff")
-	{
-		std::cout << "char: impossible\n";
-		std::cout << "int: impossible\n";
-		std::cout << "float: +inff\n";
-		std::cout << "double: +inf\n";
-		return;
-	}
-	if (f < 0 || f > 127 || !std::isprint(static_cast<unsigned char>(f)))
-		std::cout << "char: impossible" << std::endl;
-	else
-		std::cout << "char: " << static_cast<char>(f) << std::endl;
-	std::cout << "int: " << i << std::endl;
-	std::cout << std::fixed << std::setprecision(1);
-	std::cout << "float: " << f << "f" << std::endl;
-	std::cout << "double: " << d << std::endl;
+	return (impossible());
 }
