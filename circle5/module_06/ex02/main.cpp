@@ -24,9 +24,9 @@ int	main(void)
 
     for (int i = 0; i < 10; i++)
     {
-        Base *p = Base::generate();
-        Base::identify(p);
-        Base::identify(*p);
+        Base *p = generate();
+        identify(p);
+        identify(*p);
         delete p;
     }
 }

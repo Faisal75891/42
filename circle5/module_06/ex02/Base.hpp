@@ -12,20 +12,12 @@
 
 #pragma once
 
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-
 class Base
 {
-	private:
-		/* data */
 	public:
-		Base(/* args */);
 		virtual ~Base() {};
-		Base(const Base& s);
-		Base&	operator=(const Base& s);
-		static Base*	generate(void);
-		static void	identify(Base* p);
-		static void	identify(Base& p);
 };
+
+Base*	generate(void);
+void	identify(Base* p);
+void	identify(Base& p);

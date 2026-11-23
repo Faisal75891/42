@@ -19,12 +19,13 @@
 class Serializer
 {
 	private:
-		/* data */
-	public:
 		Serializer() ;
 		~Serializer();
-        Serializer(const Serializer& s);
-        Serializer& operator=(const Serializer& s);
+
+		Serializer(const Serializer& s);
+		Serializer& operator=(const Serializer& s);
+
+	public:
 		static uintptr_t	serialize(Data *ptr);
 		static Data*		deserialize(uintptr_t raw);
 };

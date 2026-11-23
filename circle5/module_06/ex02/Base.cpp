@@ -14,27 +14,10 @@
 #include "A.hpp"
 #include "B.hpp"
 #include "C.hpp"
+#include <cstdlib>
+#include <iostream>
 
-Base::Base()
-{
-
-}
-
-Base::Base(const Base& s)
-{
-    *this = s;
-}
-
-Base&	Base::operator=(const Base& s)
-{
-    if (this != &s)
-    {
-
-    }
-    return (*this);
-}
-
-Base*	Base::generate(void)
+Base*	generate(void)
 {
     int roll = std::rand() % 3;
 
@@ -53,7 +36,7 @@ Base*	Base::generate(void)
     }
 }
 
-void	Base::identify(Base* p)
+void	identify(Base* p)
 {
     if (dynamic_cast<A*>(p))
     {
@@ -69,7 +52,7 @@ void	Base::identify(Base* p)
     }
 }
 
-void	Base::identify(Base& p)
+void	identify(Base& p)
 {
     try
     {

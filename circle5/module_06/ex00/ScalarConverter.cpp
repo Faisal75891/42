@@ -58,13 +58,13 @@ static void parse(double value)
 	std::cout << "char: ";
 	if (value != value || value < 0 || value > 127)
 		std::cout << "impossible" << std::endl;
-	else if (!std::isprint(static_cast<char>(value)))
+	else if (!std::isprint(static_cast<unsigned char>(value)))
 		std::cout << "Non displayable" << std::endl;
 	else
 		std::cout << "'" << static_cast<char>(value) << "'" << std::endl;
 	
 	std::cout << "int: ";
-	if (value != value || value < INT_MAX || value > INT_MIN)
+	if (value != value || value < INT_MIN || value > INT_MAX)
 		std::cout << "impossible\n";
 	else
 	 	std::cout << static_cast<int>(value) << std::endl;
@@ -86,8 +86,12 @@ static bool isDecimal(std::string s)
 	int	digits = 0;
 	size_t	i = 0;
 
+	if (s.empty())
+		return (false);
 	if (s[i] == '+' || s[i] == '-')
 		i++;
+	if (i == s.length())
+		return (false);
 	for (; i < s.length(); i++)
 	{
 		if (s[i] == '.')
@@ -129,11 +133,12 @@ void	ScalarConverter::convert(std::string input)
 	// chars
 	if (input.length() == 3 && input[0] == '\'' && input[2] == '\'')
 		return (parse(static_cast<double>(input[1])));
-	if (input.length() == 1 && !isdigit(input[0]))
+	if (input.length() == 1 && !std::isdigit(static_cast<unsigned char>(input[0])))
 		return (parse(static_cast<double>(input[0])));
 	// float
 	if (input == "+inff" || input == "-inff" || input == "nanf"
-		|| (input[input.length() - 1] == 'f' && isDecimal(input)))
+		|| (input[input.length() - 1] == 'f'
+			&& isDecimal(input.substr(0, input.length() - 1))))
 	{
 		char	*end;
 		double converted = std::strtod(input.c_str(), &end);
@@ -148,10 +153,9 @@ void	ScalarConverter::convert(std::string input)
 	if (input == "+inf" || input == "-inf" || input == "nan" || isDecimal(input))
 	{
 		double converted = std::strtod(input.c_str(), NULL);
-		int	i = static_cast<int>(converted);
 		if (input != "+inf" && input != "-inf" && std::fabs(converted) == HUGE_VAL)
 			return (impossible());
-		return (parse(static_cast<double>(i)));
+		return (parse(converted));
 	}
 	// int
 	if (isInt(input))
@@ -159,7 +163,7 @@ void	ScalarConverter::convert(std::string input)
 		double	converted = std::strtod(input.c_str(), NULL);
 		if (converted < INT_MIN || converted > INT_MAX)
 			return (impossible());
-		return parse(converted);
+		return (parse(converted));
 	}
 	return (impossible());
 }

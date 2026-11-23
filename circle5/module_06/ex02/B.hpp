@@ -16,7 +16,4 @@
 
 class B : public Base
 {
-	public:
-		B(/* args */);
-		~B();
 };
